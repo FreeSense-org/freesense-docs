@@ -1,0 +1,31 @@
+/* FreeSense brand accent for Starlight (coral #EA4F2D on the ink palette). */
+:root {
+  --sl-color-accent-low: #3a1610;
+  --sl-color-accent: #ea4f2d;
+  --sl-color-accent-high: #ffb9a6;
+
+  --sl-color-text-accent: #ff6b4a;
+}
+
+/* Dark theme: align the greys with the website's ink palette. */
+:root[data-theme='dark'] {
+  --sl-color-bg: #14181f;
+  --sl-color-bg-nav: #14181f;
+  --sl-color-bg-sidebar: #171c24;
+  --sl-color-hairline: #2a3340;
+  --sl-color-hairline-light: #344052;
+}
+
+/* Light theme accent tuning. */
+:root[data-theme='light'] {
+  --sl-color-accent-low: #ffd9cd;
+  --sl-color-accent: #d63e1d;
+  --sl-color-accent-high: #5e1c0d;
+  --sl-color-text-accent: #d63e1d;
+}
+
+/* A touch more presence for the site title next to the logo. */
+.site-title {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
