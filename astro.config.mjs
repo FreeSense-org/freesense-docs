@@ -37,6 +37,7 @@ export default defineConfig({
         {
           label: 'Guides',
           items: [
+            { label: 'Migrating from pfSense / OPNsense', slug: 'guides/migrating' },
             { label: 'Updates & release channels', slug: 'guides/updates-and-channels' },
           ],
         },
