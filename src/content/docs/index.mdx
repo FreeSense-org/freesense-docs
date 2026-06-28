@@ -1,0 +1,52 @@
+---
+title: FreeSense Documentation
+description: Documentation for FreeSense — the open-source firewall & router operating system.
+template: splash
+hero:
+  tagline: The open-source firewall & router OS — install it, configure it, and keep it up to date.
+  image:
+    dark: ../../assets/icon-reversed.svg
+    light: ../../assets/icon.svg
+  actions:
+    - text: Get started
+      link: /getting-started/installation/
+      icon: right-arrow
+    - text: Download FreeSense
+      link: https://freesense.org/download
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+:::note
+These docs are brand new and growing. Pages will fill in over time — contributions welcome on
+[GitHub](https://github.com/FreeSense-org/freesense-docs).
+:::
+
+## Where to start
+
+<CardGrid stagger>
+  <Card title="Install FreeSense" icon="rocket">
+    Write an installer image to USB and get a firewall running in minutes.
+    [Installation guide →](/getting-started/installation/)
+  </Card>
+  <Card title="First boot & setup" icon="laptop">
+    Assign interfaces, reach the web GUI, and set your admin password.
+    [First boot →](/getting-started/first-boot/)
+  </Card>
+  <Card title="Updates & channels" icon="random">
+    How package-based updates work and how to choose stable vs development.
+    [Updates →](/guides/updates-and-channels/)
+  </Card>
+  <Card title="Packages" icon="puzzle">
+    Extend FreeSense with signed add-on packages from the official repo.
+    [Packages →](/packages/installing-packages/)
+  </Card>
+</CardGrid>
+
+## What is FreeSense?
+
+FreeSense is a free, community-driven firewall and router operating system — a fully open
+derivative of pfSense® CE, built from source on FreeBSD with signed package updates and no vendor
+lock-in. See the [introduction](/introduction/) for the bigger picture.
