@@ -39,7 +39,7 @@ expected; proceed to the site.
 Use the default credentials:
 
 - **Username:** `admin`
-- **Password:** `pfsense`
+- **Password:** `freesense`
 
 :::danger[Change the password immediately]
 The default password is public knowledge. Change it right away under

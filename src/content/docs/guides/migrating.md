@@ -57,7 +57,7 @@ with **Recover config.xml** instead.
 
 ## After the first boot
 
-1. Log in to the web GUI (`https://192.168.1.1`, `admin` / `pfsense` — change the password
+1. Log in to the web GUI (`https://192.168.1.1`, `admin` / `freesense` — change the password
    immediately).
 2. Check **Interfaces** — confirm WAN/LAN assignments and addresses.
 3. Check **System → General** — hostname, domain, DNS.
