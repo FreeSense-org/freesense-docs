@@ -5,7 +5,7 @@ description: What FreeSense is, where it comes from, and how it's built.
 
 **FreeSense** is a free and open-source firewall and router operating system. It gives you a
 complete web-managed firewall — rules, NAT, VPNs, DHCP, DNS, traffic shaping, monitoring, and a
-package manager — on a hardened FreeBSD base.
+package manager — on a hardened, up-to-date **FreeBSD 16** base with the newest kernel and drivers.
 
 ## Open from top to bottom
 
@@ -19,16 +19,21 @@ on **FreeBSD**. Everything is public and Apache-2.0 licensed:
 You can build the whole system yourself from source, or run the official signed images. There is no
 proprietary core and no vendor lock-in.
 
-:::note[Not affiliated with Netgate]
-FreeSense is an independent community project. It is **not** affiliated with, sponsored by, or
-endorsed by Netgate or the pfSense project. *pfSense* is a registered trademark of Netgate.
+:::note[Independent project]
+FreeSense is an independent community project and is not affiliated with or endorsed by the pfSense
+project. *pfSense* and *FreeBSD* are trademarks of their respective owners.
 :::
 
 ## How it's built
 
-The OS is rebuilt automatically from upstream FreeBSD sources plus a small overlay of FreeSense
-packages. Builds run on GitHub, and the resulting packages are signed and published to the official
-repository at `pkg.freesense.org`. Installer images are published to `downloads.freesense.org`.
+Every release pins an exact **FreeBSD 16** source snapshot and a frozen set of upstream package
+sources, so builds are reproducible and never drift out from under you. The world, kernel and 570+
+packages are compiled from source on automated CI runners — with dedicated FreeBSD hardware for
+larger releases — then cryptographically **signed** with the project key.
+
+Signed packages publish to `pkg.freesense.org` and installer images to `downloads.freesense.org`,
+both served over a global CDN. Installed systems fetch updates over the air, verified against the
+project fingerprint — no phone-home and no accounts.
 
 ## Release channels
 
