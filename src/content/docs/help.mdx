@@ -1,0 +1,48 @@
+---
+title: Page help — coming soon
+description: Per-page help for the FreeSense web GUI is on the way. In the meantime, start with the guides.
+tableOfContents: false
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+You followed the **?** (help) link from the FreeSense web GUI. Detailed, per-page help is being
+written — it isn't published yet, but the guides below cover the essentials, and this page will grow
+into full context-sensitive help.
+
+:::note[Coming soon]
+Context help for individual GUI pages is on the FreeSense docs roadmap. Until each page has its own
+article, this landing page points you at the most useful starting points.
+:::
+
+## Start here
+
+<CardGrid>
+  <Card title="First boot & setup" icon="laptop">
+    Assign interfaces, reach the web GUI, and set your admin password.
+    [First boot →](/getting-started/first-boot/)
+  </Card>
+  <Card title="Updates & channels" icon="random">
+    How package-based updates work and how to choose stable vs development.
+    [Updates →](/guides/updates-and-channels/)
+  </Card>
+  <Card title="Installing packages" icon="puzzle">
+    Extend FreeSense with signed add-on packages from the official repo.
+    [Packages →](/packages/installing-packages/)
+  </Card>
+  <Card title="All documentation" icon="open-book">
+    Browse the full documentation from the top.
+    [Documentation home →](/)
+  </Card>
+</CardGrid>
+
+## Help us write it
+
+FreeSense is open source, and so are these docs. If you know a GUI page well, you can add its help
+article directly.
+
+<LinkCard
+  title="Contribute a help page on GitHub"
+  href="https://github.com/FreeSense-org/freesense-docs"
+  description="Edit the docs and open a pull request — every page helps."
+/>
