@@ -1,52 +1,43 @@
 ---
 title: Updates & release channels
-description: How FreeSense delivers updates as signed packages, and how to choose a release channel.
+description: How FreeSense delivers signed updates and how to choose a release channel.
 ---
 
-FreeSense updates are **package-based**, not image-based. You do not reinstall to update — the system
-upgrades in place from the official signed repository.
+FreeSense updates are package-based. You do not reinstall for a routine update: the system upgrades
+in place from the official signed repository through **System → Update**.
 
-## How updates work
-
-The OS itself is a set of core packages (base system, kernel, and supporting pieces). Updating runs
-`pkg upgrade` against `pkg.freesense.org` from the GUI:
-
-**System → Update**
-
-The same mechanism keeps add-on [packages](/packages/installing-packages/) current. Everything is
-delivered through one unified, cryptographically signed package path.
-
-:::note[Signed packages]
-FreeSense's official repository is signed with the project's key, and the matching public key ships
-in the OS. Packages that fail signature verification are rejected.
-:::
+The operating system is delivered as core packages for the base system, kernel, and supporting
+components. Add-on packages use the same signed repository mechanism. Packages that fail fingerprint
+verification are rejected.
 
 ## Release channels
 
-There are two channels:
-
-| Channel | For | Tracks |
+| Channel | Intended use | Tracks |
 | --- | --- | --- |
-| **Stable** | Production | Tested release builds |
-| **Development** | Testing / early access | Latest FreeBSD & features |
+| **Stable** | Production and normal use | Not available while FreeSense uses FreeBSD 16-CURRENT |
+| **Candidate** | Preview testing | Current RC Preview build |
+| **Development** | Early testing | Current FreeBSD and feature development |
 
-Choose the channel that fits the machine. Production firewalls should stay on **Stable**;
-**Development** is for trying new things and helping test.
+FreeSense does not currently offer a production-supported Stable build. Candidate contains the
+**1.0.0 RC Preview**, based on the unsupported FreeBSD 16-CURRENT development branch, and must only
+be used on non-critical systems. Development is for contributors and earlier testing.
 
 ## Switching channels
 
-Select the channel on the **System → Update → Update Settings** page, then check for updates. The box
-will repoint at the chosen channel's repository and offer the packages available there.
+Select a channel on **System → Update → Update Settings**, save, and check for updates. Selecting
+Candidate requires an explicit acknowledgement that it is pre-release software.
 
-## Update cadence
+Downgrading through the updater is not supported. If a release must be withdrawn, FreeSense can move
+the Stable channel back to an earlier immutable package snapshot. Other recovery cases may require a
+reinstall followed by restoration of a known-good configuration.
 
-Package and security updates are published **continuously** — as upstream fixes land and FreeSense
-packages are rebuilt, your firewall picks them up over the air from **System → Update**. Fresh,
-signed **installer images** are rebuilt on a roughly **14-day cadence**, so a new install always
-starts from a current FreeBSD 16 base rather than an old snapshot.
+## Cadence and artifact policy
 
-## ISOs vs updates
+Preview candidates are published only after the release checklist passes. They cannot be promoted
+to Stable while their FreeBSD base lacks an upstream-supported release branch. The planned monthly
+Stable train begins after FreeSense moves to a supported FreeBSD base. Development packages follow
+current project snapshots, while installer images are produced when content and cadence require one.
 
-Installer images (ISOs) are for **fresh installs** only. Once installed, stay current with package
-updates rather than re-imaging. Major FreeBSD version jumps may occasionally call for a reinstall —
-this is noted in release announcements when it applies.
+Stable and Candidate artifacts are immutable. Promotion reuses the exact signed packages and ISO
+that passed testing rather than rebuilding from source. Installer images are for fresh installations;
+installed systems should normally remain current through package updates.
