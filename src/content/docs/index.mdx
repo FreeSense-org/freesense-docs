@@ -1,52 +1,75 @@
 ---
 title: FreeSense Documentation
-description: Documentation for FreeSense — the open-source firewall & router operating system.
+description: Install, operate, extend, and understand the modern FreeSense firewall platform.
 template: splash
 hero:
-  tagline: The open-source firewall & router OS — install it, configure it, and keep it up to date.
+  tagline: One open firewall platform. Verifiable releases, a curated package catalog, and documentation that follows the product.
   image:
     dark: ../../assets/icon-reversed.svg
     light: ../../assets/icon.svg
   actions:
-    - text: Get started
+    - text: Install FreeSense
       link: /getting-started/installation/
       icon: right-arrow
-    - text: Download FreeSense
-      link: https://freesense.org/download
-      icon: external
+    - text: Explore the package platform
+      link: /packages/catalog/
+      icon: puzzle
       variant: minimal
 ---
 
 import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-:::note
-These docs are brand new and growing. Pages will fill in over time — contributions welcome on
-[GitHub](https://github.com/FreeSense-org/freesense-docs).
-:::
+<div class="docs-status-strip">
+  <span><b>FreeBSD 16</b> development base</span>
+  <span><b>32</b> curated packages</span>
+  <span><b>4-commit</b> release provenance</span>
+  <span><b>Apache-2.0</b> throughout</span>
+</div>
 
-## Where to start
+## Start with an outcome
 
 <CardGrid stagger>
-  <Card title="Install FreeSense" icon="rocket">
-    Write an installer image to USB and get a firewall running in minutes.
-    [Installation guide →](/getting-started/installation/)
+  <Card title="Deploy a new firewall" icon="rocket">
+    Verify an image, install on amd64 hardware or a VM, assign interfaces, and secure the initial account.
+    [Follow the installation path →](/getting-started/installation/)
   </Card>
-  <Card title="First boot & setup" icon="laptop">
-    Assign interfaces, reach the web GUI, and set your admin password.
-    [First boot →](/getting-started/first-boot/)
+  <Card title="Understand a release" icon="approve-check-circle">
+    Learn how source, ports, the OS definition, and FreeBSD are sealed into one build set and promoted without recompilation.
+    [Read the release model →](/guides/release-process/)
   </Card>
-  <Card title="Updates & channels" icon="random">
-    How package-based updates work and how to choose stable vs development.
-    [Updates →](/guides/updates-and-channels/)
+  <Card title="Extend the platform" icon="puzzle">
+    Browse the focused package catalog, including Suricata 8, CrowdSec, ZeroTier, FRR, HAProxy, monitoring, and automation.
+    [Explore packages →](/packages/catalog/)
   </Card>
-  <Card title="Packages" icon="puzzle">
-    Extend FreeSense with signed add-on packages from the official repo.
-    [Packages →](/packages/installing-packages/)
+  <Card title="Bring an existing config" icon="random">
+    Review the guarded migration path for compatible pfSense and OPNsense configuration data.
+    [Plan a migration →](/guides/migrating/)
   </Card>
 </CardGrid>
 
-## What is FreeSense?
+## What changed in the modern platform
 
-FreeSense is a free, community-driven firewall and router operating system — a fully open
-derivative of pfSense® CE, built from source on FreeBSD with signed package updates and no vendor
-lock-in. See the [introduction](/introduction/) for the bigger picture.
+FreeSense is not just a renamed firewall image. The current development line introduces a smaller,
+explicit package contract; Bootstrap 5 package interfaces; candidate promotion; atomic Suricata
+configuration; and CI checks that connect package metadata to the actual build list.
+
+<div class="docs-feature-grid">
+  <div><b>Package clarity</b><span>Capabilities, services, support status, resource impact, and direct management links.</span></div>
+  <div><b>Security integration</b><span>Suricata 8 events and validation, CrowdSec firewall decisions, and consent-driven ZeroTier routes.</span></div>
+  <div><b>Release integrity</b><span>Every artifact records exact source, ports, OS-definition, and FreeBSD revisions.</span></div>
+</div>
+
+:::caution[Development status]
+FreeSense 1.0 is still under active development on FreeBSD 16-CURRENT. Candidate and Development
+images are testing channels, not supported production releases. The download page always reflects
+the live release manifest.
+:::
+
+## Core reading
+
+<CardGrid>
+  <LinkCard title="Introduction" description="Project scope, independence, licensing, and architecture." href="/introduction/" />
+  <LinkCard title="First boot" description="Interfaces, WebUI access, and initial security setup." href="/getting-started/first-boot/" />
+  <LinkCard title="Updates & channels" description="Stable, Candidate, Development, and how artifacts move between them." href="/guides/updates-and-channels/" />
+  <LinkCard title="Download center" description="Live images, hashes, and provenance." href="https://freesense.org/download" />
+</CardGrid>
