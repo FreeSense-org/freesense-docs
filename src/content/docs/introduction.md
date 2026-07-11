@@ -26,10 +26,9 @@ project. *pfSense* and *FreeBSD* are trademarks of their respective owners.
 
 ## How it's built
 
-Every release pins an exact **FreeBSD 16** source snapshot and a frozen set of upstream package
-sources, so builds are reproducible and never drift out from under you. The world, kernel and 570+
-packages are compiled from source on automated CI runners — with dedicated FreeBSD hardware for
-larger releases — then cryptographically **signed** with the project key.
+Every release pins exact **source**, **ports**, **OS-definition**, and **FreeBSD** revisions plus a
+frozen set of upstream package sources. The world, kernel, and curated package catalog are built
+from that sealed definition and cryptographically **signed** with the project key.
 
 Signed packages publish to `pkg.freesense.org` and installer images to `downloads.freesense.org`,
 both served over a global CDN. Installed systems fetch updates over the air, verified against the
@@ -37,10 +36,11 @@ project fingerprint — no phone-home and no accounts.
 
 ## Release channels
 
-FreeSense offers two channels so you can balance stability against freshness:
+FreeSense uses three explicit channels:
 
-- **Stable** — tested release builds, recommended for production.
-- **Development** — bleeding-edge snapshots that track the latest FreeBSD and features.
+- **Stable** — supported artifacts promoted from an accepted candidate without recompilation.
+- **Candidate** — immutable release candidates undergoing installation, upgrade, and rollback tests.
+- **Development** — continuously integrated snapshots that track the latest FreeBSD and features.
 
 See [Updates & release channels](/guides/updates-and-channels/) for how updates are delivered and
 how to switch.

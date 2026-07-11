@@ -8,7 +8,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'FreeSense Docs',
-      description: 'Documentation for FreeSense — the open-source firewall & router OS.',
+      description: 'Build, install, operate, and extend the modern FreeSense firewall platform.',
       logo: {
         light: './src/assets/icon.svg',
         dark: './src/assets/icon-reversed.svg',
@@ -39,12 +39,14 @@ export default defineConfig({
           items: [
             { label: 'Migrating from pfSense / OPNsense', slug: 'guides/migrating' },
             { label: 'Updates & release channels', slug: 'guides/updates-and-channels' },
+            { label: 'Release process & provenance', slug: 'guides/release-process' },
           ],
         },
         {
-          label: 'Packages',
+          label: 'Package platform',
           items: [
-            { label: 'Installing packages', slug: 'packages/installing-packages' },
+            { label: 'Catalog overview', slug: 'packages/catalog' },
+            { label: 'Install & manage packages', slug: 'packages/installing-packages' },
           ],
         },
       ],
