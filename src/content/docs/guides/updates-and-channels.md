@@ -25,7 +25,7 @@ be used on non-critical systems. Development is for contributors and earlier tes
 ## Switching channels
 
 Select a channel on **System → Update → Update Settings**, save, and check for updates. Selecting
-Candidate requires an explicit acknowledgement that it is pre-release software.
+Candidate is clearly marked as pre-release software and is intended only for non-critical testing.
 
 Downgrading through the updater is not supported. On compatible ZFS installations, updates are
 prepared in a new [boot environment](/operations/zfs-boot-environments/) and a failed first boot can
