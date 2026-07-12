@@ -63,6 +63,7 @@ export default defineConfig({
             { label: 'Suricata 8', slug: 'security/suricata' },
             { label: 'CrowdSec', slug: 'security/crowdsec' },
             { label: 'Monitoring and logs', slug: 'operations/monitoring-and-logs' },
+            { label: 'ZFS boot environments', slug: 'operations/zfs-boot-environments' },
             { label: 'Diagnostics and troubleshooting', slug: 'operations/diagnostics-and-troubleshooting' },
           ],
         },
