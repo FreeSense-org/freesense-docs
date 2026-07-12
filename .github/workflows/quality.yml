@@ -1,0 +1,32 @@
+name: Documentation quality
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          repository: FreeSense-org/freesense
+          path: freesense-src
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run validate -- freesense-src/src/etc/freesense-package-catalog.json
+      - run: npm run build
+      - name: Reject vendor documentation material
+        run: |
+          if git grep -IEn '(Netgate Docs|docs\.netgate\.com/pfsense|Electric Sheep Fencing|Rubicon Communications)' -- src public; then
+            echo 'FreeSense documentation must not copy vendor documentation material' >&2
+            exit 1
+          fi
