@@ -27,9 +27,10 @@ be used on non-critical systems. Development is for contributors and earlier tes
 Select a channel on **System → Update → Update Settings**, save, and check for updates. Selecting
 Candidate requires an explicit acknowledgement that it is pre-release software.
 
-Downgrading through the updater is not supported. If a release must be withdrawn, FreeSense can move
-the Stable channel back to an earlier immutable package snapshot. Other recovery cases may require a
-reinstall followed by restoration of a known-good configuration.
+Downgrading through the updater is not supported. On compatible ZFS installations, updates are
+prepared in a new [boot environment](/operations/zfs-boot-environments/) and a failed first boot can
+automatically return to the previous complete system state. UFS recovery may require a reinstall
+followed by restoration of a known-good configuration.
 
 ## Cadence and artifact policy
 
