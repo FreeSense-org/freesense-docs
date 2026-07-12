@@ -17,6 +17,21 @@ Each entry declares:
 The Package Manager shows these details before installation so an administrator can understand the
 operational and security impact first.
 
+## Catalog coverage
+
+All published integrations are covered by this documentation set. Use the focused guides for
+[security](/security/suricata/), [VPN and private networking](/packages/vpn-and-private-networking/),
+[routing and services](/packages/routing-services-and-delivery/), and
+[monitoring and automation](/packages/monitoring-and-automation/).
+
+| Category | Supported integrations |
+| --- | --- |
+| Security | ACME Certificates, CrowdSec, pfBlockerNG, Suricata 8 |
+| VPN | WireGuard, Tailscale, ZeroTier, OpenVPN Client Export |
+| Routing and services | BIND, FreeRADIUS, FRRouting, HAProxy, Avahi, TFTP, Multicast Bridge, mDNS Bridge, UDP Broadcast Relay |
+| Monitoring | ANDwatch, LLDP, SNMP, softflowd, Telegraf, Zabbix 7 agent/proxy, node_exporter, ntopng, NUT, syslog-ng, Traffic Totals |
+| System and diagnostics | Automation, Network Diagnostics, Open VM Tools |
+
 ## Security and filtering
 
 | Package | Primary role |
