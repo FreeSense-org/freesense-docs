@@ -39,7 +39,7 @@ Policies compile directly to Squid ACLs. Allow/block destinations and threat
 feeds work without decryption; URL paths, MIME types and response scanning need
 inspection. Use the simulator to check the resulting access and TLS decision.
 
-Explicit listeners support local users, LDAP/AD, RADIUS and
+Explicit listeners support enabled, non-expired local users, LDAP/AD, RADIUS and
 Kerberos/Negotiate. Transparent listeners use source network policy and cannot
 reliably present browser authentication challenges.
 
@@ -51,7 +51,8 @@ companion installs ClamAV, c-icap and squidclamav. Local scanning sees HTTPS
 response bodies only for inspected destinations.
 
 Feed downloads must use HTTPS. They are bounded, normalized, deduplicated and
-staged before activation. A failed update keeps the last-known-good database.
+staged before activation. An hourly scheduler checks the configured update
+interval, and a failed update keeps the last-known-good database.
 
 ## Safe rollout
 
@@ -65,7 +66,7 @@ staged before activation. A failed update keeps the last-known-good database.
    only after verifying the explicit deployment.
 
 Every save is staged and checked with Squid’s parser. Failed activation restores
-the previous working configuration. **Status > Emergency disable** removes
+both the previous runtime files and the previous saved configuration. **Status > Emergency disable** removes
 interception rules before stopping the service.
 
 Inbound TLS termination and application publishing belong in HAProxy, not Web
