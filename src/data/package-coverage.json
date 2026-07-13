@@ -29,6 +29,8 @@
     "tftpd": "packages/routing-services-and-delivery",
     "Status_Traffic_Totals": "packages/monitoring-and-automation",
     "udpbroadcastrelay": "packages/routing-services-and-delivery",
+    "WebGateway": "packages/web-gateway",
+    "WebGateway-AV": "packages/web-gateway",
     "WireGuard": "packages/vpn-and-private-networking",
     "zabbix-agent7": "packages/monitoring-and-automation",
     "zabbix-proxy7": "packages/monitoring-and-automation",
