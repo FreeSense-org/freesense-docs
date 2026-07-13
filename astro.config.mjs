@@ -74,6 +74,7 @@ export default defineConfig({
             { label: 'Install & manage packages', slug: 'packages/installing-packages' },
             { label: 'VPN and private networking', slug: 'packages/vpn-and-private-networking' },
             { label: 'Routing, services, and delivery', slug: 'packages/routing-services-and-delivery' },
+            { label: 'Secure Web Gateway', slug: 'packages/web-gateway' },
             { label: 'Monitoring and automation', slug: 'packages/monitoring-and-automation' },
           ],
         },

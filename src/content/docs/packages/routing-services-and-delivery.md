@@ -16,6 +16,7 @@ This group contains focused services that extend the core firewall without dupli
 ## Service delivery
 
 - **HAProxy** is the maintained reverse-proxy and load-balancing integration.
+- **Secure Web Gateway** provides outbound explicit/transparent proxying, TLS policy, identity, filtering, feeds, ICAP, and optional local malware scanning. It does not replace HAProxy for inbound publishing.
 - **BIND** provides authoritative DNS service.
 - **FreeRADIUS** provides network authentication.
 - **TFTP Server** supplies simple local file delivery.
