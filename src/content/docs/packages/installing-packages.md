@@ -33,9 +33,10 @@ Manager) and apply updates from your chosen [release channel](/guides/updates-an
 
 ## Building your own
 
-Because the package recipes are open, you can build packages yourself from the
-[`freesense-ports`](https://github.com/FreeSense-org/freesense-ports) overlay and serve them from
-your own repository if you prefer to self-host.
+Because the package recipes are open, you can build the system and runtime ports from
+[`freesense-system-ports`](https://github.com/FreeSense-org/freesense-system-ports) and the optional
+package ports from [`freesense-packages`](https://github.com/FreeSense-org/freesense-packages), then
+serve them from your own repository if you prefer to self-host.
 
 :::tip[Resource planning]
 Packages marked **intensive**, such as Suricata, ntopng, or large DNS/IP feed processing, need more
