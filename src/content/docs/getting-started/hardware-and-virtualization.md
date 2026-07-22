@@ -1,7 +1,7 @@
 ---
 title: Hardware and virtualization
 description: Choose a FreeSense appliance or virtual machine that can sustain its enabled services.
-channels: [devel, candidate, stable]
+channels: [devel, stable]
 last_verified_release: development
 ---
 

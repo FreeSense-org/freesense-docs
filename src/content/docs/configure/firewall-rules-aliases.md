@@ -1,7 +1,7 @@
 ---
 title: Firewall rules and aliases
 description: Express policy clearly, review it safely, and avoid unmaintainable one-off rules.
-channels: [devel, candidate, stable]
+channels: [devel, stable]
 last_verified_release: development
 ---
 

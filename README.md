@@ -29,9 +29,11 @@ Package guidance is grouped by capability, but every package published in
 
 ## Release-aware documentation
 
-The public channel endpoints are `/devel/`, `/candidate/`, and `/stable/`. They point to the
-current documentation contract for each lifecycle tier. Candidate and Stable release notes must
-identify the sealed artifact set and link to a frozen documentation snapshot before publication.
+The active public channel endpoints are `/stable/` and `/devel/`. Stable documents the supported,
+tagged 1.0.x line. Development documents rolling 1.1 work and must always be described as
+experimental and unsupported. Stable release notes identify the sealed artifact set and link to a
+frozen documentation snapshot before publication. The legacy `/candidate/` route remains only to
+explain that Candidate is not an active download channel.
 See [the documentation policy](src/content/docs/contributors/documentation-policy.md) for the
 evidence and review standard.
 

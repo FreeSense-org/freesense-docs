@@ -42,7 +42,6 @@ export default defineConfig({
             { label: 'Release process & provenance', slug: 'guides/release-process' },
             { label: 'Version compatibility', slug: 'releases/compatibility' },
             { label: 'Development channel', slug: 'releases/development' },
-            { label: 'Candidate channel', slug: 'releases/candidate' },
             { label: 'Stable channel', slug: 'releases/stable' },
           ],
         },

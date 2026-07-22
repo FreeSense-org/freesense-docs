@@ -1,7 +1,7 @@
 ---
 title: Network Address Translation
 description: Use outbound, port-forward, and one-to-one NAT deliberately and with matching policy.
-channels: [devel, candidate, stable]
+channels: [devel, stable]
 last_verified_release: development
 ---
 
