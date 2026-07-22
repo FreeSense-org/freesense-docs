@@ -20,8 +20,8 @@ hero:
 import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 <div class="docs-status-strip">
-  <span><b>FreeBSD 16</b> development base</span>
-  <span><b>32</b> curated packages</span>
+  <span><b>Stable 1.0.x</b> supported</span>
+  <span><b>Development 1.1</b> experimental</span>
   <span><b>4-commit</b> release provenance</span>
   <span><b>Apache-2.0</b> throughout</span>
 </div>
@@ -34,7 +34,7 @@ import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
     [Follow the installation path →](/getting-started/installation/)
   </Card>
   <Card title="Understand a release" icon="approve-check-circle">
-    Learn how source, ports, the OS definition, and FreeBSD are sealed into one build set and promoted without recompilation.
+    Learn how source, ports, the OS definition, and FreeBSD are sealed into one verifiable build set.
     [Read the release model →](/guides/release-process/)
   </Card>
   <Card title="Extend the platform" icon="puzzle">
@@ -49,9 +49,9 @@ import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 ## What changed in the modern platform
 
-FreeSense is not just a renamed firewall image. The current development line introduces a smaller,
-explicit package contract; Bootstrap 5 package interfaces; candidate promotion; atomic Suricata
-configuration; and CI checks that connect package metadata to the actual build list.
+FreeSense is not just a renamed firewall image. The current line introduces a smaller, explicit
+package contract; Bootstrap 5 package interfaces; split System and optional-package builds; atomic
+Suricata configuration; and CI checks that connect package metadata to the actual build list.
 
 <div class="docs-feature-grid">
   <div><b>Package clarity</b><span>Capabilities, services, support status, resource impact, and direct management links.</span></div>
@@ -59,10 +59,9 @@ configuration; and CI checks that connect package metadata to the actual build l
   <div><b>Release integrity</b><span>Every artifact records exact source, ports, OS-definition, and FreeBSD revisions.</span></div>
 </div>
 
-:::caution[Development status]
-FreeSense 1.0 is still under active development on FreeBSD 16-CURRENT. Candidate and Development
-images are testing channels, not supported production releases. The download page always reflects
-the live release manifest.
+:::danger[Development is experimental]
+Stable 1.0.x is the supported production line. Development 1.1 is experimental, intended only for
+testing, and receives no support. The download page reads both independent release documents live.
 :::
 
 ## Core reading
@@ -70,14 +69,13 @@ the live release manifest.
 <CardGrid>
   <LinkCard title="Introduction" description="Project scope, independence, licensing, and architecture." href="/introduction/" />
   <LinkCard title="First boot" description="Interfaces, WebUI access, and initial security setup." href="/getting-started/first-boot/" />
-  <LinkCard title="Updates & channels" description="Stable, Candidate, Development, and how artifacts move between them." href="/guides/updates-and-channels/" />
+  <LinkCard title="Updates & channels" description="Supported Stable, experimental Development, and the one-way upgrade boundary." href="/guides/updates-and-channels/" />
   <LinkCard title="Download center" description="Live images, hashes, and provenance." href="https://freesense.org/download" />
 </CardGrid>
 
 ## Choose documentation by release channel
 
 <CardGrid>
-  <LinkCard title="Development" description="Current implementation guidance for contributors and lab testing." href="/devel/" />
-  <LinkCard title="Candidate" description="Preview-release guidance tied to sealed, testable build sets." href="/candidate/" />
-  <LinkCard title="Stable" description="Supported-release documentation and retained immutable snapshots." href="/stable/" />
+  <LinkCard title="Stable 1.0.x" description="Supported production guidance and immutable tagged patch releases." href="/stable/" />
+  <LinkCard title="Development 1.1" description="Experimental, unsupported guidance for contributors and disposable labs." href="/devel/" />
 </CardGrid>

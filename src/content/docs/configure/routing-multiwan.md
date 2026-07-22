@@ -1,7 +1,7 @@
 ---
 title: Routing and multi-WAN
 description: Control gateways, static routes, policy routing, and failover without losing observability.
-channels: [devel, candidate, stable]
+channels: [devel, stable]
 last_verified_release: development
 ---
 

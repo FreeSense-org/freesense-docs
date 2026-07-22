@@ -1,7 +1,7 @@
 ---
 title: CrowdSec
 description: Use behavioral security decisions as a managed FreeSense firewall input.
-channels: [devel, candidate, stable]
+channels: [devel, stable]
 packages: [CrowdSec]
 capabilities: [firewall-modification, network-monitoring, credential-storage]
 last_verified_release: development

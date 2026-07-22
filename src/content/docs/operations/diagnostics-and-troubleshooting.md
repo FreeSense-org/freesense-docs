@@ -1,7 +1,7 @@
 ---
 title: Diagnostics and troubleshooting
 description: Troubleshoot from evidence with bounded tools, logs, and a recoverable change path.
-channels: [devel, candidate, stable]
+channels: [devel, stable]
 packages: [Diagnostics, Automation]
 last_verified_release: development
 ---

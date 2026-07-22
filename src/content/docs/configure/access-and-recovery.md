@@ -1,7 +1,7 @@
 ---
 title: Users, certificates, and backup
 description: Protect administrator access and make every configuration change recoverable.
-channels: [devel, candidate, stable]
+channels: [devel, stable]
 last_verified_release: development
 ---
 

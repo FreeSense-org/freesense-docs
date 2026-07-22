@@ -1,23 +1,14 @@
 ---
 title: Candidate channel
-description: Documentation for immutable FreeSense release candidates.
+description: Legacy information for the inactive FreeSense Candidate channel.
 channel: candidate
-support_tier: preview
+support_tier: inactive
 ---
 
-Candidate is the preview channel for a sealed FreeSense build set. A candidate is tested as a
-specific combination of FreeSense source, ports, OS definition, and FreeBSD revisions. Promotion
-changes a channel pointer; it never recompiles the validated artifacts.
+Candidate is not an active public release channel in the current model. FreeSense publishes two
+independent channel documents: supported [Stable 1.0.x](/releases/stable/) and experimental,
+unsupported [Development 1.1](/releases/development/).
 
-Use it for pre-production acceptance testing, compatibility testing, and release feedback. Do not
-depend on it for a production support commitment while FreeSense remains on its current development
-base.
-
-## Reading a candidate document set
-
-Candidate release notes identify the artifact version, source revisions, package catalog revision,
-known limitations, and verification data. If a document needs to differ from Development guidance,
-the candidate release notes take priority and link to the appropriate frozen documentation snapshot.
-
-See [Release process and provenance](/guides/release-process/) for the acceptance gates and
-[Version compatibility](/releases/compatibility/) for the supported platform boundaries.
+Release verification still happens before publication, but it does not create a separate Candidate
+download stream. Refer to [Release process and provenance](/guides/release-process/) for the current
+build, verification, and publication order.

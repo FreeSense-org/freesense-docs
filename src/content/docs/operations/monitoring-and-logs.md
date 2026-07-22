@@ -1,7 +1,7 @@
 ---
 title: Monitoring and logs
 description: Use metrics, flow data, traffic analysis, and logs without losing the operational signal.
-channels: [devel, candidate, stable]
+channels: [devel, stable]
 last_verified_release: development
 ---
 

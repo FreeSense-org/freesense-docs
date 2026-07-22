@@ -1,7 +1,7 @@
 ---
 title: Routing, services, and delivery packages
 description: Understand the supported integrations that deliver routes, DNS, authentication, proxying, and discovery.
-channels: [devel, candidate, stable]
+channels: [devel, stable]
 last_verified_release: development
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Configuration recipes
 description: Original, reviewable patterns for common FreeSense deployments.
-channels: [devel, candidate, stable]
+channels: [devel, stable]
 last_verified_release: development
 ---
 

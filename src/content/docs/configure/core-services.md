@@ -1,7 +1,7 @@
 ---
 title: Core services
 description: Operate DNS, DHCP, time, dynamic DNS, and certificate-related services as part of one network design.
-channels: [devel, candidate, stable]
+channels: [devel, stable]
 last_verified_release: development
 ---
 

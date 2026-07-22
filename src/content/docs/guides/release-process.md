@@ -1,37 +1,68 @@
 ---
 title: Release process
-description: How FreeSense candidates are tested, promoted, retained, and rolled back.
+description: How FreeSense builds, verifies, versions, and publishes the Stable and Development lines.
 ---
 
-FreeSense stable releases will be promoted from immutable release candidates. Building and publishing
-Stable are separate operations: the release team tests a candidate, records the results, and changes
-the Stable channel pointer only after approval. Promotion never recompiles the tested artifacts.
+FreeSense has two active release lines with different promises:
 
-:::caution[Current status]
-The 1.0 milestone is an **RC Preview** based on FreeBSD 16-CURRENT. It is unsupported, is not intended
-for production, and cannot be promoted to Stable. Stable promotion remains disabled until the base
-uses an upstream-supported FreeBSD release.
-:::
+| Line | Purpose | Support policy |
+| --- | --- | --- |
+| **Stable 1.0.x** | Production and normal use | Supported; sealed except for explicit maintenance or security patch releases |
+| **Development 1.1** | Integration testing, contributors, and disposable labs | **Experimental; no support** |
 
-## Versioning
+The release identity is preserved with Git tags. `1.0.0` identifies the original Stable release;
+if a necessary security or maintenance fix is made, its tested source is tagged and published as a
+new patch release such as `1.0.1`. Routine feature development does not enter the 1.0.x line.
 
-- `1.0.0-rc.1`: unsupported RC Preview
-- `1.0.0`: stable feature release
-- `1.0.1`: maintenance or security release
-- `1.1.0-dev.<date>.<sequence>`: development snapshot
+## Independent System and package builds
 
-## Acceptance gates
+The System repository and optional-package repository have separate immutable input fingerprints.
+That separation avoids rebuilding optional packages for every System change.
 
-A release must install in BIOS and UEFI VMs, complete web-UI updates on two independent VMs, preserve
-configuration and services, pass FreeSense/pfSense/OPNsense import checks, verify all signatures and
-hashes, and complete a rollback drill. Known issues and exact source, ports, OS-definition, and
-FreeBSD revisions are recorded with the release.
+1. At 06:00 UTC each day, the System planner resolves the FreeSense source, OS definition, and
+   pinned FreeBSD inputs. It builds and publishes a new System repository only when that System
+   fingerprint is new.
+2. After a successful System check, the optional-package planner resolves the current package
+   sources against the selected System closure. It starts a package build only when the package
+   fingerprint is new.
+3. If only System code changes while package sources and the FreeBSD platform remain compatible,
+   the existing optional-package repository is reused.
+4. A package-source change or an accepted FreeBSD pin change produces a new package fingerprint and
+   therefore a new optional-package build. Shared runner concurrency queues that work safely.
 
-## Support
+The FreeBSD source, ports, world seed, worker image, and worker tools are content-addressed and
+pinned as one reviewed platform input. A scheduled check runs daily at 02:00 UTC but performs the
+expensive rollover work only near the end of the active window. It advances the pin by exactly 14
+days through one reusable pull request.
 
-There is currently no supported Stable line. RC Preview and Development builds are testing channels
-without production support guarantees. Once Stable exists, the current minor line will be supported
-and its predecessor will receive critical fixes for at least 90 days.
+## Repository verification and ISO publication
 
-Security issues should be reported privately through GitHub private vulnerability reporting, not in
-a public issue.
+System and optional-package repositories are signed and verified independently. Rolling 1.1
+workflows never promote their repositories into Stable. A Stable patch is published manually from
+an exact checked 1.0.x release lock, and the Stable pointer can move only to a higher 1.0 patch as
+one verified System and optional-package pair.
+
+An installer build consumes an exact matching repository pair. Publication is ordered so a channel
+can never advertise an installer that is not actually downloadable:
+
+1. assemble the ISO from the selected signed System and optional-package repositories;
+2. verify its completion marker, SHA-256 checksum, size, and build provenance;
+3. boot-smoke that exact ISO in KVM;
+4. upload it to an immutable path on `downloads.freesense.org` and verify the public object; then
+5. publish the small `stable.json` or `devel.json` channel document on `pkg.freesense.org`.
+
+The website keeps no release version in its source. It reads those two channel documents at request
+time, so Stable and Development can be published independently without rebuilding the website or
+overwriting the other channel.
+
+## Upgrade boundary
+
+Moving from Stable 1.0.x to Development 1.1 is a one-way updater transition. The updater does not
+offer a package downgrade from 1.1 to 1.0. To return, boot an intact 1.0 boot environment or install
+a tagged 1.0.x image, then continue on the Stable update path from that running 1.0 system.
+
+Before testing Development, export the configuration and keep verified recovery media. Development
+is experimental and receives no production or support commitment.
+
+Security issues should be reported privately through GitHub private vulnerability reporting, not
+in a public issue.

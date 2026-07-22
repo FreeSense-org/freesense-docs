@@ -1,7 +1,7 @@
 ---
 title: Suricata 8
 description: Deploy the supported FreeSense IDS/IPS integration with validated configuration and bounded event review.
-channels: [devel, candidate, stable]
+channels: [devel, stable]
 packages: [suricata]
 capabilities: [packet-inspection, firewall-modification, scheduled-downloads]
 last_verified_release: development

@@ -1,7 +1,7 @@
 ---
 title: WebUI menu reference
 description: Navigate FreeSense by operational intent while the full generated menu reference is expanded.
-channels: [devel, candidate, stable]
+channels: [devel, stable]
 last_verified_release: development
 ---
 
