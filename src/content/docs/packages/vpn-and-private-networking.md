@@ -1,7 +1,7 @@
 ---
 title: VPN and private networking
 description: Choose WireGuard, Tailscale, ZeroTier, or OpenVPN export based on ownership and route-control requirements.
-channels: [devel, candidate, stable]
+channels: [devel, stable]
 last_verified_release: development
 ---
 

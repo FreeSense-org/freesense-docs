@@ -51,4 +51,8 @@ If the WebUI is unavailable, select a known-good ZFS boot environment from the b
 
 ## Release channels
 
-Boot-environment handling is independent of the selected Stable, Candidate, or Development channel. The environment metadata records the FreeSense version installed by the updater, which makes it easier to identify a rollback target. Changing channels does not make package downgrades safe; use a previously verified environment when a complete system rollback is required.
+Boot-environment handling is independent of the selected Stable or Development channel. The
+environment metadata records the installed FreeSense version, which makes it easier to identify a
+recovery target. Moving from 1.0.x to 1.1 remains a one-way updater transition: selecting Stable on
+a running 1.1 system does not make a package downgrade safe. To return to 1.0, boot a previously
+verified intact 1.0 environment or reinstall a tagged 1.0.x image.

@@ -1,11 +1,12 @@
 ---
 title: Version compatibility
-description: How FreeSense documentation, release channels, artifacts, and support state stay aligned.
-channels: [devel, candidate, stable]
-last_verified_release: development
+description: How FreeSense documentation, artifacts, update boundaries, and support state stay aligned.
+channels: [devel, stable]
+last_verified_release: '1.0'
 ---
 
-FreeSense documentation follows the same release contract as its artifacts. A published release records four immutable inputs:
+FreeSense documentation follows the same release contract as its artifacts. A published release
+records four immutable inputs:
 
 | Field | Meaning |
 | --- | --- |
@@ -16,16 +17,22 @@ FreeSense documentation follows the same release contract as its artifacts. A pu
 
 ## Documentation channels
 
-- [Development](/devel/) documents the active development line and can change frequently.
-- [Candidate](/candidate/) documents a named release candidate used for acceptance testing.
-- [Stable](/stable/) documents a promoted, supported release and must remain immutable.
+- [Stable](/stable/) documents the supported, immutable 1.0.x production line.
+- [Development](/devel/) documents the rolling 1.1 line and can change frequently. It is
+  experimental and receives no support.
 
-The site root is a channel chooser. A future stable release will retain its own route, for example `/stable/1.0.0/`, even after a newer stable line exists.
+Candidate is not an active public channel in this release model. Historical Candidate links remain
+only to explain that boundary.
 
-## Compatibility labels
+## Update compatibility
 
-Pages use channel and verification metadata. When behavior differs by channel or release, the page must state the oldest supported version, the current verification target, and the upgrade or rollback boundary. A package guide must not claim support for a retired wrapper or an untested version.
+The System repository and optional-package repository are separate, but a release always records a
+compatible pair. Optional packages are reused across System updates while their package sources and
+pinned FreeBSD platform fingerprint remain unchanged.
 
-## Current state
+The updater permits 1.0.x to move to 1.1, but not 1.1 to downgrade to 1.0. Returning requires
+booting an intact 1.0 boot environment or reinstalling a tagged 1.0.x image. Documentation must not
+describe channel selection as a safe package downgrade.
 
-The current FreeSense line is Development on FreeBSD 16-CURRENT. Candidate and Stable pages describe the publication model, but they do not imply that a supported Stable artifact exists.
+When behavior differs by line, a page must state its verification target and support boundary. A
+package guide must not claim support for an untested version or for experimental Development.

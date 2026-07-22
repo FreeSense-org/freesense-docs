@@ -1,7 +1,7 @@
 ---
 title: Interfaces, VLANs, and bridges
 description: Build a recoverable network foundation before adding policy and services.
-channels: [devel, candidate, stable]
+channels: [devel, stable]
 last_verified_release: development
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Monitoring and automation packages
 description: Extend observability and maintenance without turning the firewall into an unbounded job runner.
-channels: [devel, candidate, stable]
+channels: [devel, stable]
 last_verified_release: development
 ---
 
