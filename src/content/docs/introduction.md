@@ -34,6 +34,17 @@ Signed packages publish to `pkg.freesense.org` and installer images to `download
 both served over a global CDN. Installed systems fetch updates over the air, verified against the
 project fingerprint — no phone-home and no accounts.
 
+## No phone-home or project telemetry
+
+FreeSense sends no device identifier, telemetry, configuration, or usage report to the project.
+Legacy vendor registration, dashboard polling, device-ID attachment, and automatic cloud
+configuration upload paths are disabled or removed.
+
+The updater makes unauthenticated HTTPS reads to `pkg.freesense.org` for the RSA-signed repository
+manifest, update notes, repository metadata, and packages. It does not contact the marketing
+website for updates. Network services and optional packages you enable may contact the upstream
+services you configure; those are functional connections, not FreeSense project telemetry.
+
 ## Release channels
 
 FreeSense uses two active channels:
