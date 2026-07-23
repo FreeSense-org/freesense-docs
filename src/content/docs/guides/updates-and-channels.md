@@ -7,6 +7,11 @@ FreeSense updates are package-based. Routine updates are installed in place from
 repositories through **System → Update**. Repository signatures and package fingerprints are
 verified before the appliance changes its package configuration or installs an update.
 
+The update check is a public, unauthenticated HTTPS read from `pkg.freesense.org`. It fetches the
+signed repository manifest, update notes, package repository metadata, and requested packages. It
+does not send a device identifier, configuration, telemetry, or usage report, and it does not use
+the marketing website as an update service.
+
 ## Active release channels
 
 | Channel | Intended use | Tracks | Support |
