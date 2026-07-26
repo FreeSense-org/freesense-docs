@@ -32,6 +32,7 @@ export default defineConfig({
             { label: 'Introduction', slug: 'introduction' },
             { label: 'Hardware and virtualization', slug: 'getting-started/hardware-and-virtualization' },
             { label: 'Installation', slug: 'getting-started/installation' },
+            { label: 'Cloud images', slug: 'getting-started/cloud-images' },
             { label: 'First boot & setup', slug: 'getting-started/first-boot' },
           ],
         },
