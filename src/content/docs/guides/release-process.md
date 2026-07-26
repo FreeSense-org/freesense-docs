@@ -35,21 +35,23 @@ pinned as one reviewed platform input. A scheduled check runs daily at 02:00 UTC
 expensive rollover work only near the end of the active window. It advances the pin by exactly 14
 days through one reusable pull request.
 
-## Repository verification and ISO publication
+## Repository verification and release-bundle publication
 
 System and optional-package repositories are signed and verified independently. Rolling 1.1
 workflows never promote their repositories into Stable. A Stable patch is published manually from
 an exact checked 1.0.x release lock, and the Stable pointer can move only to a higher 1.0 patch as
 one verified System and optional-package pair.
 
-An installer build consumes an exact matching repository pair. Publication is ordered so a channel
-can never advertise an installer that is not actually downloadable:
+An installer/cloud build consumes an exact matching repository pair. Publication is ordered so a
+channel can never advertise a partial bundle:
 
-1. assemble the ISO from the selected signed System and optional-package repositories;
-2. verify its completion marker, SHA-256 checksum, size, and build provenance;
-3. boot-smoke that exact ISO in KVM;
-4. upload it to an immutable path on `downloads.freesense.org` and verify the public object; then
-5. publish the small `stable.json` or `devel.json` channel document on `pkg.freesense.org`.
+1. assemble the ISO plus UFS and ZFS QCOW2/raw images from the selected signed repositories;
+2. verify completion markers, SHA-256 checksums, sizes, and the shared bundle fingerprint;
+3. boot-smoke the ISO plus BIOS/UEFI cloud paths and one-/two-NIC provisioning in KVM;
+4. upload all five files to immutable paths on `downloads.freesense.org` and verify them; then
+5. publish the small `freesense.download/v2` `stable.json` or `devel.json` document.
+
+Historical ISO-only `freesense.download/v1` channel documents remain readable.
 
 The website keeps no release version in its source. It reads those two channel documents at request
 time, so Stable and Development can be published independently without rebuilding the website or
