@@ -45,10 +45,10 @@ one verified System and optional-package pair.
 An installer/cloud build consumes an exact matching repository pair. Publication is ordered so a
 channel can never advertise a partial bundle:
 
-1. assemble the ISO, QCOW2, and raw GPT image from the selected signed repositories;
+1. assemble the ISO plus UFS and ZFS QCOW2/raw images from the selected signed repositories;
 2. verify completion markers, SHA-256 checksums, sizes, and the shared bundle fingerprint;
 3. boot-smoke the ISO plus BIOS/UEFI cloud paths and one-/two-NIC provisioning in KVM;
-4. upload all three files to immutable paths on `downloads.freesense.org` and verify them; then
+4. upload all five files to immutable paths on `downloads.freesense.org` and verify them; then
 5. publish the small `freesense.download/v2` `stable.json` or `devel.json` document.
 
 Historical ISO-only `freesense.download/v1` channel documents remain readable.

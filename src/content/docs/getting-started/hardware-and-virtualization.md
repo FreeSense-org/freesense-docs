@@ -27,7 +27,8 @@ Use predictable, well-supported NICs. Before deploying remotely, test link state
 
 FreeSense can run as a virtual appliance when the hypervisor can present stable virtual NICs and serial or virtual-console access. Keep WAN and LAN on separate virtual networks, reserve resources for inspection workloads, and take a configuration backup before changing virtual switches.
 
-Official QCOW2 and raw UFS images are available for KVM-compatible platforms and bhyve. They use
+Official QCOW2 and raw images are available with recommended UFS roots or ZFS boot environments
+for KVM-compatible platforms and bhyve. They use
 cloud-init metadata through a native FreeSense adapter and include the QEMU guest agent. See
 [Cloud images](/getting-started/cloud-images/) for imports and the one-NIC management warning.
 

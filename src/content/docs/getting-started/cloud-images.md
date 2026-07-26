@@ -1,17 +1,31 @@
 ---
 title: Cloud images
-description: Import the official QCOW2 or raw UFS image and provision FreeSense safely with cloud-init.
+description: Choose an official UFS or ZFS cloud image and provision FreeSense safely with cloud-init.
 channels: [devel, stable]
 ---
 
-FreeSense publishes two amd64 cloud-disk formats beside each installer ISO:
+FreeSense publishes UFS and ZFS variants in two amd64 cloud-disk formats beside each installer ISO:
 
 - **QCOW2 + xz** for Proxmox, OpenStack, QEMU/KVM, and compatible importers.
 - **Raw GPT + xz** for bhyve and platforms that import raw disks.
 
-Both are sparse 16 GiB UFS disks, boot with BIOS or UEFI, grow their root filesystem when the
-virtual disk is enlarged, and include `qemu-guest-agent`. Verify the format-specific SHA-256 value
+The recommended UFS image is a sparse 16 GiB disk. The ZFS image is a sparse 32 GiB disk and adds
+boot environments for upgrade rollback. Both boot with BIOS or UEFI, grow when the virtual disk is
+enlarged, and include `qemu-guest-agent`. Verify the filesystem- and format-specific SHA-256 value
 shown on the [download page](https://freesense.org/download) before decompressing the image.
+
+## Choose UFS or ZFS
+
+Choose **UFS** for the smallest, simplest, and most broadly compatible cloud appliance. Choose
+**ZFS** when boot environments are worth the additional memory and disk headroom. The ZFS cloud
+image uses one non-redundant virtual disk; ZFS does not make that disk redundant. Use provider
+snapshots or backups, allocate at least 4 GiB of RAM, keep the virtual disk at 32 GiB or larger,
+and use provider-level disk encryption when required.
+
+The ZFS pool is named `FreeSense`, starts at `FreeSense/ROOT/default`, and keeps configuration and
+the package database with each boot environment. A rollback therefore restores a coherent system
+state. Cloud instance identity remains idempotent and is reapplied if a rollback predates initial
+provisioning.
 
 ## Network and management safety
 
@@ -85,14 +99,14 @@ translated into native `config.xml`; cloud-init does not maintain a competing `r
 
 ## Import examples
 
-Proxmox:
+Proxmox (replace `ufs` with `zfs` to import the ZFS variant):
 
 ```sh
 unxz FreeSense-*-amd64-ufs.qcow2.xz
 qm importdisk 120 FreeSense-*-amd64-ufs.qcow2 local-lvm
 ```
 
-QEMU/KVM:
+QEMU/KVM (replace `ufs` with `zfs` when desired):
 
 ```sh
 qemu-system-x86_64 -enable-kvm -m 4096 \
@@ -101,7 +115,7 @@ qemu-system-x86_64 -enable-kvm -m 4096 \
   -nic user,model=virtio -nic tap,model=virtio
 ```
 
-bhyve:
+bhyve (replace `ufs` with `zfs` when desired):
 
 ```sh
 unxz FreeSense-*-amd64-ufs.raw.xz
