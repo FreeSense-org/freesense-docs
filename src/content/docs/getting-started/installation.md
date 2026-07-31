@@ -24,7 +24,7 @@ Development builds are experimental and receive no support. Do not install one o
 support-dependent firewall. Upgrading from 1.0.x to 1.1 cannot be reversed through the updater.
 :::
 
-The download card displays the exact SHA-256 checksum, size, publication date, and build provenance
+The guided picker displays the exact SHA-256 checksum, size, publication date, and build provenance
 read from the live channel document. The ISO, QCOW2, and raw images are served from immutable URLs
 on `downloads.freesense.org`. For a preinstalled KVM-compatible disk, follow the
 [cloud-image guide](/getting-started/cloud-images/) instead of writing the installer.
