@@ -3,7 +3,7 @@ title: Package catalog
 description: The curated FreeSense package platform, its categories, and the information shown before installation.
 ---
 
-FreeSense publishes a focused catalog of **32 supported package integrations**. The catalog is a
+FreeSense publishes a focused catalog of **34 supported package integrations**. The catalog is a
 product contract shared by the WebUI, build list, and CI—not a loose directory of optional ports.
 
 Each entry declares:
@@ -21,6 +21,7 @@ operational and security impact first.
 
 All published integrations are covered by this documentation set. Use the focused guides for
 [security](/security/suricata/), [VPN and private networking](/packages/vpn-and-private-networking/),
+[WireGuard](/packages/wireguard/),
 [routing and services](/packages/routing-services-and-delivery/), and
 [monitoring and automation](/packages/monitoring-and-automation/).
 

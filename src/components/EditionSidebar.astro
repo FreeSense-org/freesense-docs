@@ -1,0 +1,16 @@
+---
+import MobileMenuFooter from 'virtual:starlight/components/MobileMenuFooter';
+import SidebarSublist from '@astrojs/starlight/components/SidebarSublist.astro';
+
+const { sidebar } = Astro.locals.starlightRoute;
+const pathname = Astro.url.pathname;
+const label = pathname === '/devel' || pathname.startsWith('/devel/') ? 'Development 1.1' : 'Stable 1.0.5';
+const selectedGroup = sidebar.find((entry) => entry.type === 'group' && entry.label === label);
+const selectedSidebar = selectedGroup?.type === 'group' ? selectedGroup.entries : sidebar;
+---
+
+<SidebarSublist sublist={selectedSidebar} />
+
+<div class="md:sl-hidden">
+  <MobileMenuFooter />
+</div>

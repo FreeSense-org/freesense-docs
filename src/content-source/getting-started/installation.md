@@ -63,6 +63,28 @@ in the firmware. The FreeSense installer supports both **UEFI** and **BIOS**.
 Follow the prompts to install to the internal disk. When it finishes, remove the USB stick and
 reboot.
 
+## Installation decisions
+
+The installer writes the selected target disk. Identify that disk by capacity and model before
+confirming—especially on a system that also contains data disks, a hypervisor boot disk, or mirrored
+storage. Do not rely only on device names, which can change between hardware and virtual platforms.
+
+Choose the filesystem and disk layout for the appliance's recovery and retention needs. ZFS boot
+environments are valuable when you need a rollback point for operating-system changes; they do not
+replace configuration backups or an external copy of essential logs. Use storage that can sustain
+the enabled package set rather than sizing only for the base ISO.
+
+Record the selected boot mode, target disk, storage layout, and physical or virtual console path.
+That information is essential if a later interface, update, or disk change makes the WebUI
+unreachable.
+
+## Before connecting production networks
+
+Boot the appliance with console access and identify which physical port is which. Keep the WAN
+disconnected or connected only to a controlled test uplink until WAN and LAN assignment is confirmed.
+On virtual machines, keep WAN and LAN on distinct virtual networks and make sure a virtual console
+is available even if the management network configuration is wrong.
+
 ## Next
 
 Continue to [First boot & setup](/getting-started/first-boot/) to assign interfaces and reach the
