@@ -16,8 +16,8 @@ on **FreeBSD**. Everything is public and Apache-2.0 licensed:
 - the package recipes; and
 - the entire build pipeline.
 
-You can build the whole system yourself from source or run the official signed images. There is no
-proprietary core and no vendor lock-in.
+You can build the whole system yourself from source or run the official signed installer and cloud
+images. There is no proprietary core and no vendor lock-in.
 
 :::note[Independent project]
 FreeSense is an independent community project and is not affiliated with or endorsed by the pfSense
@@ -30,9 +30,10 @@ Every release pins exact **source**, **ports**, **OS-definition**, and **FreeBSD
 frozen set of upstream package sources. The world, kernel, and curated package catalog are built
 from that sealed definition and cryptographically **signed** with the project key.
 
-Signed packages publish to `pkg.freesense.org` and installer images to `downloads.freesense.org`,
-both served over a global CDN. Installed systems fetch updates over the air, verified against the
-project fingerprint — no phone-home and no accounts.
+Signed packages publish to `pkg.freesense.org`; installer media and preinstalled UFS and ZFS cloud
+disks publish to `downloads.freesense.org`. Both are served over a global CDN. Installed systems
+fetch updates over the air, verified against the project fingerprint — no phone-home and no
+accounts.
 
 ## No phone-home or project telemetry
 
@@ -65,5 +66,6 @@ boundaries.
 ## Next steps
 
 - [Install FreeSense](/getting-started/installation/)
+- [Deploy a cloud image](/getting-started/cloud-images/)
 - [First boot & setup](/getting-started/first-boot/)
 - [Download an image](https://freesense.org/download)
