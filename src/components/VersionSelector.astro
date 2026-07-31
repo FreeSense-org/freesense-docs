@@ -1,0 +1,31 @@
+---
+import editions from '../data/editions.json';
+
+const pathname = Astro.url.pathname;
+const currentEdition = pathname === '/devel' || pathname.startsWith('/devel/') ? 'devel' : 'stable';
+const counterpartPath = (edition) => {
+  if (pathname === '/stable' || pathname === '/stable/' || pathname === '/devel' || pathname === '/devel/') {
+    return `${editions[edition].route_prefix}/`;
+  }
+  return pathname.replace(/^\/(stable|devel)(?=\/|$)/, editions[edition].route_prefix);
+};
+---
+
+<label class="edition-selector">
+  <span class="edition-selector__label">Documentation version</span>
+  <select aria-label="Documentation version" data-version-selector>
+    {
+      Object.entries(editions).map(([edition, details]) => (
+        <option value={counterpartPath(edition)} selected={edition === currentEdition}>{details.label}</option>
+      ))
+    }
+  </select>
+</label>
+
+<script>
+  document.querySelectorAll('[data-version-selector]').forEach((element) => {
+    element.addEventListener('change', () => {
+      window.location.assign(element.value);
+    });
+  });
+</script>

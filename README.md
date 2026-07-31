@@ -31,11 +31,23 @@ Package guidance is grouped by capability, but every package published in
 
 The active public channel endpoints are `/stable/` and `/devel/`. Stable documents the supported,
 tagged 1.0.x line. Development documents rolling 1.1 work and must always be described as
-experimental and unsupported. Stable release notes identify the sealed artifact set and link to a
-frozen documentation snapshot before publication. The legacy `/candidate/` route remains only to
-explain that Candidate is not an active download channel.
-See [the documentation policy](src/content/docs/contributors/documentation-policy.md) for the
+experimental and unsupported. The upper-right version selector contains only these two current
+editions. Stable release notes identify the sealed artifact set and link to a frozen documentation
+snapshot before publication. The legacy `/candidate/` route remains only to explain that Candidate
+is not an active download channel.
+See [the documentation policy](src/content-source/contributors/documentation-policy.md) for the
 evidence and review standard.
+
+### Edition authoring
+
+Write common Stable/Development content in `src/content-source/`. Before preview, validation, and
+build, `scripts/generate-editions.mjs` creates the actual Starlight pages under
+`src/content/docs/stable/` and `src/content/docs/devel/`. Do not edit those generated copies.
+
+When a page differs in Development, add a complete replacement with the same relative path under
+`src/content-overrides/devel/`; Stable keeps the shared source. Use
+`npm run sync-editions -- ../freesense-os-base` when preparing a release-related documentation
+change, then run `npm run validate -- <product-catalog> <os-base-checkout>`.
 
 FreeSense documentation is original work. Other vendor documentation may be used only as a private
 coverage checklist; never copy prose, images, tables, diagrams, branding, or navigation structure.
