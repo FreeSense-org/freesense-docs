@@ -31,7 +31,7 @@
     "udpbroadcastrelay": "packages/routing-services-and-delivery",
     "WebGateway": "packages/web-gateway",
     "WebGateway-AV": "packages/web-gateway",
-    "WireGuard": "packages/vpn-and-private-networking",
+    "WireGuard": "packages/wireguard",
     "zabbix-agent7": "packages/monitoring-and-automation",
     "zabbix-proxy7": "packages/monitoring-and-automation",
     "ZeroTier": "packages/vpn-and-private-networking"
