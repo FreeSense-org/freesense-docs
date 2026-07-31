@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "stable": {
+    "label": "1.0.5 Stable",
+    "route_prefix": "/stable",
+    "release": "1.0.5",
+    "lifecycle": "supported",
+    "source_sha": "2298de24ae9eca9f11e7d17000a88e8044101f4c",
+    "packages_sha": "94619f3212dc48e81c62da8bf0bb49d114b23965",
+    "system_ports_sha": "56d41e2971fd043776c42a40ee592e611b3b6671",
+    "freebsd_source_sha": "7fc2c9f688efb12beddd58a01628157e32b632b0",
+    "freebsd_ports_sha": "e04fb01027e2b36c6c05e2593359a9beee80bf35"
+  },
+  "devel": {
+    "label": "1.1 Development",
+    "route_prefix": "/devel",
+    "release": "1.1.0",
+    "lifecycle": "experimental",
+    "source_sha": "2298de24ae9eca9f11e7d17000a88e8044101f4c",
+    "packages_sha": "94619f3212dc48e81c62da8bf0bb49d114b23965",
+    "verified_at": "2026-08-01"
+  }
+}

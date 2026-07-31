@@ -4,9 +4,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/generate-editions.mjs",
     "dev": "astro dev",
+    "prebuild": "node scripts/generate-editions.mjs",
     "build": "astro build",
+    "prevalidate": "node scripts/generate-editions.mjs",
     "validate": "node scripts/validate-docs.mjs",
+    "sync-editions": "node scripts/sync-editions.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

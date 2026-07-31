@@ -1,0 +1,21 @@
+---
+export function getStaticPaths() {
+	const sourceEntries = Object.keys(import.meta.glob('/src/content-source/**/*.{md,mdx}'));
+	const sourceRoute = (entry) => {
+		const withoutPrefix = entry.replace('/src/content-source/', '').replace(/\.(md|mdx)$/, '');
+		if (withoutPrefix === 'index' || withoutPrefix === 'help') return undefined;
+		return withoutPrefix.endsWith('/index')
+			? withoutPrefix.slice(0, -'/index'.length)
+			: withoutPrefix;
+	};
+	return sourceEntries
+    .map(sourceRoute)
+    .filter(Boolean)
+    .map((route) => ({
+		params: { slug: route },
+      props: { target: `/stable/${route}/` },
+    }));
+}
+
+return Astro.redirect(Astro.props.target);
+---
