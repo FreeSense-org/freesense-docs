@@ -4,7 +4,8 @@ description: Choose an official UFS or ZFS cloud image and provision FreeSense s
 channels: [devel, stable]
 ---
 
-FreeSense publishes UFS and ZFS variants in two amd64 cloud-disk formats beside each installer ISO:
+FreeSense releases can publish official UFS and ZFS variants in two amd64 cloud-disk formats beside
+the installer ISO:
 
 - **QCOW2 + xz** for Proxmox, OpenStack, QEMU/KVM, and compatible importers.
 - **Raw GPT + xz** for bhyve and platforms that import raw disks.
@@ -13,6 +14,18 @@ The recommended UFS image is a sparse 16 GiB disk. The ZFS image is a sparse 32 
 boot environments for upgrade rollback. Both boot with BIOS or UEFI, grow when the virtual disk is
 enlarged, and include `qemu-guest-agent`. Verify the filesystem- and format-specific SHA-256 value
 shown on the [download page](https://freesense.org/download) before decompressing the image.
+
+:::tip[Choose the filesystem for the deployment]
+ZFS is the recommended filesystem for a conventional installation because it enables boot
+environments. In cloud deployments, UFS is the recommended default because it is smaller and needs
+less memory; choose ZFS when boot-environment rollback is worth the additional resources. Both
+filesystems are supported when listed for the selected release.
+:::
+
+Support follows the release channel, not the disk format: Stable 1.0.x artifacts are supported for
+production, while Development 1.1 artifacts are experimental and unsupported. The
+[guided download picker](https://freesense.org/download?image=ufs&format=qcow2) shows only combinations
+that are actually published.
 
 ## Choose UFS or ZFS
 
