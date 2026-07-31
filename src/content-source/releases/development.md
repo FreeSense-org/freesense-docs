@@ -25,5 +25,6 @@ one-way updater transition: returning to 1.0 requires booting an intact 1.0 envi
 reinstalling a 1.0.x image.
 
 The exact current build remains discoverable from the live Development release document and the
-provenance attached to its artifact. Package availability is defined by the
-[curated catalog](/packages/catalog/), not by a generic FreeBSD repository.
+provenance attached to its installer and cloud artifacts. Published combinations can include the
+installer ISO plus UFS and ZFS disks in QCOW2 and raw GPT formats. Package availability is defined
+by the [curated catalog](/packages/catalog/), not by a generic FreeBSD repository.
