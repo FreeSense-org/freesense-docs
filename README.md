@@ -17,10 +17,10 @@ npm run preview
 
 ## Writing docs
 
-Pages live in `src/content/docs/` as Markdown / MDX. The sidebar is defined in
-`astro.config.mjs`. To add a page:
+Write shared pages in `src/content-source/` as Markdown / MDX. The sidebar is
+defined in `astro.config.mjs`. To add a page:
 
-1. Create `src/content/docs/<section>/<page>.md` with frontmatter (`title`, `description`).
+1. Create `src/content-source/<section>/<page>.md` with frontmatter (`title`, `description`).
 2. Add it to the `sidebar` in `astro.config.mjs`.
 
 Package guidance is grouped by capability, but every package published in
@@ -29,7 +29,7 @@ Package guidance is grouped by capability, but every package published in
 
 ## Release-aware documentation
 
-The active public channel endpoints are `/stable/` and `/devel/`. Stable documents the supported,
+The canonical public endpoints are `/` for Stable and `/1.1/` for Development. Stable documents the supported,
 tagged 1.0.x line. Development documents rolling 1.1 work and must always be described as
 experimental and unsupported. The upper-right version selector contains only these two current
 editions. Stable release notes identify the sealed artifact set and link to a frozen documentation
@@ -42,7 +42,7 @@ evidence and review standard.
 
 Write common Stable/Development content in `src/content-source/`. Before preview, validation, and
 build, `scripts/generate-editions.mjs` creates the actual Starlight pages under
-`src/content/docs/stable/` and `src/content/docs/devel/`. Do not edit those generated copies.
+`src/content/docs/` (Stable root) and `src/content/docs/1.1/` (Development). Do not edit those generated copies.
 
 When a page differs in Development, add a complete replacement with the same relative path under
 `src/content-overrides/devel/`; Stable keeps the shared source. Use

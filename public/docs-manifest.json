@@ -4,19 +4,19 @@
   "channels": {
     "devel": {
       "label": "Development",
-      "path": "/devel/",
+      "path": "/1.1/",
       "support_tier": "development",
       "description": "Current documentation for the actively developed FreeSense line."
     },
     "candidate": {
       "label": "Candidate",
-      "path": "/candidate/",
+      "path": "/releases/candidate/",
       "support_tier": "preview",
       "description": "Documentation frozen with a release candidate and used for acceptance testing."
     },
     "stable": {
       "label": "Stable",
-      "path": "/stable/",
+      "path": "/",
       "support_tier": "supported",
       "description": "Immutable documentation for promoted, supported releases."
     }

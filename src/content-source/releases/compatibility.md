@@ -17,8 +17,8 @@ records four immutable inputs:
 
 ## Documentation channels
 
-- [Stable](/stable/) documents the supported, immutable 1.0.x production line.
-- [Development](/devel/) documents the rolling 1.1 line and can change frequently. It is
+- [Stable](/) documents the supported, immutable 1.0.x production line.
+- [Development](/1.1/) documents the rolling 1.1 line and can change frequently. It is
   experimental and receives no support.
 
 Candidate is not an active public channel in this release model. Historical Candidate links remain

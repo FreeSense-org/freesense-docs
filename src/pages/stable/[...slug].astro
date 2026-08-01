@@ -1,0 +1,16 @@
+---
+import VersionChoice from '../../components/VersionChoice.astro';
+
+export function getStaticPaths() {
+  const sourceEntries = Object.keys(import.meta.glob('/src/content-source/**/*.{md,mdx}'));
+  return sourceEntries
+    .map((entry) => entry.replace('/src/content-source/', '').replace(/\.(md|mdx)$/, ''))
+    .filter((route) => route !== 'index' && route !== 'help')
+    .map((route) => route.endsWith('/index') ? route.slice(0, -'/index'.length) : route)
+    .map((route) => ({ params: { slug: route }, props: { route } }));
+}
+
+const { route } = Astro.props;
+---
+
+<VersionChoice route={route} legacyLabel="The old Stable documentation address" />

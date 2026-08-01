@@ -6,7 +6,10 @@ const root = resolve(import.meta.dirname, '..');
 const sourceRoot = resolve(root, 'src/content-source');
 const overridesRoot = resolve(root, 'src/content-overrides');
 const outputRoot = resolve(root, 'src/content/docs');
-const editions = ['stable', 'devel'];
+const editions = [
+  { name: 'stable', routePrefix: '' },
+  { name: 'devel', routePrefix: '1.1' },
+];
 const editBaseUrl = 'https://github.com/FreeSense-org/freesense-docs/edit/main/';
 
 function assertOutputPath(target) {
@@ -23,9 +26,9 @@ async function listSourceFiles(directory) {
     const fullPath = resolve(directory, entry.name);
     if (entry.isDirectory()) {
       files.push(...await listSourceFiles(fullPath));
-      continue;
+    } else if (['.md', '.mdx'].includes(extname(entry.name))) {
+      files.push(fullPath);
     }
-    if (['.md', '.mdx'].includes(extname(entry.name))) files.push(fullPath);
   }
   return files;
 }
@@ -40,8 +43,8 @@ function rewriteUrl(url, edition, docRoots) {
   const segments = pathname.split('/').filter(Boolean);
   const firstSegment = segments[0];
   if (!firstSegment || !docRoots.has(firstSegment)) return url;
-  if (firstSegment === 'stable' || firstSegment === 'devel') return url;
-  return `/${edition}${pathname}${suffix}`;
+  if (firstSegment === '1.1') return url;
+  return `${edition.routePrefix ? `/${edition.routePrefix}` : ''}${pathname}${suffix}`;
 }
 
 function rewriteDocumentationUrls(content, edition, docRoots) {
@@ -56,15 +59,20 @@ function rewriteDocumentationUrls(content, edition, docRoots) {
   return rewritten;
 }
 
+function rewriteEditionAssets(content, edition) {
+  const assetRoot = edition.routePrefix ? '../../../assets/' : '../../assets/';
+  return content.replaceAll('__ASSET_ROOT__/', assetRoot);
+}
+
 function sourceEditUrl(sourcePath) {
   const relativePath = relative(root, sourcePath).split(sep).join('/');
   return `${editBaseUrl}${relativePath}`;
 }
 
 function injectEditUrl(content, editUrl) {
-	if (/^---\r?\n/.test(content)) {
-		return content.replace(/^---\r?\n/, `---\neditUrl: ${editUrl}\n`);
-	}
+  if (/^---\r?\n/.test(content)) {
+    return content.replace(/^---\r?\n/, `---\neditUrl: ${editUrl}\n`);
+  }
   return `---\neditUrl: ${editUrl}\n---\n\n${content}`;
 }
 
@@ -80,25 +88,31 @@ const docRoots = new Set(sourceFiles.map((sourceFile) => {
     : sourcePath[0];
 }));
 
-for (const edition of editions) {
-  const outputDirectory = resolve(outputRoot, edition);
-  assertOutputPath(outputDirectory);
-  await rm(outputDirectory, { recursive: true, force: true });
-  await mkdir(outputDirectory, { recursive: true });
+// The output directory is entirely generated. Remove every previous generated
+// entry, while retaining its tracked .gitignore, so removed source pages cannot
+// leave a competing legacy route behind.
+for (const entry of await readdir(outputRoot, { withFileTypes: true })) {
+  if (entry.name === '.gitignore') continue;
+  const generatedTarget = resolve(outputRoot, entry.name);
+  assertOutputPath(generatedTarget);
+  await rm(generatedTarget, { recursive: true, force: true });
+}
 
+for (const edition of editions) {
   for (const sharedSource of sourceFiles) {
     const relativePath = relative(sourceRoot, sharedSource);
-    const editionOverride = resolve(overridesRoot, edition, relativePath);
+    const editionOverride = resolve(overridesRoot, edition.name, relativePath);
     const selectedSource = existsSync(editionOverride) ? editionOverride : sharedSource;
-    const target = resolve(outputDirectory, relativePath);
+    const target = resolve(outputRoot, edition.routePrefix, relativePath);
     assertOutputPath(target);
     await mkdir(dirname(target), { recursive: true });
 
     let content = await readFile(selectedSource, 'utf8');
     content = injectEditUrl(content, sourceEditUrl(selectedSource));
     content = rewriteDocumentationUrls(content, edition, docRoots);
+    content = rewriteEditionAssets(content, edition);
     await writeFile(target, content, 'utf8');
   }
 }
 
-console.log(`Materialized ${sourceFiles.length} shared documentation files for ${editions.join(' and ')}.`);
+console.log(`Materialized ${sourceFiles.length} shared documentation files at / and /1.1/.`);

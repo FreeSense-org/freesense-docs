@@ -2,7 +2,7 @@
   "schema_version": 1,
   "stable": {
     "label": "1.0.5 Stable",
-    "route_prefix": "/stable",
+    "route_prefix": "",
     "release": "1.0.5",
     "lifecycle": "supported",
     "source_sha": "2298de24ae9eca9f11e7d17000a88e8044101f4c",
@@ -13,7 +13,7 @@
   },
   "devel": {
     "label": "1.1 Development",
-    "route_prefix": "/devel",
+    "route_prefix": "/1.1",
     "release": "1.1.0",
     "lifecycle": "experimental",
     "source_sha": "2298de24ae9eca9f11e7d17000a88e8044101f4c",

@@ -21,6 +21,12 @@ if (!/^1\.0\.\d+$/.test(editions.stable.release) || editions.stable.lifecycle !=
 if (editions.devel.release !== '1.1.0' || editions.devel.lifecycle !== 'experimental') {
 	throw new Error('Development edition must identify the experimental 1.1.0 train');
 }
+if (editions.stable.route_prefix !== '' || editions.devel.route_prefix !== '/1.1') {
+	throw new Error('edition routes must use the Stable root and the /1.1 Development prefix');
+}
+for (const output of ['src/content/docs/index.mdx', 'src/content/docs/1.1/index.mdx']) {
+	if (!existsSync(resolve(root, output))) throw new Error(`generated edition entry is missing: ${output}`);
+}
 const releasesDirectory = resolve(osBaseRoot, 'config/releases');
 const stableLocks = readdirSync(releasesDirectory)
 	.filter((file) => /^1\.0\.\d+\.json$/.test(file))

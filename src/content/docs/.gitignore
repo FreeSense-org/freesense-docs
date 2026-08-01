@@ -1,4 +1,4 @@
 # This directory is materialized from src/content-source/ before local preview,
 # validation, and production build. Edit the source files, never these copies.
-/stable/
-/devel/
+/*
+!/.gitignore

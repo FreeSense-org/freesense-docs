@@ -18,4 +18,5 @@ The WebUI is organized around configuration, status, diagnostics, services, VPN,
 
 Packages add their own Configure and Status paths. The package catalog exposes those paths along with services and capabilities so operators can find an integration without memorizing old menu locations.
 
-The next iteration of this reference will be generated from core menu definitions and package XML, with a CI check that rejects references to removed pages.
+Use **About this Page** or the question-mark icon in the WebUI for the relevant direct guide. See
+the [WebUI context-help map](/reference/context-help/) for the edition and topic-selection contract.
