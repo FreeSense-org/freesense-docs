@@ -4,7 +4,7 @@ import SidebarSublist from '@astrojs/starlight/components/SidebarSublist.astro';
 
 const { sidebar } = Astro.locals.starlightRoute;
 const pathname = Astro.url.pathname;
-const label = pathname === '/devel' || pathname.startsWith('/devel/') ? 'Development 1.1' : 'Stable 1.0.5';
+const label = pathname === '/1.1' || pathname.startsWith('/1.1/') ? 'Development 1.1' : 'Stable 1.0.5';
 const selectedGroup = sidebar.find((entry) => entry.type === 'group' && entry.label === label);
 const selectedSidebar = selectedGroup?.type === 'group' ? selectedGroup.entries : sidebar;
 ---

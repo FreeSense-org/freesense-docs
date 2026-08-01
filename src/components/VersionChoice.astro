@@ -1,0 +1,55 @@
+---
+const { route = '', legacyLabel = 'this legacy address' } = Astro.props;
+const normalizedRoute = route.replace(/^\/+|\/+$/g, '');
+const stableHref = normalizedRoute ? `/${normalizedRoute}/` : '/';
+const developmentHref = normalizedRoute ? `/1.1/${normalizedRoute}/` : '/1.1/';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Choose FreeSense documentation version</title>
+    <meta name="robots" content="noindex" />
+  </head>
+  <body class="version-choice">
+    <main>
+      <a class="brand" href="/" aria-label="FreeSense Docs home"><span>FS</span> FreeSense Docs</a>
+      <p class="eyebrow">Documentation moved</p>
+      <h1>Choose the documentation version</h1>
+      <p class="intro">{legacyLabel} is retained for old bookmarks. It does not redirect automatically: choose the version that matches the firewall you are operating.</p>
+      <div class="choices">
+        <a href={stableHref}>
+          <span class="choice-kicker">Supported production</span>
+          <strong>Stable 1.0.5</strong>
+          <span>Use for current 1.0.x installations and supported production systems.</span>
+        </a>
+        <a href={developmentHref}>
+          <span class="choice-kicker">Experimental and unsupported</span>
+          <strong>Development 1.1</strong>
+          <span>Use only for a disposable lab running the rolling 1.1 development line.</span>
+        </a>
+      </div>
+      <p class="footnote">Development upgrades are one-way. Do not use Development documentation for a production 1.0.x firewall.</p>
+    </main>
+  </body>
+</html>
+
+<style>
+  :global(*) { box-sizing: border-box; }
+  :global(body) { margin: 0; background: #0b0f14; color: #edf2f7; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+  main { width: min(760px, calc(100% - 2.5rem)); margin: 0 auto; padding: clamp(3rem, 12vh, 8rem) 0; }
+  .brand { display: inline-flex; gap: .65rem; align-items: center; color: #ff6948; font-weight: 750; text-decoration: none; }
+  .brand span { color: #fff; font-size: 1.3rem; letter-spacing: -.12em; }
+  .eyebrow { margin: 4rem 0 .8rem; color: #ff6948; font-size: .8rem; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; }
+  h1 { margin: 0; font-size: clamp(2.3rem, 6vw, 4.5rem); letter-spacing: -.055em; line-height: .98; }
+  .intro { max-width: 640px; color: #b8c2d0; font-size: 1.08rem; line-height: 1.65; }
+  .choices { display: grid; gap: 1rem; margin: 2.5rem 0 1.25rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .choices a { display: grid; gap: .7rem; min-height: 190px; padding: 1.35rem; border: 1px solid #293545; border-radius: 16px; background: linear-gradient(145deg, #151d27, #10161e); color: #b8c2d0; line-height: 1.55; text-decoration: none; transition: border-color .15s ease, transform .15s ease; }
+  .choices a:hover { border-color: #ff6948; transform: translateY(-2px); }
+  .choices strong { color: #fff; font-size: 1.35rem; letter-spacing: -.025em; }
+  .choice-kicker { color: #ff866d; font-size: .74rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .footnote { color: #8895a7; font-size: .9rem; line-height: 1.55; }
+  @media (max-width: 40rem) { .choices { grid-template-columns: 1fr; } .eyebrow { margin-top: 3rem; } }
+</style>

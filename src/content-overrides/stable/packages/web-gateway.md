@@ -11,5 +11,5 @@ Do not install or copy Web Gateway configuration from a development appliance in
 For supported Stable web-service designs, use the services available in the 1.0.5 catalog and retain
 the normal Stable update path.
 
-Use the version selector to open the [1.1 Development Secure Web Gateway guide](/devel/packages/web-gateway/)
+Use the version selector to open the [1.1 Development Secure Web Gateway guide](/1.1/packages/web-gateway/)
 when you are intentionally evaluating the experimental development line.
