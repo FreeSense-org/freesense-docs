@@ -20,10 +20,11 @@ operational and security impact first.
 ## Catalog coverage
 
 All published integrations are covered by this documentation set. Use the focused guides for
-[security](/security/suricata/), [VPN and private networking](/packages/vpn-and-private-networking/),
+[security and filtering](/packages/security-and-filtering/), [VPN and private networking](/packages/vpn-and-private-networking/),
 [WireGuard](/packages/wireguard/),
 [routing and services](/packages/routing-services-and-delivery/), and
-[monitoring and automation](/packages/monitoring-and-automation/).
+[monitoring and automation](/packages/monitoring-and-automation/), and
+[system and diagnostics](/packages/system-and-diagnostics/).
 
 | Category | Supported integrations |
 | --- | --- |

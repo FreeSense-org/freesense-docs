@@ -2,22 +2,24 @@
 import editions from '../data/editions.json';
 
 const pathname = Astro.url.pathname;
-const currentEdition = pathname === '/devel' || pathname.startsWith('/devel/') ? 'devel' : 'stable';
+const currentEdition = pathname === '/1.1' || pathname.startsWith('/1.1/') ? 'devel' : 'stable';
 const counterpartPath = (edition) => {
-  if (pathname === '/stable' || pathname === '/stable/' || pathname === '/devel' || pathname === '/devel/') {
-    return `${editions[edition].route_prefix}/`;
-  }
-  return pathname.replace(/^\/(stable|devel)(?=\/|$)/, editions[edition].route_prefix);
+  const logicalPath = currentEdition === 'devel' ? pathname.replace(/^\/1\.1(?=\/|$)/, '') : pathname;
+  const normalizedPath = logicalPath === '' ? '/' : logicalPath;
+  return `${editions[edition].route_prefix}${normalizedPath}`;
 };
 ---
 
 <label class="edition-selector">
-  <span class="edition-selector__label">Documentation version</span>
+  <span class="edition-selector__label">Version</span>
   <select aria-label="Documentation version" data-version-selector>
     {
-      Object.entries(editions).map(([edition, details]) => (
+      ['stable', 'devel'].map((edition) => {
+        const details = editions[edition];
+        return (
         <option value={counterpartPath(edition)} selected={edition === currentEdition}>{details.label}</option>
-      ))
+        );
+      })
     }
   </select>
 </label>

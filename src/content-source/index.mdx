@@ -5,8 +5,8 @@ template: splash
 hero:
   tagline: One open firewall platform. Installer media, official cloud disks, verifiable releases, and documentation that follows the product.
   image:
-    dark: ../../../assets/icon-reversed.svg
-    light: ../../../assets/icon.svg
+    dark: __ASSET_ROOT__/icon-reversed.svg
+    light: __ASSET_ROOT__/icon.svg
   actions:
     - text: Install FreeSense
       link: /getting-started/installation/
@@ -23,12 +23,7 @@ hero:
 
 import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-<div class="docs-status-strip">
-  <span><b>Stable 1.0.5</b> supported</span>
-  <span><b>Development 1.1</b> experimental</span>
-  <span><b>UFS + ZFS</b> official cloud disks</span>
-  <span><b>Apache-2.0</b> throughout</span>
-</div>
+<p class="docs-edition-note"><strong>Stable 1.0.5</strong> is the supported production documentation. Use the version menu for the experimental <strong>1.1 Development</strong> line.</p>
 
 ## Start with an outcome
 
@@ -51,16 +46,16 @@ import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
   </Card>
 </CardGrid>
 
-## What changed in the modern platform
+## Navigate the platform
 
 FreeSense is not just a renamed firewall image. The current line introduces a smaller, explicit
 package contract; Bootstrap 5 package interfaces; split System and optional-package builds; atomic
 Suricata configuration; and CI checks that connect package metadata to the actual build list.
 
 <div class="docs-feature-grid">
-  <div><b>Package clarity</b><span>Capabilities, services, support status, resource impact, and direct management links.</span></div>
-  <div><b>Security integration</b><span>Suricata 8 events and validation, CrowdSec firewall decisions, and consent-driven ZeroTier routes.</span></div>
-  <div><b>Release integrity</b><span>Installer and cloud artifacts record exact source, ports, OS-definition, and FreeBSD revisions.</span></div>
+  <div><b>Base OS</b><span>Firewalling, routing, interfaces, integrated services, built-in VPN, and the WebUI reference.</span><a href="/base-os/system-administration/">Explore Base OS →</a></div>
+  <div><b>Optional Packages</b><span>Packages grouped by job, with installation, lifecycle, operating notes, and package-specific profiles.</span><a href="/packages/catalog/">Explore packages →</a></div>
+  <div><b>Operate with confidence</b><span>Updates, observability, diagnostics, recovery, and release provenance for the installed system.</span><a href="/operations/monitoring-and-logs/">Operate FreeSense →</a></div>
 </div>
 
 :::danger[Development is experimental]
@@ -78,9 +73,9 @@ testing, and receives no support. The download page reads both independent relea
   <LinkCard title="Download center" description="Live images, hashes, and provenance." href="https://freesense.org/download" />
 </CardGrid>
 
-## Choose documentation by release channel
+## Documentation editions
 
 <CardGrid>
-  <LinkCard title="Stable 1.0.5" description="Supported production guidance and immutable tagged patch releases." href="/stable/" />
-  <LinkCard title="Development 1.1" description="Experimental, unsupported guidance for contributors and disposable labs." href="/devel/" />
+  <LinkCard title="Stable 1.0.5" description="You are here: supported production guidance and immutable tagged patch releases." href="/" />
+  <LinkCard title="Development 1.1" description="Experimental, unsupported guidance for contributors and disposable labs." href="/1.1/" />
 </CardGrid>
