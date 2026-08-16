@@ -5,7 +5,11 @@ channels: [devel, stable]
 last_verified_release: development
 ---
 
-FreeSense targets **amd64** systems and supports both UEFI and legacy BIOS boot. Treat the firewall as an appliance: select hardware for the traffic, encryption, inspection, and log retention you actually enable rather than for the base install alone.
+FreeSense supports **amd64** with UEFI or legacy BIOS. The 1.1 Development line also has an
+**experimental ARM64** target for standards-compliant generic UEFI systems. ARM64 uses virtio
+storage and networking and does not imply Raspberry Pi or other SBC compatibility. Treat the
+firewall as an appliance: select hardware for the traffic, encryption, inspection, and log
+retention you actually enable rather than for the base install alone.
 
 ## Starting profiles
 

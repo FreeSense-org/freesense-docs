@@ -7,7 +7,7 @@ This guide takes you from a downloaded image to a freshly installed FreeSense sy
 
 ## Requirements
 
-- A 64-bit (amd64) machine, dedicated to FreeSense
+- A 64-bit amd64 machine, or an experimental standards-compliant ARM64 UEFI machine, dedicated to FreeSense
 - At least **1 GB RAM** and **8 GB disk**
 - **Two network interfaces** (WAN + LAN), or one interface with VLANs
 - A USB stick (at least 2 GB) to write the installer
@@ -25,7 +25,8 @@ support-dependent firewall. Upgrading from 1.0.x to 1.1 cannot be reversed throu
 :::
 
 The guided picker displays the exact SHA-256 checksum, size, publication date, and build provenance
-read from the live channel document. The ISO, QCOW2, and raw images are served from immutable URLs
+read from the live architecture-specific channel document. The amd64 ISO, ARM64 installer IMG,
+QCOW2, and raw images are served from immutable URLs
 on `downloads.freesense.org`. For a preinstalled KVM-compatible disk, follow the
 [cloud-image guide](/getting-started/cloud-images/) instead of writing the installer.
 
@@ -37,6 +38,17 @@ Always verify the image before writing it.
 # compare this output with the SHA-256 value on the download page
 sha256sum FreeSense-*-amd64.iso
 ```
+
+For ARM64, verify the compressed installer before decompressing it:
+
+```sh
+sha256sum FreeSense-*-arm64-installer.img.xz
+xz -dk FreeSense-*-arm64-installer.img.xz
+```
+
+ARM64 is experimental and UEFI-only. The generic image expects standard UEFI plus virtio storage
+and networking. It does not include Raspberry Pi firmware, U-Boot, DTBs, or support for any
+particular single-board computer.
 
 The complete 64-character value must match before you write the image.
 
@@ -52,6 +64,8 @@ Writing to the wrong device will erase it. Double-check the target disk name.
 # find your USB device first (diskutil list / lsblk)
 dd if=FreeSense-*-amd64.iso of=/dev/diskN bs=4m
 ```
+
+Use the decompressed `.img` file instead of the ISO when installing ARM64.
 
 **Windows:** use [balenaEtcher](https://etcher.balena.io/) and select the `.iso`.
 

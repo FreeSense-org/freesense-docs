@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "stable": {
-    "label": "1.0.5 Stable",
+    "label": "1.0.7 Stable",
     "route_prefix": "",
-    "release": "1.0.5",
+    "release": "1.0.7",
     "lifecycle": "supported",
-    "source_sha": "2298de24ae9eca9f11e7d17000a88e8044101f4c",
-    "packages_sha": "94619f3212dc48e81c62da8bf0bb49d114b23965",
+    "source_sha": "2766a2492909744aca3a5645a0ae815e715a61a2",
+    "packages_sha": "fe2ff95b17612449780cccb6f3555e0aeee09ce6",
     "system_ports_sha": "56d41e2971fd043776c42a40ee592e611b3b6671",
-    "freebsd_source_sha": "7fc2c9f688efb12beddd58a01628157e32b632b0",
-    "freebsd_ports_sha": "e04fb01027e2b36c6c05e2593359a9beee80bf35"
+    "freebsd_source_sha": "e004ff15f87e6aa8f2aa13cd5600ae13457b95f1",
+    "freebsd_ports_sha": "ca7ba106939a488129189fd13657b9e5f9d535d1"
   },
   "devel": {
     "label": "1.1 Development",
