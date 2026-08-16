@@ -34,7 +34,7 @@ const editions = JSON.parse(await readFile(editionsPath, 'utf8'));
 editions.stable = {
   ...editions.stable,
   label: `${stable.release} Stable`,
-  route_prefix: '/stable',
+  route_prefix: '',
   release: stable.release,
   lifecycle: policy.release.stable_lifecycle,
   source_sha: stable.source_sha,
@@ -46,7 +46,7 @@ editions.stable = {
 editions.devel = {
   ...editions.devel,
   label: `${policy.release.development_train} Development`,
-  route_prefix: '/devel',
+  route_prefix: '/1.1',
   release: policy.release.development_version,
   lifecycle: policy.release.development_lifecycle,
 };

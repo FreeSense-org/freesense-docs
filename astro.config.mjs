@@ -4,7 +4,7 @@ import starlight from '@astrojs/starlight';
 
 const navigation = [
   {
-    label: 'Start here',
+    label: 'Get started',
     items: [
       ['Introduction', 'introduction'],
       ['Hardware and virtualization', 'getting-started/hardware-and-virtualization'],
@@ -14,54 +14,55 @@ const navigation = [
     ],
   },
   {
-    label: 'Releases and lifecycle',
+    label: 'Base OS',
     items: [
-      ['Updates & release channels', 'guides/updates-and-channels'],
-      ['Release process & provenance', 'guides/release-process'],
-      ['Version compatibility', 'releases/compatibility'],
-      ['Development channel', 'releases/development'],
-      ['Stable channel', 'releases/stable'],
+      ['System administration', 'base-os/system-administration'],
+      ['Interfaces and networking', 'base-os/interfaces-and-networking'],
+      ['Firewall and NAT', 'base-os/firewall-and-nat'],
+      ['Routing and high availability', 'base-os/routing-and-high-availability'],
+      ['Built-in services', 'base-os/built-in-services'],
+      ['Built-in VPN', 'base-os/built-in-vpn'],
     ],
   },
   {
-    label: 'Configure the firewall',
+    label: 'Optional packages',
     items: [
-      ['Interfaces, VLANs, and bridges', 'configure/interfaces-vlans-bridges'],
-      ['Firewall rules and aliases', 'configure/firewall-rules-aliases'],
-      ['NAT', 'configure/nat'],
-      ['Routing and multi-WAN', 'configure/routing-multiwan'],
-      ['Core services', 'configure/core-services'],
-      ['Users, certificates, and backup', 'configure/access-and-recovery'],
-    ],
-  },
-  {
-    label: 'Secure and operate',
-    items: [
-      ['Suricata 8', 'security/suricata'],
-      ['CrowdSec', 'security/crowdsec'],
-      ['Monitoring and logs', 'operations/monitoring-and-logs'],
-      ['ZFS boot environments', 'operations/zfs-boot-environments'],
-      ['Diagnostics and troubleshooting', 'operations/diagnostics-and-troubleshooting'],
-    ],
-  },
-  {
-    label: 'Package platform',
-    items: [
-      ['Catalog overview', 'packages/catalog'],
-      ['Install & manage packages', 'packages/installing-packages'],
+      ['Package catalog', 'packages/catalog'],
+      ['Install and manage packages', 'packages/installing-packages'],
+      ['Security and filtering', 'packages/security-and-filtering'],
       ['VPN and private networking', 'packages/vpn-and-private-networking'],
-      ['WireGuard', 'packages/wireguard'],
       ['Routing, services, and delivery', 'packages/routing-services-and-delivery'],
-      ['Secure Web Gateway', 'packages/web-gateway', ['devel']],
       ['Monitoring and automation', 'packages/monitoring-and-automation'],
+      ['System and diagnostics', 'packages/system-and-diagnostics'],
+      ['Secure Web Gateway', 'packages/web-gateway', ['devel']],
     ],
   },
   {
-    label: 'Guides and reference',
+    label: 'Operate and troubleshoot',
+    items: [
+      ['Monitoring and logs', 'operations/monitoring-and-logs'],
+      ['Diagnostics and troubleshooting', 'operations/diagnostics-and-troubleshooting'],
+      ['ZFS boot environments', 'operations/zfs-boot-environments'],
+      ['Status and diagnostics reference', 'reference/menu-guide'],
+    ],
+  },
+  {
+    label: 'Releases',
+    items: [
+      ['Updates and release channels', 'guides/updates-and-channels'],
+      ['Release process and provenance', 'guides/release-process'],
+      ['Version compatibility', 'releases/compatibility'],
+      ['Stable release line', 'releases/stable'],
+      ['Development release line', 'releases/development'],
+    ],
+  },
+  {
+    label: 'Reference and contribution',
     items: [
       ['Migration boundaries', 'guides/migrating'],
       ['Configuration recipes', 'recipes'],
       ['WebUI menu reference', 'reference/menu-guide'],
+      ['WebUI context help', 'reference/context-help'],
       ['Glossary', 'reference/glossary'],
       ['Documentation policy', 'contributors/documentation-policy'],
     ],
@@ -72,7 +73,9 @@ const editionNavigation = (edition) => navigation.map((section) => ({
   label: section.label,
   items: section.items
     .filter(([, , availableIn]) => !availableIn || availableIn.includes(edition))
-    .map(([label, slug]) => ({ label, slug: `${edition}/${slug}` })),
+    .map(([label, slug]) => edition === 'devel'
+      ? { label, link: `/1.1/${slug}/` }
+      : { label, slug }),
 }));
 
 const sidebar = [
@@ -103,7 +106,6 @@ export default defineConfig({
       components: {
         Header: './src/components/Header.astro',
         MobileMenuFooter: './src/components/MobileMenuFooter.astro',
-        Banner: './src/components/EditionBanner.astro',
         Sidebar: './src/components/EditionSidebar.astro',
       },
       sidebar,
