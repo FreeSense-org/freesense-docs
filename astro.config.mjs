@@ -76,7 +76,7 @@ const editionNavigation = (edition) => navigation.map((section) => ({
 }));
 
 const sidebar = [
-  { label: 'Stable 1.0.5', items: editionNavigation('stable') },
+  { label: 'Stable 1.0.7', items: editionNavigation('stable') },
   { label: 'Development 1.1', items: editionNavigation('devel') },
 ];
 
