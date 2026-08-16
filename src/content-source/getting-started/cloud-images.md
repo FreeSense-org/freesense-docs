@@ -4,11 +4,15 @@ description: Choose an official UFS or ZFS cloud image and provision FreeSense s
 channels: [devel, stable]
 ---
 
-FreeSense releases can publish official UFS and ZFS variants in two amd64 cloud-disk formats beside
-the installer ISO:
+FreeSense releases can publish official UFS and ZFS variants in two architecture-scoped cloud-disk
+formats beside the amd64 ISO or ARM64 installer IMG:
 
 - **QCOW2 + xz** for Proxmox, OpenStack, QEMU/KVM, and compatible importers.
 - **Raw GPT + xz** for bhyve and platforms that import raw disks.
+
+Select `amd64` for supported x86-64 deployments. The `arm64` images are experimental,
+UEFI-only, and intended for QEMU `virt` or standards-compliant ARM64 UEFI machines with virtio
+devices. They contain no board firmware, U-Boot, or DTBs.
 
 The recommended UFS image is a sparse 16 GiB disk. The ZFS image is a sparse 32 GiB disk and adds
 boot environments for upgrade rollback. Both boot with BIOS or UEFI, grow when the virtual disk is

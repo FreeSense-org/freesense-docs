@@ -45,11 +45,13 @@ one verified System and optional-package pair.
 An installer/cloud build consumes an exact matching repository pair. Publication is ordered so a
 channel can never advertise a partial bundle:
 
-1. assemble the ISO plus UFS and ZFS QCOW2/raw images from the selected signed repositories;
+1. assemble the architecture's installer (amd64 ISO or ARM64 UEFI IMG) plus UFS and ZFS QCOW2/raw images from the selected signed repositories;
 2. verify completion markers, SHA-256 checksums, sizes, and the shared bundle fingerprint;
-3. boot-smoke the ISO plus BIOS/UEFI cloud paths and one-/two-NIC provisioning in KVM;
+3. boot-smoke amd64 with KVM and ARM64 with `qemu-system-aarch64` `virt`, AAVMF, virtio, and TCG;
 4. upload all five files to immutable paths on `downloads.freesense.org` and verify them; then
-5. publish the small `freesense.download/v2` `stable.json` or `devel.json` document.
+5. publish the small architecture-aware `freesense.download/v3` document as
+   `stable.<architecture>.json` or `devel.<architecture>.json`; the unqualified document remains
+   the amd64 compatibility alias.
 
 Historical ISO-only `freesense.download/v1` channel documents remain readable.
 
