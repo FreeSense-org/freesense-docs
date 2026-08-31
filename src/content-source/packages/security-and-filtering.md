@@ -12,7 +12,7 @@ path.
 | --- | --- | --- |
 | ACME Certificates | Certificate enrollment and renewal | Account and DNS-validation credentials; consumer deployment |
 | CrowdSec | Behavioral security decisions | Managed firewall table and false-positive response |
-| DNS and IP Blocklists | Reputation-based DNS and IP filtering | Feed scope, update health, and exceptions |
+| Threat Shield & DNS Protection | Managed DNS filtering and firewall protection | Feed health, allowlists, scheduled updates, and DNS availability |
 | Suricata IDS/IPS | Detection and inline prevention | Capacity, rule tuning, pass lists, and blocking rollout |
 | Secure Web Gateway | Explicit/transparent web policy | Development-only; TLS inspection and identity policy |
 | Web Gateway Local Antivirus | Local ICAP malware scanning | Development-only; CPU, storage, and response handling |

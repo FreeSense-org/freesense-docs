@@ -10,6 +10,7 @@ const navigation = [
       ['Hardware and virtualization', 'getting-started/hardware-and-virtualization'],
       ['Installation', 'getting-started/installation'],
       ['Cloud images', 'getting-started/cloud-images'],
+      ['Raspberry Pi appliances', 'getting-started/raspberry-pi', ['devel']],
       ['First boot & setup', 'getting-started/first-boot'],
     ],
   },
