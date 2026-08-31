@@ -46,9 +46,9 @@ sha256sum FreeSense-*-arm64-installer.img.xz
 xz -dk FreeSense-*-arm64-installer.img.xz
 ```
 
-ARM64 is experimental and UEFI-only. The generic image expects standard UEFI plus virtio storage
-and networking. It does not include Raspberry Pi firmware, U-Boot, DTBs, or support for any
-particular single-board computer.
+The generic ARM64 installer is experimental and UEFI-only. It expects standard UEFI plus virtio
+storage and networking. Raspberry Pi images are separate, preinstalled appliance artifacts; follow
+the [Raspberry Pi appliance guide](/getting-started/raspberry-pi/) instead of this installer flow.
 
 The complete 64-character value must match before you write the image.
 
