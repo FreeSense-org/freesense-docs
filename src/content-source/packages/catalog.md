@@ -83,4 +83,7 @@ The release catalog audit requires every published wrapper to have matching prod
 real WebUI target. Retired wrappers are explicitly blocked from returning accidentally. Stable
 runtime overrides must use maintained versions rather than development snapshots.
 
+Contributors adding an integration update the catalog in the same change as the package port; see
+[building optional packages](/developers/building-optional-packages/#adding-a-new-package).
+
 Next: [install and manage packages](/packages/installing-packages/).
