@@ -46,10 +46,11 @@ require reinstalling and restoring a known-good configuration.
 
 ## Why optional packages do not rebuild every day
 
-System and optional packages are planned and published independently. The daily System check starts
-at 06:00 UTC and builds only when the System fingerprint changes. The package check runs afterward
-but reuses the current optional-package repository unless package sources, its build recipe, or the
-pinned FreeBSD platform changed.
+System and optional packages have independent fingerprints. The daily Development cycle, scheduled
+at 01:00 UTC, rebuilds the System only when the System fingerprint changes. It reuses the current
+optional-package repository unless package sources, package build options, its build recipe, or the
+pinned FreeBSD platform changed. The System and optional-package repositories are then published
+together as one verified pair.
 
 The platform pin groups exact FreeBSD source, ports, world seed, build image, and worker tools. A
 02:00 UTC daily check performs rollover work only near expiry and advances the pin by exactly 14
