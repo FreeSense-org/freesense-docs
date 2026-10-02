@@ -19,16 +19,18 @@ new patch release such as `1.0.1`. Routine feature development does not enter th
 The System repository and optional-package repository have separate immutable input fingerprints.
 That separation avoids rebuilding optional packages for every System change.
 
-1. At 06:00 UTC each day, the System planner resolves the FreeSense source, OS definition, and
-   pinned FreeBSD inputs. It builds and publishes a new System repository only when that System
-   fingerprint is new.
-2. After a successful System check, the optional-package planner resolves the current package
-   sources against the selected System closure. It starts a package build only when the package
-   fingerprint is new.
+1. The Development cycle is scheduled daily at 01:00 UTC; GitHub can start scheduled runs later
+   than that. It freezes the FreeSense source, System ports, optional-package sources, and pinned
+   FreeBSD inputs, then computes a System and an optional-package fingerprint for each architecture
+   (amd64 and ARM64).
+2. A component whose fingerprint has already been built and published is reused rather than
+   rebuilt. Only a new fingerprint starts a System or optional-package build.
 3. If only System code changes while package sources and the FreeBSD platform remain compatible,
-   the existing optional-package repository is reused.
-4. A package-source change or an accepted FreeBSD pin change produces a new package fingerprint and
-   therefore a new optional-package build. Shared runner concurrency queues that work safely.
+   the System is rebuilt and the existing optional-package repository is reused.
+4. A package-source change, a package build-option change, or an accepted FreeBSD pin change
+   produces a new package fingerprint and therefore a new optional-package build.
+5. The System and optional-package repositories for both architectures are verified and then
+   published together as one Development pair, so the channel never points at a half-updated set.
 
 The FreeBSD source, ports, world seed, worker image, and worker tools are content-addressed and
 pinned as one reviewed platform input. A scheduled check runs daily at 02:00 UTC but performs the
