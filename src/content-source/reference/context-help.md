@@ -44,4 +44,6 @@ durable operator workflow exists.
 The resolver lives in the FreeSense core source at
 `src/etc/inc/freesense-docs.inc`. A documentation link must use a route that exists in both
 editions unless the feature is explicitly Development-only. Update the map and this reference in
-the same pull request as a new top-level WebUI workflow or package integration.
+the same pull request as a new top-level WebUI workflow or package integration. See
+[the WebUI menu system](/developers/webui-menu-system/#help-menu-and-context-help) for how generated
+package pages are identified.

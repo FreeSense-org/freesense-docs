@@ -39,6 +39,14 @@ const navigation = [
     ],
   },
   {
+    label: 'Package development',
+    items: [
+      ['Building optional packages', 'developers/building-optional-packages'],
+      ['Package integration', 'developers/package-integration'],
+      ['WebUI menu system', 'developers/webui-menu-system'],
+    ],
+  },
+  {
     label: 'Operate and troubleshoot',
     items: [
       ['Monitoring and logs', 'operations/monitoring-and-logs'],

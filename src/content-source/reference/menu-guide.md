@@ -18,5 +18,11 @@ The WebUI is organized around configuration, status, diagnostics, services, VPN,
 
 Packages add their own Configure and Status paths. The package catalog exposes those paths along with services and capabilities so operators can find an integration without memorizing old menu locations.
 
+A menu item appears only when your account has a privilege for the page it opens, so users with
+restricted privileges see a shorter menu than administrators. Package pages are listed
+alphabetically inside the section that matches their purpose, such as Services or VPN; there is no
+separate packages menu. Contributors can find how entries are defined, ordered, and filtered in the
+[WebUI menu system](/developers/webui-menu-system/).
+
 Use **About this Page** or the question-mark icon in the WebUI for the relevant direct guide. See
 the [WebUI context-help map](/reference/context-help/) for the edition and topic-selection contract.

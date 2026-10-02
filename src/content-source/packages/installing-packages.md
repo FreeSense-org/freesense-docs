@@ -101,6 +101,11 @@ Because the package recipes are open, you can build the system and runtime ports
 package ports from [`freesense-packages`](https://github.com/FreeSense-org/freesense-packages), then
 serve them from your own repository if you prefer to self-host.
 
+To create or change a package, start with [building optional packages](/developers/building-optional-packages/).
+[Package integration](/developers/package-integration/) explains what happens during the install,
+reinstall, and removal steps above, and the [WebUI menu system](/developers/webui-menu-system/)
+explains how a package's pages appear in the menu.
+
 :::caution[Plan intensive packages]
 Packages marked **intensive**, such as Suricata, ntopng, or large DNS/IP feed processing, need more
 memory, CPU, and storage than the base firewall. Enable the smallest useful feature set first and
