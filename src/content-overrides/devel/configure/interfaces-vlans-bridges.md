@@ -31,14 +31,18 @@ A VXLAN interface carries an Ethernet segment inside UDP packets between two or 
 
 Create tunnels under **Interfaces > Assignments > VXLANs**. Each tunnel has:
 
-- **Parent interface**: the interface or virtual IP the tunnel is sent from. Its address of the chosen family becomes the local VTEP address, and the tunnel follows it when the address changes.
-- **Mode**: *Unicast* sends to one remote VTEP address. *Multicast* joins a group on the parent interface and floods to every VTEP in that group. IPv4 groups must be 224.0.1.0 or higher, and IPv6 groups must have site scope or wider, because link-local groups do not cross a router.
+- **Parent interface**: the interface, or IP Alias or CARP virtual IP, the tunnel is sent from. Its address of the chosen family becomes the local VTEP address. The tunnel follows that address when it changes: a new DHCP or DHCPv6 lease, a new tracked IPv6 prefix, or an edited virtual IP, also when High Availability sync applies the edit on the secondary. A bridge that the VXLAN itself is a member of cannot be the parent.
+- **Mode**: *Unicast* sends to one remote VTEP address, which must be the address of another host: unspecified, loopback, broadcast, IPv6 link-local and the firewall's own address are rejected. *Multicast* joins a group on the parent interface and floods to every VTEP in that group. IPv4 groups must be 224.0.1.0 or higher, and IPv6 groups must have site scope or wider, because link-local groups do not cross a router.
 - **VNI**: 0 to 16777215.
 - **Ports**: FreeSense listens on and sends to UDP 4789 by default. Linux VTEPs use 8472 unless they are created with `dstport 4789`, so set both ports to 8472 for a default Linux peer.
   All multicast tunnels of one address family share a single socket per local port, so their VNIs must differ even on different parents, and unicast and multicast tunnels of one family need different local ports. The edit page enforces both.
+- **TTL**: hop limit of the outer packets, 1 to 255, default 64.
 - **MAC learning**: on by default. With learning, frames for a known MAC address go directly to the VTEP it was learned from.
+- **Firewall rule**: optional automatic pass rule for the outer traffic; see [Firewall rules](#firewall-rules).
 
-A VXLAN keeps the same MAC address for its whole life, so switches and neighbours do not see a new address when the tunnel is recreated after a WAN address change.
+FreeSense names the interface (`vxlan0`, `vxlan1`, …) when the tunnel is first saved and never reuses a name that another tunnel owns.
+
+A VXLAN keeps the same MAC address for its whole life, so switches and neighbours do not see a new address when the tunnel is recreated after a WAN address change. The edit page shows it. To use a different address, set it in the **MAC Address** field of the assigned interface.
 
 If the kernel cannot start a tunnel, for example because the port is already in use, saving fails with an error and the previous settings stay in place. The reason is in the system log.
 
@@ -46,7 +50,13 @@ With a CARP virtual IP as the parent, the tunnel also runs on the backup node. I
 
 ### Assign, address, or bridge the tunnel
 
-Assign the VXLAN under **Interfaces > Assignments** like any other interface. You can then give it an address and route over it, or add it to a bridge with a LAN interface to extend that segment.
+Assign the VXLAN under **Interfaces > Assignments** like any other interface. You can then give it an address and route over it, or add it to a bridge with a LAN interface to extend that segment. The VXLANs list shows which interface each tunnel is assigned as.
+
+### Removing a tunnel or its parent
+
+A VXLAN cannot be deleted while it is assigned, a bridge or interface group member, a LAGG member, or the parent of a VLAN or QinQ. Remove those uses first. Likewise, an interface cannot be unassigned while a VXLAN is sent from it.
+
+A virtual IP that a VXLAN, GRE, or GIF tunnel is sent from cannot be deleted, and it must remain an IP Alias or CARP address of the tunnel's address family when it is edited. Changing its address is allowed; the tunnels follow it.
 
 ### MTU
 
