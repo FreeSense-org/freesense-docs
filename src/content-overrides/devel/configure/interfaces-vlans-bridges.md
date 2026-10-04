@@ -35,9 +35,14 @@ Create tunnels under **Interfaces > Assignments > VXLANs**. Each tunnel has:
 - **Mode**: *Unicast* sends to one remote VTEP address. *Multicast* joins a group on the parent interface and floods to every VTEP in that group. IPv4 groups must be 224.0.1.0 or higher, and IPv6 groups must have site scope or wider, because link-local groups do not cross a router.
 - **VNI**: 0 to 16777215.
 - **Ports**: FreeSense listens on and sends to UDP 4789 by default. Linux VTEPs use 8472 unless they are created with `dstport 4789`, so set both ports to 8472 for a default Linux peer.
+  All multicast tunnels of one address family share a single socket per local port, so their VNIs must differ even on different parents, and unicast and multicast tunnels of one family need different local ports. The edit page enforces both.
 - **MAC learning**: on by default. With learning, frames for a known MAC address go directly to the VTEP it was learned from.
 
 A VXLAN keeps the same MAC address for its whole life, so switches and neighbours do not see a new address when the tunnel is recreated after a WAN address change.
+
+If the kernel cannot start a tunnel, for example because the port is already in use, saving fails with an error and the previous settings stay in place. The reason is in the system log.
+
+With a CARP virtual IP as the parent, the tunnel also runs on the backup node. In a bridged design, the backup then floods its own LAN broadcasts to the remote VTEPs as well. Prefer routing over the tunnel in high-availability pairs, or test the failover behaviour before relying on it.
 
 ### Assign, address, or bridge the tunnel
 
@@ -63,7 +68,7 @@ VXLAN has no encryption or authentication. Carry it over a trusted network, or i
 - Check the tunnel parameters with `ifconfig vxlan0` from **Diagnostics > Command Prompt**, and confirm the local address matches the parent address.
 - Use **Diagnostics > Packet Capture** on the parent interface with UDP port 4789 (or 8472) to confirm that encapsulated traffic arrives. Select the VXLAN view to decode the inner frames.
 - If small packets pass but large transfers stall, the MTU is too large for the underlay path.
-- **Interfaces > Assignments > VXLANs** marks a tunnel that does not currently exist. This usually means the parent has no address of the selected family yet; the tunnel is created as soon as it gets one.
+- **Interfaces > Assignments > VXLANs** marks a tunnel that does not currently exist. This usually means the parent has no address of the selected family yet; the tunnel is created as soon as it gets one. Otherwise the system log and `dmesg` show why the kernel rejected it.
 
 ## Recovery rule
 
