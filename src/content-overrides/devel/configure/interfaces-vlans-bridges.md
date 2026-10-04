@@ -25,6 +25,8 @@ Bridges are useful when FreeSense must join interfaces at Layer 2, but they chan
 
 ## VXLAN
 
+VXLAN interfaces are part of the 1.1 Development line, which is experimental and unsupported. Test a VXLAN design in a lab before relying on it, and do not expect it on a 1.0 Stable system.
+
 A VXLAN interface carries an Ethernet segment inside UDP packets between two or more VXLAN tunnel endpoints (VTEPs). Use it to stretch a Layer 2 segment across a routed network, for example to join a site LAN with a segment in a data centre or a cloud network. Every VTEP of a segment must use the same VXLAN Network Identifier (VNI).
 
 Create tunnels under **Interfaces > Assignments > VXLANs**. Each tunnel has:
@@ -51,7 +53,7 @@ All members of a bridge share one MTU, so bridging a 1450-byte VXLAN with a LAN 
 
 Two sets of rules apply:
 
-- **Outer traffic** on the parent interface: the UDP packets between VTEPs. Enable **Allow the VXLAN traffic in on the parent interface** on the tunnel, or add your own pass rule. The automatic rule passes UDP from the remote VTEP to the local address on the local port, and it comes before the parent's **Block private networks** and **Block bogon networks** rules. A peer in a private range therefore still works with those options enabled. In multicast mode the rule accepts encapsulated frames from any sender on the parent network, and also passes IGMP or MLD so the group membership stays up.
+- **Outer traffic** on the parent interface: the UDP packets between VTEPs. Enable **Allow the VXLAN traffic in on the parent interface** on the tunnel, or add your own pass rule. The automatic rule passes UDP from the remote VTEP to the local address on the local port, and it comes before the parent's **Block private networks** and **Block bogon networks** rules. A peer in a private range therefore still works with those options enabled. In multicast mode the rule passes the group and the firewall's own address on the local port from any source, and also passes IGMP or MLD so the group membership stays up. On an internet-facing parent this lets any host that can reach that UDP port inject frames into the segment, so use multicast mode only on a trusted parent network.
 - **Inner traffic**: the frames inside the tunnel are filtered by the rules of the assigned VXLAN interface. These rules are always required, even with the automatic outer rule. When the VXLAN is a bridge member, FreeSense filters bridged traffic on the member interfaces, so add rules on the VXLAN interface for traffic arriving from the remote site.
 
 VXLAN has no encryption or authentication. Carry it over a trusted network, or inside an IPsec or WireGuard tunnel, when the path crosses the internet.
@@ -61,6 +63,7 @@ VXLAN has no encryption or authentication. Carry it over a trusted network, or i
 - Check the tunnel parameters with `ifconfig vxlan0` from **Diagnostics > Command Prompt**, and confirm the local address matches the parent address.
 - Use **Diagnostics > Packet Capture** on the parent interface with UDP port 4789 (or 8472) to confirm that encapsulated traffic arrives. Select the VXLAN view to decode the inner frames.
 - If small packets pass but large transfers stall, the MTU is too large for the underlay path.
+- **Interfaces > Assignments > VXLANs** marks a tunnel that does not currently exist. This usually means the parent has no address of the selected family yet; the tunnel is created as soon as it gets one.
 
 ## Recovery rule
 
