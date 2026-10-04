@@ -35,7 +35,8 @@ Create tunnels under **Interfaces > Assignments > VXLANs**. Each tunnel has:
 - **Mode**: *Unicast* sends to one remote VTEP address, which must be the address of another host: unspecified, loopback, broadcast, IPv6 link-local and the firewall's own address are rejected. *Multicast* joins a group on the parent interface and floods to every VTEP in that group. IPv4 groups must be 224.0.1.0 or higher, and IPv6 groups must have site scope or wider, because link-local groups do not cross a router.
 - **VNI**: 0 to 16777215.
 - **Ports**: FreeSense listens on and sends to UDP 4789 by default. Linux VTEPs use 8472 unless they are created with `dstport 4789`, so set both ports to 8472 for a default Linux peer.
-  All multicast tunnels of one address family share a single socket per local port, so their VNIs must differ even on different parents, and unicast and multicast tunnels of one family need different local ports. The edit page enforces both.
+  All multicast tunnels of one address family share a single socket per local port, so their VNIs must differ even on different parents, and unicast and multicast tunnels of one family need different local ports. All IPv6 tunnels must also use the same local port, because FreeBSD accepts zero-checksum IPv6 UDP on one port only; IPv6 unicast and multicast tunnels therefore cannot be combined. The edit page enforces these rules.
+  Over IPv6, a tunnel whose local and remote ports are equal sends zero UDP checksums (RFC 6935). Linux rejects those by default, so create a Linux peer with `udp6zerocsumrx`.
 - **TTL**: hop limit of the outer packets, 1 to 255, default 64.
 - **MAC learning**: on by default. With learning, frames for a known MAC address go directly to the VTEP it was learned from.
 - **Firewall rule**: optional automatic pass rule for the outer traffic; see [Firewall rules](#firewall-rules).
@@ -46,7 +47,7 @@ A VXLAN keeps the same MAC address for its whole life, so switches and neighbour
 
 If the kernel cannot start a tunnel, for example because the port is already in use, saving fails with an error and the previous settings stay in place. The reason is in the system log.
 
-With a CARP virtual IP as the parent, the tunnel also runs on the backup node. In a bridged design, the backup then floods its own LAN broadcasts to the remote VTEPs as well. Prefer routing over the tunnel in high-availability pairs, or test the failover behaviour before relying on it.
+With a CARP virtual IP as the parent, or an IP Alias on one, the tunnel runs only on the node that is MASTER for that virtual IP. The BACKUP node keeps it down, so it does not flood its own segment to the remote VTEPs, and starts it when it becomes MASTER. Test a controlled failover before relying on it.
 
 ### Assign, address, or bridge the tunnel
 
