@@ -1,0 +1,12 @@
+# Development 1.1 became Stable 1.1 and moved to the documentation root.
+/1.1 / 301
+/1.1/* /:splat 301
+# Retired Candidate channel.
+/candidate / 301
+/candidate/* / 301
+/releases/candidate/ /releases/stable/ 301
+# Package guides moved under Optional packages.
+/security/crowdsec/ /packages/crowdsec/ 301
+/security/suricata/ /packages/suricata/ 301
+/1.2/security/crowdsec/ /1.2/packages/crowdsec/ 301
+/1.2/security/suricata/ /1.2/packages/suricata/ 301

@@ -1,23 +1,34 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "stable": {
-    "label": "1.0.7 Stable",
+    "label": "1.1 Stable",
     "route_prefix": "",
-    "release": "1.0.7",
+    "train": "1.1",
+    "release": "1.1.1",
     "lifecycle": "supported",
+    "source_sha": "0318257a1c1bc4db13ed7ba1c7b58ce5a482fb33",
+    "packages_sha": "ce791911a0dcfff81aa18f45c90796fb2ab4b589",
+    "system_ports_sha": "26853c0dd4e2fa0c0fd355eac0b9e62102506b5d",
+    "freebsd_source_sha": "a52c50b4b7c2652954ef1bd34710a4b1fc8ef391",
+    "freebsd_ports_sha": "2e67f384802ff04abd34e706fb098e4cd999e7e6"
+  },
+  "devel": {
+    "label": "1.2 Development",
+    "route_prefix": "/1.2",
+    "train": "1.2",
+    "release": "1.2.0",
+    "lifecycle": "experimental"
+  },
+  "frozen": {
+    "label": "1.0 (frozen)",
+    "route_prefix": "/1.0",
+    "train": "1.0",
+    "release": "1.0.7",
+    "lifecycle": "frozen",
     "source_sha": "2766a2492909744aca3a5645a0ae815e715a61a2",
     "packages_sha": "fe2ff95b17612449780cccb6f3555e0aeee09ce6",
     "system_ports_sha": "56d41e2971fd043776c42a40ee592e611b3b6671",
     "freebsd_source_sha": "e004ff15f87e6aa8f2aa13cd5600ae13457b95f1",
     "freebsd_ports_sha": "ca7ba106939a488129189fd13657b9e5f9d535d1"
-  },
-  "devel": {
-    "label": "1.1 Development",
-    "route_prefix": "/1.1",
-    "release": "1.1.0",
-    "lifecycle": "experimental",
-    "source_sha": "2298de24ae9eca9f11e7d17000a88e8044101f4c",
-    "packages_sha": "94619f3212dc48e81c62da8bf0bb49d114b23965",
-    "verified_at": "2026-08-01"
   }
 }

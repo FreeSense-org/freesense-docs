@@ -1,10 +1,11 @@
 ---
 import MobileMenuFooter from 'virtual:starlight/components/MobileMenuFooter';
 import SidebarSublist from '@astrojs/starlight/components/SidebarSublist.astro';
+import editions from '../data/editions.json';
+import { editionForPath } from '../lib/edition.mjs';
 
 const { sidebar } = Astro.locals.starlightRoute;
-const pathname = Astro.url.pathname;
-const label = pathname === '/1.1' || pathname.startsWith('/1.1/') ? 'Development 1.1' : 'Stable 1.0.5';
+const label = editions[editionForPath(Astro.url.pathname)].label;
 const selectedGroup = sidebar.find((entry) => entry.type === 'group' && entry.label === label);
 const selectedSidebar = selectedGroup?.type === 'group' ? selectedGroup.entries : sidebar;
 ---

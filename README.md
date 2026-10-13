@@ -10,44 +10,64 @@ Built with [Astro Starlight](https://starlight.astro.build), deployed on **Cloud
 ```sh
 npm install
 npm run dev      # http://localhost:4321
-npm run validate # verifies catalog coverage against ../freesense-src by default
+npm run validate # verifies editions and catalog coverage against ../freesense-src by default
 npm run build    # -> dist/
 npm run preview
 ```
 
 ## Writing docs
 
-Write shared pages in `src/content-source/` as Markdown / MDX. The sidebar is
-defined in `astro.config.mjs`. To add a page:
+Write shared pages in `src/content-source/` as Markdown / MDX. Navigation lives in
+`src/data/navigation.mjs`, which both the sidebar (`astro.config.mjs`) and the edition generator read.
+To add a page:
 
 1. Create `src/content-source/<section>/<page>.md` with frontmatter (`title`, `description`).
-2. Add it to the `sidebar` in `astro.config.mjs`.
+2. Add it to `navigation` in `src/data/navigation.mjs`. Add `['devel']` as the third element only
+   when the page documents something that exists solely on the Development line.
 
-Package guidance is grouped by capability, but every package published in
-`freesense/src/etc/freesense-package-catalog.json` must have an entry in
-`src/data/package-coverage.json`. The validation command rejects missing and stale mappings.
+Every package published in `freesense/src/etc/freesense-package-catalog.json` has its own guide
+under `packages/`, mapped in `src/data/package-coverage.json`; category pages are hubs that link
+to them. The validation command rejects missing and stale mappings.
 
 ## Release-aware documentation
 
-The canonical public endpoints are `/` for Stable and `/1.1/` for Development. Stable documents the supported,
-tagged 1.0.x line. Development documents rolling 1.1 work and must always be described as
-experimental and unsupported. The upper-right version selector contains only these two current
-editions. Stable release notes identify the sealed artifact set and link to a frozen documentation
-snapshot before publication. The legacy `/candidate/` route remains only to explain that Candidate
-is not an active download channel.
-See [the documentation policy](src/content-source/contributors/documentation-policy.md) for the
-evidence and review standard.
+The site publishes three editions, described in `src/data/editions.json`:
+
+| Edition | Route | Content |
+| --- | --- | --- |
+| Stable 1.1 | `/` | The supported, immutable 1.1.x line. |
+| Development 1.2 | `/1.2/` | The rolling 1.2 line: experimental and unsupported. |
+| 1.0 (frozen) | `/1.0/` | Snapshot of the 1.0.x documentation, no longer maintained. |
+
+These routes match the WebUI help links in `freesense/src/etc/inc/freesense-docs.inc`
+(1.0.x → `/1.0`, 1.1.x → `/`, 1.2.x → `/1.2`). Old `/1.1/` and Candidate addresses redirect via
+`public/_redirects`. See [the documentation policy](src/content-source/contributors/documentation-policy.md)
+for the evidence and review standard.
 
 ### Edition authoring
 
 Write common Stable/Development content in `src/content-source/`. Before preview, validation, and
-build, `scripts/generate-editions.mjs` creates the actual Starlight pages under
-`src/content/docs/` (Stable root) and `src/content/docs/1.1/` (Development). Do not edit those generated copies.
+build, `scripts/generate-editions.mjs` creates the Starlight pages under `src/content/docs/`
+(Stable root), `src/content/docs/1.2/` (Development), and `src/content/docs/1.0/` (frozen). Do not
+edit those generated copies.
 
 When a page differs in Development, add a complete replacement with the same relative path under
-`src/content-overrides/devel/`; Stable keeps the shared source. Use
-`npm run sync-editions -- ../freesense-os-base` when preparing a release-related documentation
-change, then run `npm run validate -- <product-catalog> <os-base-checkout>`.
+`src/content-overrides/devel/`; Stable keeps the shared source. The frozen edition is built only
+from `src/content-frozen/1.0/` and never inherits shared-source edits.
+
+When a new Stable train is promoted, snapshot the outgoing Stable edition into
+`src/content-frozen/<train>/`, point the `frozen` entry in `editions.json` at it, and run
+`npm run sync-editions -- ../freesense-os-base`. Then run
+`npm run validate -- <product-catalog> <os-base-checkout>`.
+
+### Checks
+
+```sh
+npm run validate -- <freesense>/src/etc/freesense-package-catalog.json <freesense-os-base>
+npm run check-versions                 # version wording matches editions.json
+npm run api-reference -- <freesense-at-stable-sha> --check   # REST API reference is current
+npm run build && npm run check-links   # every internal link resolves
+```
 
 FreeSense documentation is original work. Other vendor documentation may be used only as a private
 coverage checklist; never copy prose, images, tables, diagrams, branding, or navigation structure.

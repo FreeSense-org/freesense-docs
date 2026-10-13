@@ -18,8 +18,10 @@ const compareVersions = (left, right) => {
   return 0;
 };
 
+const policy = JSON.parse(await readFile(policyPath, 'utf8'));
+const stableTrain = policy.release.stable_train;
 const releaseFiles = (await readdir(releaseDirectory))
-  .filter((file) => /^1\.0\.\d+\.json$/.test(file));
+  .filter((file) => file.startsWith(`${stableTrain}.`) && /^\d+\.\d+\.\d+\.json$/.test(file));
 const releases = await Promise.all(releaseFiles.map(async (file) =>
   JSON.parse(await readFile(resolve(releaseDirectory, file), 'utf8')),
 ));
@@ -27,13 +29,13 @@ const stable = releases
   .filter((release) => release.sealed === true)
   .sort((left, right) => compareVersions(right.release, left.release))[0];
 
-if (!stable) throw new Error(`no sealed 1.0.x release lock found in ${releaseDirectory}`);
+if (!stable) throw new Error(`no sealed ${stableTrain}.x release lock found in ${releaseDirectory}`);
 
-const policy = JSON.parse(await readFile(policyPath, 'utf8'));
 const editions = JSON.parse(await readFile(editionsPath, 'utf8'));
 editions.stable = {
   ...editions.stable,
-  label: `${stable.release} Stable`,
+  label: `${stableTrain} Stable`,
+  train: stableTrain,
   route_prefix: '',
   release: stable.release,
   lifecycle: policy.release.stable_lifecycle,
@@ -46,10 +48,13 @@ editions.stable = {
 editions.devel = {
   ...editions.devel,
   label: `${policy.release.development_train} Development`,
-  route_prefix: '/1.1',
+  route_prefix: `/${policy.release.development_train}`,
+  train: policy.release.development_train,
   release: policy.release.development_version,
   lifecycle: policy.release.development_lifecycle,
 };
 
 await writeFile(editionsPath, `${JSON.stringify(editions, null, 2)}\n`, 'utf8');
-console.log(`Synced ${editions.stable.label} and ${editions.devel.label} from FreeSense release policy.`);
+// The frozen edition is the previous Stable snapshot; it is set when a Stable
+// train is promoted, together with its src/content-frozen/ tree, never here.
+console.log(`Synced ${editions.stable.label} (${editions.stable.release}) and ${editions.devel.label} from FreeSense release policy.`);
