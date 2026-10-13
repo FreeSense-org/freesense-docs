@@ -4,7 +4,7 @@ description: How to upgrade a FreeSense 1.0.x firewall to the 1.1 Stable line, w
 ---
 
 FreeSense 1.1.0 replaces 1.0.x as the supported Stable line. A firewall on the Stable channel is
-offered 1.1.0 as a normal system update. The 1.0.x releases stay published, but ordinary fixes are
+offered the current 1.1.x release as a normal system update. The 1.0.x releases stay published, but ordinary fixes are
 no longer backported to them.
 
 :::caution[The upgrade is one-way]
@@ -50,7 +50,7 @@ version is available, so the 1.1 updater logic performs the upgrade.
 1. Open **System → Update**.
 2. On the **Update Settings** tab, confirm that **Branch** is the Stable channel.
 3. On the **System Update** tab, wait for the check to finish. **Installed system** shows the
-   running 1.0.x version and **Available system** shows 1.1.0.
+   running 1.0.x version and **Available system** shows the current 1.1.x release.
 4. Select **Install update**. The page is locked behind a progress overlay that shows the from and
    to versions and an elapsed timer; **Show details** opens the updater output. Do not close the
    browser tab or reboot the firewall by hand.
@@ -125,12 +125,13 @@ installer media and restoring the configuration backup.
 - **Known issue.** The REST API refuses to activate a boot environment that holds an older release
   (HTTP 409, `locked`), but **System → Boot Environments**, `freesense-be`, and the loader menu do
   not yet enforce this. Do not use them to return a healthy 1.1 system to 1.0.
-- **UFS.** Reinstall 1.1.0 from the installer and restore the configuration backup.
+- **UFS.** Reinstall the current 1.1.x release from the installer and restore the configuration backup.
 
 ## After the upgrade
 
-1. **Version.** The dashboard and **System → Update** show `1.1.0`. The dashboard's "built on" time
-   shows the current time in 1.1.0; this is a [known issue](/releases/1.1.0/#known-issues).
+1. **Version.** The dashboard and **System → Update** show the 1.1.x release you upgraded to. On
+   1.1.0 the dashboard's "built on" time shows the current time, a
+   [known issue](/releases/1.1.0/#known-issues) fixed in 1.1.1.
 2. **Channel.** **System → Update → Update Settings** still shows the Stable channel, and the update
    check reports the system as up to date. Development is listed as an option, but switching to it
    is one-way and unsupported.
