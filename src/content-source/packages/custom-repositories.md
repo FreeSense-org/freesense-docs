@@ -69,3 +69,18 @@ Disabling a repository keeps its settings but stops pkg using it.
 Plain `pkg` sees the custom repositories as well (after `pkg update`). Remember that anything you
 install this way skips the safety review above, and that the FreeSense repositories still win on
 priority.
+
+## In the package lists
+
+**Available Packages** and **Installed Packages** have a *Source* column and a *Source* filter.
+FreeSense's own packages are marked **Official**, and both lists open showing only those.
+
+- On **Available Packages**, switch the Source filter to a repository to list its packages (at
+  most 300 at a time). Type in the search box to search the repository itself, which is how you
+  find a package in FreeBSD's repository of tens of thousands.
+- On **Installed Packages**, the packages that came from another repository are in the list too;
+  choose *All sources* or the repository to see them.
+- A package from another source offers **Install**, **Update** and **Remove** like an official one,
+  through the same Package Installer. Before anything runs it is reviewed with the checks above, and
+  an update may change only that package, from the repository it came from.
+- The tiles at the top count the official packages only.
