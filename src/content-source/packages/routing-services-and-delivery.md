@@ -1,73 +1,95 @@
 ---
 title: Routing, services, and delivery packages
-description: Understand the supported integrations that deliver routes, DNS, authentication, proxying, and discovery.
-channels: [devel, stable]
-last_verified_release: 1.0.5
+description: Choose between the FreeSense Optional Packages for dynamic routing, authoritative DNS, RADIUS, reverse proxying, discovery relays and TFTP.
 ---
 
-This group contains focused services that extend the core firewall without duplicating it.
+These Optional Packages add network services that the base firewall does not run on its own:
+dynamic routing, authoritative DNS, RADIUS authentication, inbound reverse proxying, service
+discovery across VLANs, broadcast and multicast relaying, and TFTP file delivery. Each one is
+installed from **System → Package Manager → Available Packages** and configured under the
+**Services** menu. See [Installing packages](/packages/installing-packages/) for the general
+procedure and the [package catalog](/packages/catalog/) for every package.
 
-## Routing and discovery
+## Packages in this group
 
-- **FRRouting** provides dynamic routing protocols.
-- **mcast-bridge**, **mDNS Bridge**, and **UDP Broadcast Relay** selectively forward multicast or discovery traffic.
-- **Avahi** publishes or discovers local services where multicast DNS is appropriate.
+| Package | Package name | Upstream at 1.1.0 | Use it to | Menu |
+| --- | --- | --- | --- | --- |
+| [FRRouting](/packages/frr/) | `FreeSense-pkg-frr` | FRR 10.7.1 | Run BGP, OSPF, OSPF6, RIP and BFD | **Services → FRR ...**, **Status → FRR** |
+| [HAProxy](/packages/haproxy/) | `FreeSense-pkg-haproxy` | HAProxy 3.4.2 | Publish internal web and TCP services, terminate TLS, load balance | **Services → HAProxy**, **Status → HAProxy Stats** |
+| [BIND DNS Server](/packages/bind/) | `FreeSense-pkg-bind` | BIND 9.20.29 | Host authoritative zones, views, DNSSEC signing, secondary zones | **Services → BIND DNS Server** |
+| [FreeRADIUS](/packages/freeradius/) | `FreeSense-pkg-freeradius3` | FreeRADIUS 3.2.10 | Authenticate Wi-Fi, switch, VPN and captive portal users with RADIUS and EAP | **Services → FreeRADIUS** |
+| [Avahi](/packages/avahi/) | `FreeSense-pkg-Avahi` | avahi-app | Reflect mDNS/DNS-SD between interfaces, publish the firewall | **Services → Avahi** |
+| [mDNS Bridge](/packages/mdns-bridge/) | `FreeSense-pkg-mDNS-Bridge` | mdns-bridge 2.2 or later | Forward mDNS between interfaces with per-interface filters | **Services → mDNS Bridge** |
+| [Multicast Bridge](/packages/mcast-bridge/) | `FreeSense-pkg-mcast-bridge` | mcast-bridge 1.3 or later | Forward routable UDP multicast streams using IGMP/MLD or static forwarding | **Services → Multicast Bridge** |
+| [UDP Broadcast Relay](/packages/udpbroadcastrelay/) | `FreeSense-pkg-udpbroadcastrelay` | udpbroadcastrelay | Relay UDP broadcasts (and one multicast group) on a port between interfaces | **Services → UDP Broadcast Relay** |
+| [TFTP Server](/packages/tftpd/) | `FreeSense-pkg-tftpd` | tftp-hpa | Serve PXE boot images and device configuration files | **Services → TFTP Server** |
 
-## Service delivery
+Versions for FRR, HAProxy, BIND and FreeRADIUS are those in the 1.1.0 Stable Optional Packages
+repository. The smaller daemons come from the FreeBSD package set for the pinned platform. Stable
+packages are published for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64.
 
-- **HAProxy** is the maintained reverse-proxy and load-balancing integration.
-- **Secure Web Gateway** provides outbound explicit/transparent proxying, TLS policy, identity, filtering, feeds, ICAP, and optional local malware scanning. It does not replace HAProxy for inbound publishing.
-- **BIND** provides authoritative DNS service.
-- **FreeRADIUS** provides network authentication.
-- **TFTP Server** supplies simple local file delivery.
-- **ACME Certificates** automates certificate issuance and renewal.
+Related packages documented elsewhere: [ACME Certificates](/packages/acme/) issues the
+certificates HAProxy and FreeRADIUS use, and the [Secure Web Gateway](/packages/web-gateway/)
+handles outbound proxying and filtering.
 
-## Design rules
+## How to choose
 
-Give each service an owner, a listening interface, a credential lifecycle, log destination, backup plan, and removal procedure. Place public listeners behind narrow firewall policy. Keep discovery bridges scoped to the interfaces and protocols that need them.
+### Routing
 
-HAProxy and certificate automation often depend on the same public DNS and NAT design. Test certificate issuance, listener health checks, and a backend failure separately before calling the service ready.
+- **A few fixed routes:** use static routes in **System → Routing**, not a package. See
+  [Routing and multi-WAN](/configure/routing-multiwan/).
+- **Routes learned from or advertised to other routers:** use [FRRouting](/packages/frr/). OSPF
+  suits routers you control in one organization; BGP suits upstream providers, multi-site
+  designs with explicit policy, and large tables. Add BFD for fast failure detection.
 
-## Package operating guides
+### Publishing services and DNS
 
-### ACME Certificates and HAProxy
+- **Inbound web or TCP services behind the firewall:** [HAProxy](/packages/haproxy/). A plain
+  port forward is enough for a single service without TLS termination, health checks or
+  host-based routing; see [NAT](/configure/nat/).
+- **Outbound proxying of client traffic:** the [Secure Web Gateway](/packages/web-gateway/), not
+  HAProxy.
+- **Authoritative DNS for zones you own:** [BIND](/packages/bind/). For recursive DNS for your
+  clients, and local host overrides, the built-in DNS Resolver is the right tool; see
+  [Core services](/configure/core-services/). If both run, plan which addresses each listens on.
 
-Use ACME Certificates to enroll and renew certificates used by FreeSense services. Before enabling
-automation, decide certificate names, validation method, account owner, renewal notification, and
-which service consumes each certificate. Account keys and DNS-validation credentials are secrets.
-Test an initial issuance and renewal path before depending on automatic rotation.
+### Authentication
 
-HAProxy is the inbound reverse-proxy and load-balancing integration. Define each listener, backend,
-health check, certificate, header behavior, and source-network policy. Test a healthy backend, a
-failed backend, certificate renewal, and a request through the public NAT and firewall path. Do not
-use Secure Web Gateway as a substitute for inbound publishing.
+- **802.1X / WPA-Enterprise, switch port authentication, VPN or captive portal RADIUS:**
+  [FreeRADIUS](/packages/freeradius/). It can use local users, SQL databases or LDAP directories.
 
-### BIND, FreeRADIUS, and FRRouting
+### Discovery and relays across VLANs
 
-BIND is an authoritative DNS service, not a general replacement for the firewall resolver. Publish
-only zones you own, restrict zone transfer and updates, and bind listeners to the smallest required
-interfaces. Verify delegation and authoritative answers from outside the protected network.
+| Traffic | Package |
+| --- | --- |
+| mDNS / Bonjour (printers, AirPlay, Chromecast, HomeKit) with filtering | [mDNS Bridge](/packages/mdns-bridge/) |
+| mDNS reflection plus publishing records for the firewall itself | [Avahi](/packages/avahi/) |
+| Routable multicast streams (IPTV, audio, sensors) to subscribed interfaces | [Multicast Bridge](/packages/mcast-bridge/) |
+| UDP broadcasts on a specific port (game, media and device discovery) | [UDP Broadcast Relay](/packages/udpbroadcastrelay/) |
+| DHCP requests to a server on another network | Built-in **Services → DHCP Relay** |
+| IGMP proxying toward an upstream multicast router | Built-in **Services → IGMP Proxy** |
 
-FreeRADIUS supplies network authentication. Define authorized clients, shared secrets, identity
-source, and expected authentication and accounting flows. Restrict the listener by interface and
-firewall policy; test both allowed and denied identity paths without recording credentials.
+Run **either** mDNS Bridge **or** Avahi reflection, not both: each package refuses to save while
+the other is active.
 
-FRRouting controls dynamic routing, so a mistake can affect every reachable network. Start with one
-protocol and a small explicit set of advertised and accepted prefixes. Define peer authentication,
-filtering, route preference, failure behavior, and rollback before enabling the required daemons.
+### File delivery
 
-### Discovery, relay, and file services
+- **PXE boot, IP phone and switch provisioning:** [TFTP Server](/packages/tftpd/), on a trusted
+  provisioning network only. TFTP has no authentication.
 
-Avahi publishes and discovers local services through multicast DNS. Multicast Bridge, mDNS Bridge,
-and UDP Broadcast Relay forward selected discovery traffic between interfaces. Select interfaces and
-protocols narrowly, then verify the intended discovery works while an unrelated VLAN does not see it.
+## Rules that apply to every package here
 
-TFTP has no built-in authentication. Limit it to a trusted management network, a dedicated file
-tree, and the smallest required read/write behavior. Treat boot images and device configurations as
-sensitive operational assets, and confirm the service is unreachable from untrusted interfaces.
-
-## Service retirement
-
-Before disabling or removing a service package, remove dependent firewall and NAT rules, route
-references, certificate consumers, scheduled renewals, and external DNS or identity dependencies.
-Confirm that clients fail over as designed, then stop the service and review its logs before removal.
+- **Firewall rules are your job.** None of these packages opens its own ports (HAProxy's
+  transparent mode is the only exception, for return traffic). Each page lists the ports to allow.
+- **Keep listeners narrow.** Bind services to the interfaces or addresses that need them, and keep
+  relays to the interfaces and service names that need them. Never expose TFTP, RADIUS or relays
+  to WAN.
+- **Settings live in `config.xml`.** They are part of configuration backups and stay after package
+  removal, so a reinstall restores them. Files outside `config.xml` (TFTP files, RADIUS
+  accounting data, BIND DNSSEC keys unless **Backup Keys** is set) need their own backup.
+- **Removal stops the service.** In FreeSense 1.1 the Package Manager stops a package's services
+  before it removes them. Remove dependent firewall rules, NAT, routes, certificate consumers and
+  DNS delegations first.
+- **High availability.** FRR, HAProxy, Avahi, mDNS Bridge, Multicast Bridge and UDP Broadcast
+  Relay can follow a CARP VIP so they run only on the MASTER node. BIND, FreeRADIUS and HAProxy
+  can sync their configuration to peers over XMLRPC.

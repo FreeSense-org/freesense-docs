@@ -1,86 +1,210 @@
 ---
 title: Custom package repositories
-description: Add your own package repositories, or FreeBSD's, without ever putting FreeSense packages at risk.
+description: Add third-party or FreeBSD package repositories in FreeSense 1.1 without risking the FreeSense system or its Optional Packages.
 ---
 
-**System → Package Manager → Repositories** lists where the firewall gets packages from and lets you
-add more. It is for administrators who need software the FreeSense catalog does not offer.
+**System → Package Manager → Repositories** lists every source the firewall gets packages from,
+and lets you add your own. Use it when you need software that the
+[FreeSense catalog](/packages/catalog/) doesn't offer, either from FreeBSD's package repository
+or from a repository you or a vendor run.
 
-:::caution
-A custom repository is a third-party software source. Its packages are installed as root, are not
-tested with FreeSense, and can do anything on the firewall. Only add a repository you trust, prefer
-a signed one, and keep console or local-LAN access while you experiment.
+Custom repositories are a standard feature of FreeSense 1.1 Stable.
+
+:::caution[Third-party software]
+Packages from a custom repository are installed as root. FreeSense doesn't test them, and they
+can do anything on the firewall. Only add repositories you trust, prefer signed ones, and keep
+console or local-LAN access while you experiment.
 :::
 
-## What is listed
+## What the Repositories tab lists
 
-- **FreeSense** and **FreeSense-packages** are built in. They are always signed, cannot be edited or
-  removed, and are the only repositories the system updater uses.
-- **FreeBSD-ports** is FreeBSD's own package repository (the rolling *latest* branch). It is off by
-  default; turn it on to install FreeBSD packages that FreeSense does not ship.
-- **Custom repositories** are the ones you add (up to five).
+| Row | Priority | Can you change it? |
+| --- | --- | --- |
+| **FreeSense**: FreeSense system | 100 | No. It is built in, signed and locked. |
+| **FreeSense-packages**: FreeSense optional packages | 50 | No. It is built in, signed and locked. |
+| **FreeSense-mirror**: FreeSense mirror (when configured) | 10 | No. It is built in, signed and locked. |
+| **FreeBSD-ports**: FreeBSD optional packages, rolling *latest* branch | 0 | You can turn it on or off. It is off by default. |
+| Your **custom repositories**, up to five | 5 down to 1 | You can add, edit, reorder, disable and delete them. |
 
-## FreeSense always comes first
+The built-in rows show the address and priority from the system's repository configuration.
+Each custom row shows its **Address**, its **Verification** (**Fingerprint**, **Public key** or
+**Unsigned**), its **Priority** and whether it is **Enabled**.
 
-When two repositories offer the same package, pkg uses the one with the higher *priority*, whatever
-the versions are. FreeSense repositories use priorities 10–100. Custom repositories get 5 down to 1
-(the first in the list wins) and the FreeBSD repository gets 0. You cannot change these numbers, so a
-custom repository can add packages but can never replace one that FreeSense provides.
+When the FreeBSD repository is enabled, only its main package repository is used. FreeBSD's
+kernel-module repository stays off, because those modules are built for FreeBSD's kernel, not
+the FreeSense kernel.
 
-Two more guards back this up:
+## Priorities: FreeSense always wins
 
-- **The system updater never reads custom repositories.** Checking for updates, installing a firmware
-  update and the nightly metadata refresh only look at the FreeSense repositories, so a firmware
-  update cannot pull a core package from a third party. Plain `pkg` on the shell does see them.
-- **Every install and removal is checked first.** The Package Installer works out what pkg would do
-  and refuses anything that would upgrade, downgrade, reinstall or remove a package that is already
-  installed, supply a package FreeSense already provides, or use a name reserved for FreeSense and the
-  base system (`FreeSense-*`, `FreeBSD-*`, `php8*`, `pkg`, kernels). A removal is refused if it would
-  take a FreeSense package with it.
+If two repositories offer a package with the same name, pkg installs it from the repository
+with the higher priority, whatever the version numbers are. FreeSense fixes the priorities so
+that its own repositories always come first:
 
-## Adding a repository
+- FreeSense repositories: 10 to 100
+- custom repositories: 5 for the first one in the list, 4 for the second, and so on down to 1
+- FreeBSD-ports: 0
 
-1. Choose **Add repository**.
-2. Give it a short lowercase **name** (names starting with `freesense` or `freebsd` are reserved) and
-   its **https://** address. Plain `http://` is refused.
-3. Choose how it is verified:
-   - **Fingerprint** (recommended): the SHA-256 of the repository's public key, 64 hexadecimal digits.
-   - **Public key**: paste the repository's PEM `PUBLIC KEY` block.
-   - **Unsigned**: only after you tick the box that says an unsigned repository cannot be verified.
-     Anyone who can alter it, or the connection to it, can install code on the firewall.
-4. Save, then use **Refresh** on its row to fetch the package list and **Browse** to look through it.
-   Installing goes through the usual Package Installer, with the review described above.
+You can't type in a priority. To change the order of your custom repositories, use the up and
+down arrows on their rows. The repository at the top of the list has the highest custom
+priority. A custom repository can add packages, but it can never replace a package that
+FreeSense provides.
 
-Use the arrows on a row to change a repository's priority relative to the other custom repositories.
-Disabling a repository keeps its settings but stops pkg using it.
+## Add a repository
 
-## Firmware updates
+1. Go to **System → Package Manager → Repositories** and choose **Add repository**. The button
+   is hidden once you have five custom repositories.
+2. Fill in the **Repository** section:
 
-- The list of repositories is stored in the configuration, so it is kept across firmware updates, a
-  configuration backup and a restore. The repository files are rebuilt from it every time the
-  firewall starts its packages.
-- Packages installed from a custom repository are kept too. A firmware update can change system
-  libraries, though, so a package built for the old ones may need reinstalling afterwards. FreeSense
-  never upgrades packages from custom repositories for you: use **Refresh** and reinstall when you
-  choose to.
+   | Field | Rules |
+   | --- | --- |
+   | **Enable** | **Use this repository**. On by default. |
+   | **Name** (required) | 2–32 characters: lowercase letters, digits, `-` and `_`, starting with a letter. Names starting with `freesense` or `freebsd` are reserved. Must be unique. |
+   | **Description** | Optional, up to 120 characters. |
+   | **Address** (required) | An `https://` URL with no user name, password, query or fragment. Plain `http://` is refused. Point it at the repository folder for **FreeBSD:16:amd64**, the folder that holds `meta.conf` or `packagesite.pkg`. Example: `https://pkg.example.com/FreeBSD:16:amd64/latest`. |
 
-## From the shell
+3. Fill in the **Verification** section. **Signed with** offers three choices:
 
-Plain `pkg` sees the custom repositories as well (after `pkg update`). Remember that anything you
-install this way skips the safety review above, and that the FreeSense repositories still win on
-priority.
+   | Choice | What to enter in **Key** |
+   | --- | --- |
+   | **A fingerprint of the repository key (recommended)** | The SHA-256 fingerprint of the repository's public key: 64 hexadecimal digits. You can also paste a pkg fingerprint file (`function: "sha256"` / `fingerprint: "…"`). |
+   | **The repository public key** | The repository's PEM block, from `-----BEGIN PUBLIC KEY-----` to `-----END PUBLIC KEY-----`. Certificates and private keys are refused. |
+   | **Nothing: unsigned** | No key. You must also tick **Unsigned**: *I understand an unsigned repository cannot be verified: anyone who can alter it, or the connection to it, can install code on this firewall.* |
 
-## In the package lists
+   When you edit a repository later, its public key is not shown. Leave **Key** blank to keep the
+   stored key.
+4. Choose **Save**. The page confirms that the repository was saved and asks you to fetch its
+   package list.
+5. Choose **Refresh** on the repository's row to download the package list. A repository whose
+   signature doesn't verify fails the refresh with an error.
+6. Choose **Browse** on the row to search its packages. The list shows up to 300 at a time, and
+   the search narrows it down.
 
-**Available Packages** and **Installed Packages** have a *Source* column and a *Source* filter.
-FreeSense's own packages are marked **Official**, and both lists open showing only those.
+**Disable** keeps a repository's settings but stops pkg from using it. **Delete** removes the
+repository and its cached package list. Packages already installed from it stay installed.
 
-- On **Available Packages**, switch the Source filter to a repository to list its packages (at
-  most 300 at a time). Type in the search box to search the repository itself, which is how you
-  find a package in FreeBSD's repository of tens of thousands.
-- On **Installed Packages**, the packages that came from another repository are in the list too;
-  choose *All sources* or the repository to see them.
-- A package from another source offers **Install**, **Update** and **Remove** like an official one,
-  through the same Package Installer. Before anything runs it is reviewed with the checks above, and
-  an update may change only that package, from the repository it came from.
-- The tiles at the top count the official packages only.
+The FreeBSD repository row has a toggle to turn it on or off, plus **Refresh** and **Browse**
+while it is enabled.
+
+## Install, update and remove packages from other sources
+
+Packages from custom repositories and from FreeBSD-ports use the same Package Installer as
+FreeSense packages, with an extra safety review:
+
+- From **Repositories → Browse**, choose **Review and install** on a package.
+- On **Available Packages** and **Installed Packages**, set the **Source** filter to a
+  repository. Available Packages then lists that repository's packages, up to 300 at a time.
+  Typing in the search box searches the whole repository, which is how you find a package among
+  the tens of thousands that FreeBSD offers. The rows offer **Install**, **Update** and
+  **Remove**.
+- The **Installed from these repositories** panel on the Repositories tab lists every package
+  that came from a non-FreeSense repository, with a **Remove** action.
+
+The review page says the package comes *"From a package repository that is not part of
+FreeSense"*. It warns that the package isn't tested with FreeSense, is installed as root, is
+never upgraded automatically, and may need reinstalling after a firmware update. It also lists
+the packages that would be installed or changed, with their versions and repositories.
+
+### The dry-run guard
+
+Before the Install, Update or Remove button becomes active, the Package Installer asks pkg what
+it *would* do (`pkg install -n`, `pkg upgrade -n` or `pkg delete -n`). It refuses the operation
+if the plan would:
+
+- upgrade, downgrade or reinstall a package that is already installed. The one exception is an
+  explicit **Update** of a package from its own repository, which may change only that package;
+- remove an installed package;
+- supply a package that the FreeSense repositories already provide;
+- install a name reserved for FreeSense and the base system: `FreeSense*`, `FreeBSD*`,
+  `php*-FreeSense*`, `php8*`, `pkg`, `pkg-*` and `kernel*`.
+
+A removal is also refused if the package didn't come from a custom repository, or if removing
+it would take a FreeSense package with it. The reasons are listed on the review page, and the
+confirm button stays disabled. The plan is checked again just before the operation runs.
+
+Every operation saves a configuration restore point first, just like an official package
+install.
+
+## Upgrader isolation
+
+Custom repositories can never affect a FreeSense system update:
+
+- Their pkg configuration is generated into `/usr/local/etc/pkg/custom-repos`, and their keys
+  into `/usr/local/etc/pkg/custom-keys`. Neither is one of the system's repository directories.
+- **FreeSense-upgrade**, which handles the update check, the system update and official package
+  installs, pins pkg to the system repository directories (`/etc/pkg/` and
+  `/usr/local/etc/pkg/repos/`). It never reads, refreshes or installs from a custom repository,
+  so a system update can't pull a core package from a third party.
+- The WebUI's own package operations, such as the Available and Installed lists and installs of
+  official packages, also use only the FreeSense repositories. Only the custom-repository
+  actions ask pkg to include the custom directory.
+
+### From the shell
+
+The system's `pkg.conf` adds the custom directory to pkg's repository search path, so running
+`pkg` from the console or SSH sees your custom repositories (run `pkg update` first). Keep in
+mind:
+
+- shell installs skip the dry-run guard above;
+- the fixed priorities still apply, so FreeSense repositories win when names clash;
+- **FreeSense-upgrade** still ignores custom repositories, even when you start it from the shell.
+
+## Firmware updates and backups
+
+- The repository list is stored in the configuration (`config.xml`), so it is part of every
+  configuration backup and survives firmware updates and restores. The pkg files are rebuilt
+  from the configuration each time the firewall starts its packages.
+- Packages installed from custom repositories stay installed across a firmware update. FreeSense
+  never upgrades them for you. A firmware update can change system libraries, though, so a
+  package built for the old ones may need reinstalling. Use **Refresh**, then reinstall or
+  update the package when you choose to.
+
+## The Source column
+
+**Available Packages** and **Installed Packages** both have a **Source** column and filter:
+
+- FreeSense's own packages are marked **Official**: *A FreeSense package from the signed FreeSense
+  repository*. Both lists open showing only these.
+- Packages from other repositories show the repository's name: *From the … repository, not
+  tested with FreeSense*.
+- The tiles at the top of both pages count official packages only.
+
+## REST API
+
+The Repositories tab has REST API equivalents. Paths are relative to `https://<firewall>/api`.
+See the [API overview](/api/overview/) for authentication.
+
+| Method and path | Purpose |
+| --- | --- |
+| `GET /v1/packages/repositories` | Built-in, FreeBSD and custom repositories with their priorities and limits. Keys are never returned, only `key_set`. |
+| `POST /v1/packages/repositories` | Add a custom repository |
+| `PUT /v1/packages/repositories/{id}` | Change one. Omitted fields, and an empty `key`, keep their stored values. |
+| `DELETE /v1/packages/repositories/{id}` | Delete one. Packages installed from it stay. |
+| `POST /v1/packages/repositories/{id}/refresh` | Fetch its package list. Returns `502` if the fetch or signature check fails. |
+| `GET /v1/packages/repositories/{id}/packages` | List its packages. `id` can also be `freebsd`. `?q=` filters by name or description, and at most 300 are returned. |
+| `PUT /v1/packages/freebsd-repository` | Turn FreeBSD-ports on or off with `{"enable": true}` or `{"enable": false}` |
+
+The request body for adding or changing a repository takes `name`, `descr`, `url`,
+`signature_type` (`fingerprints`, `pubkey` or `none`), `key`, `enable`, and `ack_unsigned`, which
+is required when `signature_type` is `none`. The same validation rules apply as on the page.
+The write routes need the `packages` write scope.
+
+The API manages repositories only. You can't install packages from custom repositories through
+the API. Use the WebUI, where the dry-run guard runs.
+
+## Risks and support boundary
+
+- **Support.** FreeSense supports the catalog packages from its own repositories. Packages from
+  custom repositories or FreeBSD-ports are outside that support. When you report a problem,
+  say which non-official packages are installed, and try to reproduce the problem without
+  them.
+- **Compatibility.** FreeSense 1.1 is built on a FreeBSD 16.0-CURRENT snapshot. Packages must be
+  built for `FreeBSD:16:amd64`. FreeBSD's rolling *latest* packages can move ahead of the
+  FreeSense platform pin, so a package or its shared libraries may not match the installed
+  system.
+- **Security.** A repository with no signature, or a key you didn't verify independently, lets
+  anyone who controls the server or the connection run code on your firewall. Get fingerprints
+  through a separate trusted channel.
+- **Attack surface.** Every extra daemon is extra code running as root on the firewall. Install
+  only what you need, and don't expose its services on WAN interfaces unless you have to.
+- **Recovery.** If a third-party package breaks something, remove it from **Installed from these
+  repositories**, or restore a configuration backup and remove it from the shell.

@@ -1,64 +1,92 @@
 ---
 title: Cloud images
-description: Choose an official UFS or ZFS cloud image and provision FreeSense safely with cloud-init.
-channels: [devel, stable]
+description: Deploy a preinstalled FreeSense UFS or ZFS disk image on KVM-compatible platforms or bhyve and provision it with cloud-init.
 ---
 
-FreeSense releases can publish official UFS and ZFS variants in two architecture-scoped cloud-disk
-formats beside the amd64 ISO or ARM64 installer IMG:
+Cloud images are preinstalled FreeSense disks. Import one into your hypervisor or cloud platform
+instead of running the installer. Each image is published in two formats:
 
-- **QCOW2 + xz** for Proxmox, OpenStack, QEMU/KVM, and compatible importers.
-- **Raw GPT + xz** for bhyve and platforms that import raw disks.
+- **QCOW2, compressed with xz**, for Proxmox, OpenStack, QEMU/KVM, and other importers that accept
+  QCOW2.
+- **Raw GPT disk, compressed with xz**, for bhyve and platforms that import raw disks.
 
-Select `amd64` for supported x86-64 deployments. The `arm64` images are experimental,
-UEFI-only, and intended for QEMU `virt` or standards-compliant ARM64 UEFI machines with virtio
-devices. They contain no board firmware, U-Boot, or DTBs.
+Stable 1.1 cloud images are published for **amd64**. Each format comes with a UFS root or a ZFS root.
 
-The recommended UFS image is a sparse 16 GiB disk. The ZFS image is a sparse 32 GiB disk and adds
-boot environments for upgrade rollback. Both boot with BIOS or UEFI, grow when the virtual disk is
-enlarged, and include `qemu-guest-agent`. Verify the filesystem- and format-specific SHA-256 value
-shown on the [download page](https://freesense.org/download) before decompressing the image.
-
-:::tip[Choose the filesystem for the deployment]
-ZFS is the recommended filesystem for a conventional installation because it enables boot
-environments. In cloud deployments, UFS is the recommended default because it is smaller and needs
-less memory; choose ZFS when boot-environment rollback is worth the additional resources. Both
-filesystems are supported when listed for the selected release.
+:::note[arm64]
+There are no arm64 cloud images on Stable. Stable arm64 starts with [1.1.1](/releases/1.1.1/) and
+ships only the generic arm64 UEFI installer image, not QCOW2 or raw cloud disks. The generic arm64
+target in Development also provides an installer image instead of cloud disks. To run FreeSense on
+arm64, follow [Installation](/getting-started/installation/#install-on-arm64).
 :::
 
-Support follows the release channel, not the disk format: Stable 1.0.x artifacts are supported for
-production, while Development 1.1 artifacts are experimental and unsupported. The
-[guided download picker](https://freesense.org/download?image=ufs&format=qcow2) shows only combinations
-that are actually published.
+<!-- needs verification: freesense-os-base config/build-policy.json (generic-arm64-uefi has empty
+filesystems/formats) means no arm64 QCOW2/raw images are built. Confirm against the live download
+picker. -->
 
-## Choose UFS or ZFS
+Cloud images are a separate release artifact. They are built only from a System repository and an
+Optional Packages repository that have been verified together. Support follows the release line,
+not the disk format. Stable 1.1 images are supported. Development 1.2 images are experimental and
+unsupported.
 
-Choose **UFS** for the smallest, simplest, and most broadly compatible cloud appliance. Choose
-**ZFS** when boot environments are worth the additional memory and disk headroom. The ZFS cloud
-image uses one non-redundant virtual disk; ZFS does not make that disk redundant. Use provider
-snapshots or backups, allocate at least 4 GiB of RAM, keep the virtual disk at 32 GiB or larger,
-and use provider-level disk encryption when required.
+## Image variants
 
-The ZFS pool is named `FreeSense`, starts at `FreeSense/ROOT/default`, and keeps configuration and
-the package database with each boot environment. A rollback therefore restores a coherent system
-state. Cloud instance identity remains idempotent and is reapplied if a rollback predates initial
-provisioning.
+| | UFS image | ZFS image |
+| --- | --- | --- |
+| Virtual disk size | 16 GiB, sparse | 32 GiB, sparse |
+| Recommended memory | 2 GiB or more | 4 GiB or more |
+| Boot environments | No; upgrades run in place | Yes; pool `FreeSense`, root `FreeSense/ROOT/default` |
+| Firmware | BIOS or UEFI | BIOS or UEFI |
+| Root grows when the virtual disk is enlarged | Yes | Yes |
+| QEMU guest agent | Included | Included |
+
+<!-- needs verification: the 2 GiB recommendation for the UFS image is a sizing estimate. The 16/32
+GiB sizes, the pool and dataset names, BIOS+UEFI and root growth come from
+freesense-os-base config/build-policy.json (generic-amd64 variants). The release smoke test boots
+cloud images with 4096 MiB (scripts/runner/smoke-cloud.sh). -->
+
+The download page shows a separate SHA-256 value for each filesystem and format. Verify the
+compressed file before you decompress it.
+
+### Choose UFS or ZFS
+
+For cloud deployments, **UFS** is the default choice. It is smaller, simpler, and needs less memory.
+Choose **ZFS** when [boot environments](/operations/zfs-boot-environments/) are worth the extra
+memory and disk space: upgrades then run in a cloned environment with a health check after the
+first boot.
+
+The ZFS image uses a single, non-redundant virtual disk. ZFS doesn't make that disk redundant. Use
+provider snapshots or backups, keep the virtual disk at 32 GiB or larger, and use provider-level
+disk encryption if you need it.
+
+Configuration and the package database are stored in each boot environment, so an environment
+always holds a consistent system state. Cloud provisioning is tied to the instance ID and is
+applied again if you boot an environment that was created before the first provisioning.
 
 ## Network and management safety
 
-Use **two virtual NICs** whenever possible. The adapter makes the metadata default-route interface
-WAN and the next interface LAN unless the `freesense:` extension assigns explicit roles. With two
-or more NICs, SSH and WebUI management remain on LAN; FreeSense never adds an automatic WAN rule.
+Use **two virtual NICs** whenever you can. The cloud-init adapter makes the interface that carries
+the metadata default route WAN and the next interface LAN, unless the `freesense:` section of the
+user data assigns roles explicitly. With two or more NICs, SSH and WebUI management stay on LAN.
+FreeSense never adds a WAN management rule in this case.
 
 :::danger[One-NIC cloud instances]
-A one-NIC instance uses DHCP on WAN. FreeSense adds a persistent TCP/22 WAN rule only when metadata
-contains a valid SSH public key. Restrict that rule with `freesense.management_cidrs` and a provider
-security group. Without a key there is no WAN management access. The WebUI is never exposed on WAN
-automatically.
+A one-NIC instance runs DHCP on WAN, and the WebUI anti-lockout rule is turned off so that the WebUI
+isn't exposed to the internet. If the metadata contains a valid SSH public key, FreeSense adds a
+WAN pass rule for TCP port 22, described as **FreeSense cloud temporary SSH**. Without
+`freesense.management_cidrs`, that rule allows **any source**. Always set `management_cidrs` and
+restrict access with a provider security group as well. Without an SSH key, there is no WAN
+management access at all.
 :::
 
-The image's known default password is locked. SSH uses the existing `admin` account and rejects
-password authentication.
+The image's default administrator password is locked during provisioning, so you can't log in with
+a password. SSH uses the `admin` account with the keys from the metadata and accepts key
+authentication only. Signing in as `admin` over SSH opens the FreeSense console menu. To use the
+WebUI, set an administrator password from there (option 3, **Reset admin account and password**),
+then connect to the WebUI from the LAN.
+
+<!-- needs verification: setting a WebUI password from the console menu after cloud provisioning has
+not been tested on 1.1.0. Provisioning sets the admin password to *LOCKED* and enables key-only SSH
+(freesense-system-ports sysutils/FreeSense-cloud-init/files/freesense_cloud_init.py). -->
 
 ## NoCloud example
 
@@ -101,49 +129,58 @@ ethernets:
       macaddress: "52:54:00:12:34:57"
     addresses: [10.20.0.1/24, "2001:db8:20::1/64"]
     nameservers:
-      addresses: [1.1.1.1, "2606:4700:4700::1111"]
+      addresses: [192.0.2.53, "2001:db8::53"]
 ```
 
-Then create and attach the seed:
+Then create the seed image and attach it to the virtual machine:
 
 ```sh
 cloud-localds --network-config=network-config cidata.iso user-data meta-data
 ```
 
-NoCloud, ConfigDrive, and OpenStack datasources are supported. Hostname/FQDN, timezone, DHCP4,
-DHCP6/SLAAC, static IPv4/IPv6, gateways, MTU, DNS, SSH keys, roles, and management CIDRs are
-translated into native `config.xml`; cloud-init does not maintain a competing `rc.conf` network.
+The adapter supports the **NoCloud**, **ConfigDrive**, and **OpenStack** datasources. It
+translates the hostname and domain, timezone, DHCPv4, DHCPv6 and SLAAC, static IPv4 and IPv6
+addresses, gateways, MTU, DNS servers, SSH keys, interface roles, and management CIDRs into the
+native `config.xml`. cloud-init doesn't keep a separate network configuration in `rc.conf`.
 
 ## Import examples
 
-Proxmox (replace `ufs` with `zfs` to import the ZFS variant):
+**Proxmox** (replace `ufs` with `zfs` for the ZFS image):
 
 ```sh
-unxz FreeSense-*-amd64-ufs.qcow2.xz
-qm importdisk 120 FreeSense-*-amd64-ufs.qcow2 local-lvm
+unxz FreeSense-1.1.0-amd64-ufs.qcow2.xz
+qm importdisk 120 FreeSense-1.1.0-amd64-ufs.qcow2 local-lvm
 ```
 
-QEMU/KVM (replace `ufs` with `zfs` when desired):
+**QEMU/KVM:**
 
 ```sh
 qemu-system-x86_64 -enable-kvm -m 4096 \
-  -drive file=FreeSense-*-amd64-ufs.qcow2,if=virtio \
+  -drive file=FreeSense-1.1.0-amd64-ufs.qcow2,if=virtio \
   -drive file=cidata.iso,if=virtio,readonly=on \
   -nic user,model=virtio -nic tap,model=virtio
 ```
 
-bhyve (replace `ufs` with `zfs` when desired):
+**bhyve:**
 
 ```sh
-unxz FreeSense-*-amd64-ufs.raw.xz
-bhyve -c 2 -m 4G -H -w -s 3,virtio-blk,FreeSense-*-amd64-ufs.raw freesense
+unxz FreeSense-1.1.0-amd64-ufs.raw.xz
+bhyve -c 2 -m 4G -H -w -s 3,virtio-blk,FreeSense-1.1.0-amd64-ufs.raw freesense
 ```
 
-For OpenStack, upload the QCOW2 as a `qcow2` image and supply network data through the instance's
-ConfigDrive or metadata service.
+**OpenStack:** upload the decompressed QCOW2 as a `qcow2` image and supply network data through the
+instance's ConfigDrive or the metadata service.
 
 ## Reprovisioning
 
-Provisioning is atomic and keyed by cloud instance ID. Rebooting the same instance does not
-duplicate interfaces, users, or firewall rules. Cloning with a new instance ID performs a new
-initialization and regenerates host identity and SSH host keys.
+Provisioning is applied atomically and keyed to the cloud instance ID. Rebooting the same instance
+doesn't duplicate interfaces, users, or firewall rules. A clone with a new instance ID is
+provisioned from scratch.
+
+<!-- needs verification: regeneration of SSH host keys and host identity on a new instance ID was
+documented earlier and has not been re-checked against the 1.1.0 adapter. -->
+
+## Next
+
+- [First boot and setup](/getting-started/first-boot/)
+- [Updates and release channels](/guides/updates-and-channels/)

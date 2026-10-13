@@ -1,80 +1,128 @@
 ---
-title: First boot & setup
-description: Assign interfaces, reach the web GUI, and secure your new FreeSense install.
+title: First boot and setup
+description: Assign interfaces, reach the WebUI, sign in, and secure a newly installed FreeSense system.
 ---
 
-After installation, FreeSense boots to a console menu and is ready to configure.
+After installation, FreeSense boots to the console menu. This page covers the first steps from
+there to a secured, reachable system. For cloud images, provisioning replaces several of these
+steps; see [Cloud images](/getting-started/cloud-images/).
+
+## Factory defaults
+
+| Setting | Default |
+| --- | --- |
+| Hostname | `FreeSense.home.arpa` |
+| WAN | First interface (`em0` in the default configuration), IPv4 by DHCP, IPv6 by DHCPv6 |
+| LAN | Second interface (`em1`), `192.168.1.1/24` |
+| DHCP server on LAN | Enabled, addresses `192.168.1.100` to `192.168.1.199` |
+| DNS | DNS Resolver enabled |
+| Firewall | Default rule allows LAN to any destination; outbound NAT in automatic mode |
+| WebUI | HTTPS with a self-signed certificate |
+| WebUI account | User `admin`, password `freesense` |
+| Time zone | `Etc/UTC` |
+
+These values come from the factory configuration shipped with the system. Interface names depend on
+your hardware, so FreeSense asks you to assign interfaces if the defaults don't exist.
 
 ## 1. Assign interfaces
 
-On first boot you'll be asked to assign network interfaces. At minimum set:
+If the configured interfaces don't match the hardware, FreeSense reports a network interface
+mismatch at boot and starts interface assignment automatically. To assign interfaces later, use
+console option **1) Assign Interfaces**.
 
-- **WAN** — the interface connected to your internet uplink (often gets an address via DHCP)
-- **LAN** — the interface for your internal network
+1. Answer whether VLANs need to be set up first. Set up VLANs now only if WAN or LAN is a tagged
+   VLAN.
+2. Enter the WAN interface name, or `a` to detect it automatically. Auto-detection asks you to plug
+   in the cable and watches for link-up.
+3. Enter the LAN interface name, or `a`. Press Enter without a name to run with WAN only.
+4. Assign optional interfaces, or press Enter to finish.
+5. Check the summary and confirm with `y`.
 
-The console menu (option *Assign Interfaces*) lets you redo this at any time.
+To change an address without reassigning interfaces, use option **2) Set interface(s) IP address**.
 
-## 2. Default LAN address
+## 2. Connect a computer to LAN
 
-By default the LAN interface uses:
+Connect a computer to the LAN interface. With the defaults it receives an address between
+`192.168.1.100` and `192.168.1.199`, with `192.168.1.1` as gateway and DNS server.
 
-- **IP:** `192.168.1.1/24`
-- **DHCP server:** enabled, handing out addresses to LAN clients
+## 3. Open the WebUI
 
-Connect a computer to the LAN interface and you should receive an address automatically.
-
-## 3. Reach the web GUI
-
-Open a browser to the LAN address:
+Open a browser on the LAN computer and go to:
 
 ```
 https://192.168.1.1
 ```
 
-You'll get a certificate warning (the appliance uses a self-signed certificate by default) — this is
-expected; proceed to the site.
+The browser warns about the self-signed certificate. This is expected on a new installation. Check
+that you are connecting to the address you expect, then continue. You can replace the certificate
+later under **System → Certificates**.
 
-## 4. Log in
+## 4. Sign in
 
-Use the default credentials:
+| Field | Value |
+| --- | --- |
+| Username | `admin` |
+| Password | `freesense` |
 
-- **Username:** `admin`
-- **Password:** `freesense`
-
-:::danger[Change the password immediately]
-The default password is public knowledge. Change it right away under
-**System → User Manager**, and consider restricting GUI access to the LAN.
+:::danger[Change the default password]
+The default password is public. FreeSense shows a warning while the `admin` account still uses it.
+Set a strong password in the setup wizard or under **System → User Manager**.
 :::
 
 ## 5. Run the setup wizard
 
-The first login launches a setup wizard to set the hostname, time zone, WAN/LAN addresses, and the
-admin password. You can re-run it later from **System → Setup Wizard**.
+On a new installation, the first sign-in opens the setup wizard. It sets the hostname and domain,
+DNS servers, time server and time zone, WAN and LAN configuration, and the administrator password.
+You can run it again at any time from **System → Setup Wizard**.
 
-## Validate the initial appliance
+After the wizard, the WebUI opens **Home**, the dashboard. The top menu groups pages by area:
+**System**, **Interfaces**, **Firewall**, **Services**, **VPN**, **Status**, **Diagnostics**, and
+**Help**. Press **Ctrl+K** (or select **Search** in the menu bar) to find any page by name. See the
+[WebUI menu reference](/reference/menu-guide/).
 
-Before adding packages or exposing services, confirm the basic control plane:
+## Check the new system
 
-1. Verify the console shows the intended WAN and LAN assignments and that link state matches the
-   connected ports.
-2. Confirm the LAN client receives the expected address and gateway, then reach the WebUI at the
-   documented LAN address.
-3. Set a unique administrator password and verify the configured time, timezone, hostname, and DNS
-   behavior. Accurate time is required for certificates, VPNs, log correlation, and updates.
-4. Save a configuration backup after the initial setup. Keep it outside the appliance and protect it
-   because it can contain sensitive configuration material.
-5. Apply the intended update channel only after confirming the recovery console path. Development
-   upgrades are one-way and must not be used as a production rollback strategy.
+Before you add packages or expose services, confirm the basics:
 
-## If management access is lost
+1. The console shows the intended WAN and LAN assignments, and link state matches the cables.
+2. A LAN client gets the expected address and gateway and can reach the WebUI.
+3. The administrator password is no longer the default.
+4. Time, time zone, hostname, and DNS are correct. Accurate time is required for certificates, VPNs,
+   log correlation, and updates.
+5. The dashboard's **System Information** widget shows the version, and under **System → Update**
+   the system reports that it is up to date or offers an update.
+6. You have saved a configuration backup from **Diagnostics → Backup & Restore** and stored it off
+   the appliance. Protect it: it can contain keys and passwords.
 
-Use the local console rather than repeatedly changing switch ports or WAN settings remotely. The
-console menu can reassign interfaces and restore a known local-management path. A factory reset
-returns the LAN address and DHCP defaults and resets the administrator account, but it is a
-destructive recovery action; restore a saved configuration only after confirming it matches the
-appliance and intended release line.
+:::note[Known issue in 1.1.0]
+The **System Information** widget can show the current time as the build date, because the build
+time file is empty in 1.1.0. The version itself is correct.
+:::
+
+Choose the update channel only after you have confirmed you have console access for recovery.
+Stable is the supported channel. Moving to Development is one-way. See
+[Updates and release channels](/guides/updates-and-channels/).
+
+## If you lose management access
+
+Use the local console instead of repeatedly changing switch ports or WAN settings remotely. The
+console menu offers:
+
+| Option | Use it to |
+| --- | --- |
+| 1) Assign Interfaces | Reassign WAN, LAN, and optional interfaces. |
+| 2) Set interface(s) IP address | Change an interface address and the LAN DHCP range. |
+| 3) Reset admin account and password | Restore the `admin` account and reset its password. |
+| 4) Reset to factory defaults | Restore the factory configuration. This erases your configuration. |
+| 15) Restore recent configuration | Roll back to one of the recently saved configurations. |
+
+A factory reset restores the LAN address, the DHCP defaults, and the `admin` account, but it
+deletes your configuration. Restore a saved backup only after you have confirmed that it belongs to
+this appliance and release line. More recovery steps are in
+[Access and recovery](/configure/access-and-recovery/).
 
 ## Next
 
-- Keep your system current: [Updates & release channels](/guides/updates-and-channels/)
-- Add features: [Installing packages](/packages/installing-packages/)
+- [Updates and release channels](/guides/updates-and-channels/)
+- [Installing packages](/packages/installing-packages/)
+- [ZFS boot environments](/operations/zfs-boot-environments/)

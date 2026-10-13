@@ -1,0 +1,83 @@
+---
+title: FreeSense Development Documentation
+description: Documentation for the experimental, unsupported FreeSense 1.2 Development line, rebuilt nightly.
+template: splash
+hero:
+  title: FreeSense 1.2 Development
+  tagline: The rolling, experimental line that becomes the next Stable release. Rebuilt nightly, unsupported, and meant for contributors and disposable lab systems only.
+  image:
+    dark: __ASSET_ROOT__/icon-reversed.svg
+    light: __ASSET_ROOT__/icon.svg
+  actions:
+    - text: About the Development line
+      link: /releases/development/
+      icon: right-arrow
+    - text: What 1.1 brought
+      link: /releases/whats-new-1.1/
+      icon: document
+      variant: secondary
+    - text: Stable 1.1 documentation
+      link: /
+      icon: approve-check-circle
+      variant: minimal
+---
+
+import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<p class="docs-edition-note"><strong>Development 1.2</strong> documentation. This line is experimental and unsupported. For production firewalls use the <a href="/">Stable 1.1 documentation</a>.</p>
+
+<Aside type="danger" title="Experimental, no support">
+Development builds are produced nightly from current sources. A build that passed its signature,
+integrity, and boot checks is still experimental software and can contain defects that need a
+reinstall to recover from. Moving a system from Stable to Development is one-way: the updater never
+offers Stable again on a Development system. Keep a configuration backup and recovery media.
+</Aside>
+
+## What Development offers today
+
+<CardGrid stagger>
+  <Card title="Nightly builds" icon="rocket">
+    The Development cycle starts daily at 01:00 UTC. System and optional packages rebuild only when
+    their inputs change.
+    [How Development is built →](/releases/development/)
+  </Card>
+  <Card title="arm64 and Raspberry Pi previews" icon="laptop">
+    The Raspberry Pi appliance images are published only on this line. The generic arm64 UEFI
+    installer is built here nightly and is also on Stable from 1.1.1.
+    [Raspberry Pi appliances →](/getting-started/raspberry-pi/)
+  </Card>
+  <Card title="Everything in 1.1" icon="approve-check-circle">
+    Development starts from FreeSense 1.1: the REST API, custom package repositories, VXLAN,
+    remote backups, and the reworked WebUI.
+    [Tour of 1.1 →](/releases/whats-new-1.1/)
+  </Card>
+  <Card title="Contribute" icon="seti:config">
+    Build optional packages, integrate a package with the WebUI, and test changes on a lab system.
+    [Build a package →](/developers/building-optional-packages/)
+  </Card>
+</CardGrid>
+
+## The 1.1 highlights Development builds on
+
+<CardGrid>
+  <LinkCard title="REST API and API Explorer" description="Versioned JSON API under /api/v1 with per-user keys and WebUI-equivalent privileges." href="/api/overview/" />
+  <LinkCard title="Custom package repositories" description="Your own pkg repositories and FreeBSD's, always below the FreeSense repositories." href="/packages/custom-repositories/" />
+  <LinkCard title="Rebuilt Package Manager" description="Filters, a review step before every change, and a live output console." href="/packages/installing-packages/" />
+  <LinkCard title="Reworked WebUI navigation" description="Grouped menus, Ctrl+K menu search, and rebuilt pages." href="/releases/whats-new-1.1/#webui" />
+  <LinkCard title="VXLAN interfaces" description="Unicast or multicast overlays that can join bridges." href="/configure/interfaces-vlans-bridges/#vxlan" />
+  <LinkCard title="ZFS boot-environment upgrades" description="Cloned environment, first-boot health check, one automatic rollback." href="/operations/zfs-boot-environments/" />
+</CardGrid>
+
+## Documentation editions
+
+<CardGrid>
+  <LinkCard title="Stable 1.1" description="Supported production releases: 1.1.0 and later 1.1.x patch releases." href="/" />
+  <LinkCard title="Development 1.2" description="You are here. Experimental, unsupported, rebuilt nightly." href="/1.2/" />
+  <LinkCard title="FreeSense 1.0 (frozen)" description="The 1.0.x documentation as it was at 1.0.7. No longer maintained." href="/1.0/" />
+</CardGrid>
+
+## One edition, fully open
+
+FreeSense has a single edition. Development, Stable, and every optional package are built from
+public, Apache-2.0 licensed sources. Report bugs found on Development builds as GitHub issues, and
+report security problems privately through GitHub private vulnerability reporting.

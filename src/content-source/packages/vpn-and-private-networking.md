@@ -1,71 +1,67 @@
 ---
 title: VPN and private networking
-description: Choose WireGuard, Tailscale, ZeroTier, or OpenVPN export based on ownership and route-control requirements.
-channels: [devel, stable]
-last_verified_release: 1.0.5
+description: Compare the WireGuard, Tailscale, ZeroTier, and OpenVPN Client Export packages with the built-in IPsec, OpenVPN, and L2TP VPNs.
 ---
 
-FreeSense supports several private-networking integrations. Select one based on who controls peers,
-routes, DNS, identity, and the operating model—not only encryption performance.
+FreeSense has two kinds of VPN support. **IPsec**, **OpenVPN** and **L2TP** are built into the
+System and are always available under the **VPN** menu; see [Built-in VPN](/base-os/built-in-vpn/).
+The packages on this page are **Optional Packages**: you install them from
+**System → Package Manager → Available Packages** when you need them, and they are built and
+published separately from the System.
 
-| Package | Best fit | Operational boundary |
-| --- | --- | --- |
-| WireGuard | Direct site-to-site or remote access | You own peer keys, tunnels, and routes |
-| Tailscale | Managed WireGuard mesh | The Tailscale control plane manages identity and coordination |
-| ZeroTier | Virtual network overlays | Managed routes and DNS require explicit administrator consent |
-| OpenVPN Client Export | Client configuration delivery | Exports profiles and credentials for existing OpenVPN service design |
+| Package | What it adds | Who controls keys and routes | Menu after install |
+| --- | --- | --- | --- |
+| [WireGuard](/packages/wireguard/) | Kernel WireGuard tunnels and peers | You, on the firewall | **VPN → WireGuard**, **Status → WireGuard** |
+| [Tailscale](/packages/tailscale/) | Membership in a Tailscale tailnet: subnet router, exit node | The Tailscale control server (or your own compatible server) | **VPN → Tailscale**, **Status → Tailscale** |
+| [ZeroTier](/packages/zerotier/) | Membership in ZeroTier virtual networks | The ZeroTier network controller; FreeSense accepts routes and DNS only with your consent | **VPN → ZeroTier**, **Status → ZeroTier Peers** |
+| [OpenVPN Client Export](/packages/openvpn-client-export/) | Client configs and Windows installers for the built-in OpenVPN server | You, through the built-in OpenVPN server and certificate manager | **VPN → OpenVPN → Client Export** |
 
-## Choose the ownership model first
+All four are lightweight packages. Stable publishes them for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64.
 
-- Use [WireGuard](/packages/wireguard/) when FreeSense should own tunnel interfaces, peer keys,
-  allowed networks, and the firewall policy around them.
-- Use Tailscale when its identity-aware control plane and managed mesh are a deliberate part of the
-  design. Document the identity provider and who may advertise or approve routes.
-- Use ZeroTier only after explicitly deciding which controller-supplied routes, default routes, and
-  DNS settings may affect the appliance.
-- Use OpenVPN Client Export when an existing FreeSense OpenVPN design needs distributable client
-  profiles. It is an export tool, not a replacement VPN server.
+## How to choose
 
-Every choice still needs three independent controls: tunnel authentication, a return route, and a
-firewall rule that permits only the intended traffic. A successful connection alone does not grant
-reachability through the firewall.
+Start with who should own identity, keys, and routes.
 
-## ZeroTier route consent
+- **Site-to-site tunnel to a device you manage, or a few road-warrior clients:** use
+  [WireGuard](/packages/wireguard/). It is simple and fast, and everything lives in the FreeSense
+  configuration. You exchange public keys and write the firewall rules yourself.
+- **Standards-based site-to-site with third-party firewalls or cloud gateways:** use the built-in
+  **IPsec**.
+- **Remote access with user names, passwords, and certificates from the FreeSense user manager:**
+  use the built-in **OpenVPN** server and add [OpenVPN Client Export](/packages/openvpn-client-export/)
+  to hand out ready-made client profiles.
+- **Devices already in a Tailscale tailnet, with no inbound ports to open:** use
+  [Tailscale](/packages/tailscale/). Identity and device approval happen in the Tailscale admin
+  console.
+- **A flat virtual network across many sites run by a ZeroTier controller:** use
+  [ZeroTier](/packages/zerotier/).
 
-FreeSense does not silently accept managed routes or DNS from ZeroTier. Review and explicitly
-enable managed routes, global routes, default routes, and DNS behavior according to the network
-design. Confirm that return routes and firewall rules exist before exposing an internal network.
+Tailscale and ZeroTier depend on an outside control plane. Before you join a firewall, know who
+owns the account or controller, who can approve devices and advertise routes, and how a device is
+removed. You can run several of these side by side, but give each one non-overlapping address
+ranges.
 
-## Tailscale and ZeroTier operations
+## What every VPN still needs
 
-Tailscale and ZeroTier use a controller-managed identity and membership model. Before joining an
-appliance, identify the account or controller owner, authentication and device-approval process,
-route-advertisement authority, DNS policy, key or token expiry, and offboarding process. Restrict
-which local networks may be advertised or accepted, then verify that controller changes cannot
-silently broaden access beyond the approved design.
+A working tunnel does not mean traffic flows. For every option above, check:
 
-For both systems, validate node identity, peer state, accepted routes, and return routing before
-allowing production traffic. Treat an overlay route as a routing change: protect the assigned
-interface with explicit firewall policy and retain a non-overlay management path during rollout.
+1. **Inbound access** to the VPN's port on WAN, where it needs one: the WireGuard listen port, the
+   OpenVPN server port, IPsec IKE and NAT-T. Tailscale and ZeroTier work through NAT but connect
+   directly more often with their UDP port open (41641 and 9993).
+2. **Firewall rules** on the VPN's interface or interface group: **WireGuard** and **Tailscale**
+   groups, the **OpenVPN** and **IPsec** tabs, or the assigned ZeroTier interface.
+3. **Routes in both directions.** The remote side needs a route back to your networks.
+4. **DNS**, tested separately from reachability. Tailscale's **Accept DNS** and ZeroTier's **DNS**
+   consent can change the firewall's own resolver settings.
+5. **Address planning.** Tunnel and remote networks must not overlap LAN, WAN or other VPNs.
 
-## OpenVPN Client Export
+## Roll out safely
 
-OpenVPN Client Export produces client configuration and credential material for an existing OpenVPN
-service design. Before exporting, confirm the client identity, certificate lifecycle, permitted
-networks, DNS behavior, and profile distribution method. Exported profiles and private keys are
-secrets; deliver them through an approved channel and revoke or reissue them when a device is lost
-or an operator leaves. Test import and connection with one non-administrative client before broad
-distribution.
+1. Save a configuration backup before you start.
+2. Keep console or LAN access that does not depend on the new tunnel until it works both ways.
+3. Test with one non-administrative client or one remote site first.
+4. Record who owns each key, peer, or device, and how to revoke it when a device is lost or a
+   person leaves.
 
-## Rollout checklist
-
-1. Allocate tunnel addresses that do not overlap LAN, WAN, remote-site, or client networks.
-2. Define each side's protected prefixes and decide which peer is permitted to originate a route.
-3. Create or verify firewall rules on the assigned tunnel interface and destination interfaces.
-4. Preserve a non-tunnel management path until bidirectional tests and recovery tests succeed.
-5. Test DNS behavior separately from IP reachability; avoid unintentionally making a remote DNS
-   server authoritative for local clients.
-6. Document key rotation, peer revocation, and who removes a lost device or former site.
-
-VPN configuration changes affect reachability quickly. Save a configuration backup and retain
-console or local-LAN access during rollout.
+Interface types that can carry these networks, including VXLAN, are covered in
+[Interfaces, VLANs and bridges](/configure/interfaces-vlans-bridges/).
