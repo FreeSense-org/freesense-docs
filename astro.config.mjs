@@ -30,6 +30,7 @@ const navigation = [
     items: [
       ['Package catalog', 'packages/catalog'],
       ['Install and manage packages', 'packages/installing-packages'],
+      ['Custom repositories', 'packages/custom-repositories', ['devel']],
       ['Security and filtering', 'packages/security-and-filtering'],
       ['VPN and private networking', 'packages/vpn-and-private-networking'],
       ['Routing, services, and delivery', 'packages/routing-services-and-delivery'],
