@@ -1,8 +1,6 @@
 ---
 title: Package integration
 description: How an optional package registers with FreeSense, stores configuration, runs services, and hooks into system events.
-channels: [devel, stable]
-last_verified_release: development
 ---
 
 An optional package is more than the files it installs. When `pkg(8)` installs a
@@ -13,17 +11,22 @@ itself, see [building optional packages](/developers/building-optional-packages/
 
 ## Repositories and the Package Manager
 
-Each appliance has two signed `pkg(8)` repositories for its release channel:
+`FreeSense-repoc` writes the appliance's `pkg(8)` repository definitions from the signed channel
+manifest on `pkg.freesense.org`, verified with keys shipped in the base system:
 
 | Repository | Contents | Priority |
 | --- | --- | --- |
 | `FreeSense` | The System repository: base OS, WebUI, and System ports | 100 |
 | `FreeSense-packages` | Optional packages for the same release train | 50 |
+| `FreeSense-mirror` | A frozen upstream FreeBSD package layer, when the channel publishes one | 10 |
 
-`FreeSense-repoc` writes these repository definitions from the signed channel manifest on
-`pkg.freesense.org`, verified with the channel public key shipped in the base system. The Package
-Manager only lists and manages packages that come from `FreeSense-packages`, which keeps optional
-integrations separate from System updates.
+The priorities make a package that FreeSense builds always win over a stock package of the same
+name. The stock FreeBSD repositories are disabled.
+
+Operators can add their own repositories under **System → Package Manager → Repositories**. Custom
+repositories are kept separate: the system upgrader and the WebUI's own package operations use only
+the FreeSense repositories, and the Package Manager lists packages from other sources only when the
+operator selects that source. See [custom repositories](/packages/custom-repositories/).
 
 The Package Manager combines two sources:
 
@@ -33,7 +36,8 @@ The Package Manager combines two sources:
   profile, capability badges, services, and the **Configure** and **Status** destinations.
 
 The catalog ships with the base system, not with the package, so product metadata is reviewed and
-versioned with the release. The per-package control page `pkg_control.php` offers start, stop, and
+versioned with the System release. The Available and Installed lists mark FreeSense packages as
+**Official**. The per-package control page `pkg_control.php` offers start, stop, and
 restart only for the services the catalog lists for that package.
 
 ## Install lifecycle
@@ -88,8 +92,11 @@ owner are shown only while some installed manifest still declares them.
 ```
 
 `<configurationfile>` names the manifest in `/usr/local/pkg/`. Optional elements include
-`<internal_name>`, `<after_install_info>`, and `<logging>`. A legacy `<pfsensepkgs>` root is still
-accepted so imported third-party packages can register.
+`<internal_name>`, `<after_install_info>`, and `<logging>`.
+
+New packages use the `<freesensepkgs>` root element. If a file doesn't parse with that root,
+`pkg-utils.inc` falls back to the upstream `<pfsensepkgs>` root, so third-party and rebuilt upstream
+packages can still register their menus, services, and tabs.
 
 ## The package manifest
 
@@ -106,6 +113,7 @@ PHP pages and keep only the registration parts.
 	<menu>
 		<name>TFTP Server</name>
 		<section>Services</section>
+		<group>network</group>
 		<url>/pkg_edit.php?xml=tftpd.xml</url>
 	</menu>
 	<service>
@@ -137,7 +145,7 @@ PHP pages and keep only the registration parts.
 | --- | --- |
 | `name` | Configuration key. Settings saved by generated forms live under `installedpackages/<name>/config`. |
 | `include_file` | PHP file loaded before any hook runs; holds the hook functions. |
-| `menu` | One or more WebUI menu entries. See the [WebUI menu system](/developers/webui-menu-system/). |
+| `menu` | One or more WebUI menu entries, each with `name`, `section`, an optional `group`, and `url`. See the [WebUI menu system](/developers/webui-menu-system/). |
 | `tabs` | Tab bar for generated pages (`text`, `url` or `xml`, `active`, `tab_level`). |
 | `service` | Service registration for **Status → Services** and service controls. |
 | `fields`, `adddeleteeditpagefields` | Generated settings form rendered by `pkg_edit.php`, or list view rendered by `pkg.php`. |
@@ -229,7 +237,7 @@ Every page a package adds must be covered by a privilege, or only administrators
 ## Integration checklist
 
 - `info.xml` names the manifest, and the manifest names an existing `include_file`.
-- Each menu entry uses a valid section and a URL covered by a privilege `match`.
+- Each menu entry uses a valid section, a `group` for grouped menus, and a URL covered by a privilege `match`.
 - Services declare an rc script or start/stop commands and a way to detect running state.
 - The resync hook is idempotent and the deinstall hooks stop services and remove generated files.
 - The catalog entry lists the same services and points `configure_path`/`status_path` at real pages.

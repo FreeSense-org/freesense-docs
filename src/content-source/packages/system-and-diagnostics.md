@@ -1,28 +1,48 @@
 ---
 title: System, diagnostics, and virtualization packages
-description: Operate the official tools that extend diagnostics, automation, and virtual-machine integration.
+description: Optional packages that add network diagnostic tools, VMware guest integration, and scheduled automation to FreeSense.
 ---
 
-These optional packages add bounded operating capabilities; they do not replace the Base OS
-configuration backup, console recovery, or access-control model.
+These Optional Packages extend how you operate and troubleshoot the firewall. They do not replace
+the System's own tools: configuration backup, console recovery, the built-in **Diagnostics** pages,
+and **Status → System Logs** are always there without any package.
 
-| Package | Use it for | Verify before enabling |
-| --- | --- | --- |
-| Automation | Scheduled jobs and service-watchdog behavior | Job owner, command scope, notification route, and rollback action |
-| Network Diagnostics | Guarded MTR, Nmap, iperf3, and ARP diagnostics | Target authorization, interface selection, and collection impact |
-| Open VM Tools | Guest integration for supported VMware deployments | Hypervisor support, guest time, shutdown behavior, and no conflict with host policy |
+| Package | Use it for | After install | Service |
+| --- | --- | --- | --- |
+| [Network Diagnostics](/packages/diagnostics/) | MTR path reports, Nmap top-ports scans, iperf3 throughput tests, ARP probes from the WebUI | **Diagnostics → Network Tools** | None |
+| [Open VM Tools](/packages/open-vm-tools/) | VMware guest integration: tools status, guest IP reporting, guest power operations | No page; two entries in **Status → Services** | `vmware-guestd`, `vmware-kmod` |
+| [Automation](/packages/automation/) | Scheduled jobs and service checks | **Services → Automation** | None |
+
+All three are lightweight packages. Install them from
+**System → Package Manager → Available Packages**. Stable publishes them for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64.
+
+## Which one do you need?
+
+- **A host is unreachable or slow and Ping or Traceroute do not explain why:** first use the
+  built-in **Diagnostics → Ping**, **Traceroute**, **Test Port**, **DNS Lookup** and
+  **Packet Capture**. Add [Network Diagnostics](/packages/diagnostics/) when you need loss per hop
+  (MTR), a quick port overview of a host (Nmap), a throughput figure (iperf3), or an ARP check on a
+  local segment.
+- **FreeSense runs as a VMware virtual machine:** install [Open VM Tools](/packages/open-vm-tools/)
+  so the host can see the guest and shut it down cleanly. Do not install it on other hypervisors or
+  on hardware.
+- **Something should happen on a schedule or when a service stops:** see
+  [Automation](/packages/automation/).
+
+UPS monitoring with Network UPS Tools is covered under
+[Monitoring and automation](/packages/monitoring-and-automation/).
 
 ## Operating boundaries
 
-Use the built-in diagnostics for a first investigation. Add Network Diagnostics only when its
-allow-listed tools are required and the appliance has sufficient resources. Treat scan and traffic
-generation tools as security-sensitive: obtain authorization, select the interface deliberately,
-and save findings outside the firewall if they are needed as evidence.
+- **Scans and load tests are security-sensitive.** Nmap and iperf3 send traffic that other systems
+  may treat as an attack or that can fill a link. Get authorisation, pick the target deliberately,
+  and give the **WebCfg - Diagnostics: Network Tools** privilege only to administrators who need
+  it. Results are shown once and not stored; save what you need elsewhere.
+- **Guest tools are not a backup.** A VMware snapshot does not replace a FreeSense configuration
+  backup or a tested restore.
+- **Automation runs changes without you.** Keep each job small, named and reviewed, and do not
+  make it the only way to restore connectivity.
 
-Automation executes change-adjacent work. Keep every job small, named, reviewed, and observable.
-Do not make it the only mechanism for restoring connectivity or applying a critical security fix.
-
-Open VM Tools improves integration with a VMware host; it does not make snapshots a substitute for
-a FreeSense configuration backup or a tested restore procedure.
-
-Next: [diagnostics and troubleshooting](/operations/diagnostics-and-troubleshooting/).
+For a general troubleshooting method and the built-in tools, see
+[Diagnostics and troubleshooting](/operations/diagnostics-and-troubleshooting/) and
+[Monitoring and logs](/operations/monitoring-and-logs/).

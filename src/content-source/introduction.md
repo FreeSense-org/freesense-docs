@@ -4,8 +4,9 @@ description: What FreeSense is, where it comes from, and how it is built.
 ---
 
 **FreeSense** is a free and open-source firewall and router operating system. It provides a complete
-web-managed firewall — rules, NAT, VPNs, DHCP, DNS, traffic shaping, monitoring, and a package
-manager — on a pinned **FreeBSD 16** base.
+web-managed firewall (rules, NAT, VPNs, DHCP, DNS, traffic shaping, monitoring, a REST API, and a
+package manager) on a pinned **FreeBSD 16** base. FreeSense has a single edition: every feature is
+in the same free build.
 
 ## Open from top to bottom
 
@@ -32,14 +33,15 @@ from that sealed definition and cryptographically **signed** with the project ke
 
 Signed packages publish to `pkg.freesense.org`; installer media and preinstalled UFS and ZFS cloud
 disks publish to `downloads.freesense.org`. Both are served over a global CDN. Installed systems
-fetch updates over the air, verified against the project fingerprint — no phone-home and no
+fetch updates over the air, verified against the project fingerprint, with no phone-home and no
 accounts.
 
 ## No phone-home or project telemetry
 
 FreeSense sends no device identifier, telemetry, configuration, or usage report to the project.
-Legacy vendor registration, dashboard polling, device-ID attachment, and automatic cloud
-configuration upload paths are disabled or removed.
+Legacy vendor registration, dashboard polling, the device identifier, and automatic cloud
+configuration upload paths are removed. Download and package requests identify only as
+`FreeSense/<version>`.
 
 The updater makes unauthenticated HTTPS reads to `pkg.freesense.org` for the RSA-signed repository
 manifest, update notes, repository metadata, and packages. It does not contact the marketing
@@ -50,22 +52,28 @@ services you configure; those are functional connections, not FreeSense project 
 
 FreeSense uses two active channels:
 
-- **Stable 1.0.x** — supported, immutable production releases. Routine development is frozen;
-  necessary security or maintenance work is published as an explicit tagged patch such as `1.0.1`.
-- **Development 1.1** — continuously integrated experimental builds for contributors and labs.
-  Development receives **no support** and is not intended for production.
+- **Stable 1.1.x**: supported production releases built from sealed release locks. Necessary fixes
+  are published as tagged patch releases such as `1.1.1`. FreeSense 1.1.0 replaced the 1.0.x line,
+  which stays published but no longer receives routine fixes.
+- **Development 1.2**: the rolling line for the next release, rebuilt nightly for contributors and
+  labs. Development receives **no support** and is not intended for production.
+
+Stable is published for amd64 and, starting with [1.1.1](/releases/1.1.1/), for generic arm64
+(UEFI installer image); 1.1.0 itself was amd64 only. The Raspberry Pi appliance images are
+available on Development only.
 
 System updates and optional packages have independent build fingerprints. A System-only change does
 not rebuild optional packages; they rebuild when package sources or the pinned FreeBSD platform
-changes. Installer images publish to `downloads.freesense.org`, while the small independent Stable
+change. Installer images publish to `downloads.freesense.org`, while the small independent Stable
 and Development channel documents publish to `pkg.freesense.org` and are read live by the website.
 
-See [Updates & release channels](/guides/updates-and-channels/) for the update and downgrade
-boundaries.
+See [What's new in FreeSense 1.1](/releases/whats-new-1.1/) for the current release and
+[Updates & release channels](/guides/updates-and-channels/) for the one-way upgrade rules.
 
 ## Next steps
 
 - [Install FreeSense](/getting-started/installation/)
+- [Upgrade from 1.0](/guides/upgrading-from-1.0/)
 - [Deploy a cloud image](/getting-started/cloud-images/)
 - [First boot & setup](/getting-started/first-boot/)
 - [Download an image](https://freesense.org/download)

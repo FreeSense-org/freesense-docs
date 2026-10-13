@@ -1,72 +1,121 @@
 ---
 title: Migrating from pfSense or OPNsense
-description: Import your existing pfSense CE or OPNsense configuration into FreeSense during installation.
+description: Import a pfSense CE or OPNsense configuration into FreeSense, during installation or on a running system, and know what carries over.
 ---
 
-The FreeSense installer can import the **basic configuration** from an existing
-**pfSense® CE** or **OPNsense®** firewall, so you don't have to rebuild everything by hand.
+FreeSense can import the configuration of an existing pfSense® CE or OPNsense® firewall, so you do not
+have to rebuild it by hand. There are two ways in:
 
-:::caution[Packages are never imported]
-Only core configuration is imported — add-on **packages/plugins are not**. Reinstall those from
-**System → Package Manager** after the first boot, and review your settings.
-:::
+- **During installation**, with **Import config** in the installer menu. The importer reads
+  `config.xml` from a USB stick or from the disk of the old installation.
+- **On a running FreeSense system**, by restoring the file under **Diagnostics → Backup & Restore**.
 
-## What gets imported
+Both use the same detection, conversion, and package mapping, so they produce the same result.
 
-| | pfSense CE | OPNsense |
+FreeSense is an independent project derived from pfSense CE. It is not affiliated with or endorsed by
+the owners of the pfSense or OPNsense trademarks; the names are used here only to identify the
+products you are migrating from.
+
+## What carries over
+
+The importer recognizes the source by the root element of `config.xml` (`<pfsense>` or `<opnsense>`).
+
+| Configuration | From pfSense CE | From OPNsense |
 | --- | --- | --- |
-| System (hostname, domain, DNS, time zone) | ✅ | ✅ |
-| Interface assignments + addresses | ✅ | ✅ |
-| VLANs, DHCP, gateways, static routes | ✅ | ✅ |
-| Firewall rules / NAT | ✅ | ⚠️ **not imported** |
-| Users, certificates | ✅ | ⚠️ **not imported** |
-| Packages / plugins | ❌ | ❌ |
+| System settings (hostname, domain, DNS, time zone) | Imported | Imported |
+| Interfaces, VLANs, gateways, static routes | Imported | Imported |
+| DHCP server settings | Imported | Imported |
+| Users and groups | Imported | Imported |
+| Certificate authorities and certificates | Imported | Imported |
+| Firewall rules and NAT | Imported | Not imported |
+| IPsec and OpenVPN | Imported | Not imported |
+| Traffic shaper, DHCP relay, dashboard widgets | Imported | Not imported |
+| DNS resolver settings | Imported | Not imported; the DNS Resolver is enabled with defaults |
+| Package and plugin settings | Imported for packages that FreeSense offers | Not imported |
 
-- **pfSense CE** is a high-fidelity import — FreeSense *is* a rebuild of pfSense CE, so the
-  configuration schema is identical. Everything except packages carries over.
-- **OPNsense** is a **basic, best-effort** import. OPNsense's configuration diverged from the shared
-  lineage, so FreeSense imports only the parts that are still compatible (interfaces, system basics,
-  DHCP, gateways, routes, VLANs). Firewall rules, NAT, VPN, certificates and OPNsense-specific
-  settings are intentionally skipped — importing them blindly could lock you out. Re-create those
-  after the first boot.
+**From pfSense CE**, FreeSense keeps the whole configuration: the configuration format is shared, so
+only the root element is renamed. Package settings stay in the file and apply once the matching
+FreeSense packages are installed.
+
+**From OPNsense**, the configuration format has diverged, so only the compatible sections are kept.
+The OPNsense-specific configuration tree, firewall rules, NAT, traffic shaper, IPsec, OpenVPN, DHCP
+relay, dashboard widgets, and installed plugin settings are dropped, as is the OPNsense version marker
+so that FreeSense applies its own configuration upgrade. Because OPNsense keeps its resolver settings in
+the dropped tree, the importer enables the FreeSense DNS Resolver so the firewall can resolve update
+and package servers after import. Re-create firewall rules, NAT, and VPNs after the first boot.
+
+## Packages
+
+The importer reads the installed packages (pfSense) or plugins (OPNsense, with the `os-` prefix
+removed) from the source configuration and maps each one to a FreeSense Optional Package using a
+mapping table shared by the installer and the WebUI:
+
+- In the installer, the **Packages to install** checklist pre-selects confident matches and shows
+  uncertain suggestions unselected for you to confirm. A summary then lists functions that are built
+  into FreeSense and packages with no FreeSense equivalent, so nothing is dropped silently.
+- On a running system, the restore message lists the packages to reinstall (uncertain matches are
+  marked with `?`) and the packages with no FreeSense equivalent.
+
+After the first boot, open **System → Package Manager → Installed Packages**, install any mapped
+package that is missing from **Available Packages**, and review each package's settings.
+<!-- needs verification: whether the package selection staged by the installer (/tmp/recovered_config/import_packages) or by the WebUI restore (/conf/import_packages) is installed automatically after the first boot; no reader for either file was found in the 1.1.0 sources -->
 
 ## Before you start
 
-1. On your existing firewall, export the configuration:
-   - **pfSense:** Diagnostics → Backup & Restore → Download configuration as XML.
-   - **OPNsense:** System → Configuration → Backups → Download.
-2. Copy the resulting **`config.xml`** onto a USB stick. Put it in the root of the stick, or in a
-   `conf/` folder (`config.xml` or `conf/config.xml`). FAT or UFS formatted sticks both work.
-3. Do **not** encrypt the backup (encrypted pfSense backups aren't supported by the importer).
+On the old firewall, download the configuration as XML. Do not encrypt it if you will use the
+installer: the installer importer reads only plain `config.xml` files. The WebUI restore can decrypt an
+encrypted backup in the pfSense or FreeSense format if you provide its password.
 
 ## Import during installation
 
-1. Boot the FreeSense installer.
-2. At the welcome menu, choose **Import config**.
-3. Pick **pfSense** or **OPNsense**.
-4. Insert the USB stick and confirm — the installer scans for `config.xml`, converts it, and stages
-   it for the install.
-5. Choose **Install** and complete the installation as normal. The imported configuration is applied
-   to the new system automatically.
+1. Copy `config.xml` to the root of a USB stick, or to a `conf/` folder on it. FAT and UFS sticks work.
+   You can also skip the stick and read the file directly from the old installation's disk (UFS or
+   ZFS) in the same machine.
+2. Boot the FreeSense installer and accept the notice.
+3. In the welcome menu, choose **Import config** (**Import basic config from pfSense or OPNsense**).
+4. Select the partition that holds the configuration. The importer mounts it read-only and looks for
+   `config.xml`, `conf/config.xml`, or `cf/conf/config.xml`.
+5. Confirm the detected source (pfSense CE or OPNsense).
+6. In **Packages to install**, tick the packages you want.
+7. When the importer reports success, choose **Install** and complete the installation. The converted
+   configuration is copied into the new system.
 
-:::note[The brand must match]
-If you choose **pfSense** but the file isn't a pfSense config (or vice-versa), the importer shows an
-error and imports nothing. A FreeSense backup (`<freesense>`) is not a "foreign" config — restore it
-with **Recover config.xml** instead.
-:::
+A FreeSense backup is recognized too and is copied unchanged. To reuse the configuration of an earlier
+FreeSense installation on the same disk, **Recover config.xml** in the installer menu is the direct
+route.
+
+## Import on a running system
+
+1. Install FreeSense and complete the [first boot](/getting-started/first-boot/).
+2. Open **Diagnostics → Backup & Restore**.
+3. Under **Restore Backup**, leave **Restore area** at all (a whole configuration), choose the
+   **Configuration file**, and tick **Configuration file is encrypted.** with the password if needed.
+4. Select **Review / Restore Configuration**, review the restore, and confirm. The message names the
+   detected source, the sections that were dropped, and the package mapping. The firewall reboots with
+   the converted configuration.
+
+Conversion only happens for a full restore. Restoring a single area from a pfSense or OPNsense file is
+not converted.
 
 ## After the first boot
 
-1. Log in to the web GUI (`https://192.168.1.1`, `admin` / `freesense` — change the password
-   immediately).
-2. Check **Interfaces** — confirm WAN/LAN assignments and addresses.
-3. Check **System → General** — hostname, domain, DNS.
-4. Re-add any **packages** you need (System → Package Manager).
-5. **OPNsense migrants:** re-create your **firewall rules, NAT, and VPNs** — these were not imported.
+1. Sign in to the WebUI and change any password that was carried over from the old system if it was
+   shared or weak.
+2. Check **Interfaces → Assignments**: the old port names may not exist on new hardware. Fix any
+   interface mismatch at the console or on the assignments page.
+3. Check **System → General Setup** for hostname, domain, and DNS.
+4. Check **Status → Services** and **Status → System Logs** for errors.
+5. Check **System → Package Manager → Installed Packages** and review each package's settings.
+6. **From OPNsense:** re-create firewall rules, NAT, and VPN tunnels.
 
 ## Troubleshooting
 
-- **"Not a valid pfSense/OPNsense config"** — the file's root element didn't match the brand you
-  picked. Make sure you downloaded the right backup and selected the matching brand.
-- **No `config.xml` found** — check the file is named exactly `config.xml` and is in the stick's root
-  or a `conf/` folder, and that the stick is FAT or UFS formatted.
+- **"Could not recognize this config"** - the file's root element is not `<pfsense>`, `<opnsense>`, or
+  `<freesense>`. Check that you downloaded the configuration XML and not an encrypted or compressed
+  file.
+- **"No readable config.xml was found"** - the file is not at `config.xml`, `conf/config.xml`, or
+  `cf/conf/config.xml` on the selected partition, or the partition is not FAT, UFS, or ZFS.
+- **No packages were detected** - the source had no packages recorded; only the base configuration is
+  imported.
+- **Interfaces do not come up** - the hardware differs from the old firewall. Use console option 1
+  (**Assign Interfaces**) to map the interfaces to the new ports.

@@ -1,24 +1,48 @@
 ---
 title: Stable channel
-description: The supported, immutable FreeSense 1.0.x production line.
-channel: stable
-support_tier: supported
+description: The supported FreeSense 1.1.x production line, its release notes, and where its release metadata is published.
 ---
 
-Stable is the supported FreeSense 1.0.x production line. Its source and build inputs are identified
-by Git tags so a published release can be audited and recreated.
+Stable is the supported FreeSense production line. It currently tracks **1.1.x**. The first release
+of the line is tagged `1.1.0`; it replaced 1.0.x as the supported line on 2026-10-13.
 
-The original release is tagged `1.0.0`. Routine feature development is frozen on this line. If a
-necessary maintenance or security correction is accepted, it is built, tested, tagged, and
-published as an explicit patch release such as `1.0.1`; the earlier artifact remains immutable.
+Each Stable release is built from a sealed release lock that records the exact source, ports,
+optional package, and FreeBSD revisions, so a published release can be audited and recreated (see
+[Release process](/guides/release-process/)). Necessary fixes are built, tested, tagged, and
+published as patch releases such as `1.1.1`. Earlier artifacts stay immutable.
 
-Stable release metadata is published independently at
-`https://pkg.freesense.org/v1/releases/stable.json`. Its installer and any UFS or ZFS cloud-disk URLs
-point to immutable objects on `downloads.freesense.org`. The channel document is updated atomically
-only after every listed artifact passes integrity checks and its format-specific KVM boot smoke test
-and is publicly downloadable. See [Cloud images](/getting-started/cloud-images/) for filesystem and
+## Release notes
+
+| Release | Date | Notes |
+| --- | --- | --- |
+| 1.1.1 | October 2026 | [Release notes](/releases/1.1.1/) · adds arm64 (generic UEFI installer); amd64 code unchanged from 1.1.0 |
+| 1.1.0 | 2026-10-13 | [Release notes](/releases/1.1.0/) · [What's new in 1.1](/releases/whats-new-1.1/) |
+
+Release notes for the earlier 1.0.x line are in the [frozen 1.0 documentation](/1.0/).
+
+## Architectures
+
+Stable publishes **amd64** (installer ISO plus UFS and ZFS cloud disks). Starting with
+[1.1.1](/releases/1.1.1/), Stable also publishes **arm64**: System and Optional Packages for
+aarch64 and the generic arm64 UEFI installer image. There are no arm64 cloud disks on Stable.
+FreeSense 1.1.0 itself was amd64 only. The Raspberry Pi
+appliance images are not part of the Stable line; they are available on
+[Development](/releases/development/) only.
+
+## Release metadata
+
+Stable release metadata is published at `https://pkg.freesense.org/v1/releases/stable.json`. Its
+installer and cloud-disk URLs point to immutable objects on `downloads.freesense.org`. The document
+is updated only after every listed artifact has passed its integrity checks and boot test and is
+publicly downloadable. See [Cloud images](/getting-started/cloud-images/) for file system and
 format selection.
 
-Moving from Stable to [Development](/releases/development/) is possible, but the updater cannot
-downgrade a running 1.1 system back to 1.0. Read [Updates and release channels](/guides/updates-and-channels/)
-before changing channels.
+## 1.0.x and upgrades
+
+The 1.0.x releases remain published, but ordinary fixes are no longer backported to them. A 1.0.x
+firewall on the Stable channel is offered the current 1.1.x release as a system update. That upgrade is one-way; read
+[Upgrading from 1.0](/guides/upgrading-from-1.0/) first.
+
+Moving from Stable to [Development](/releases/development/) is possible but also one-way: a
+Development system is never offered Stable again. Read
+[Updates and release channels](/guides/updates-and-channels/) before changing channels.

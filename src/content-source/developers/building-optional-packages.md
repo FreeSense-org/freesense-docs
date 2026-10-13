@@ -1,19 +1,17 @@
 ---
 title: Building optional packages
-description: Create, validate, build, and publish a FreeSense optional package port.
-channels: [devel, stable]
-last_verified_release: development
+description: Create, validate, build, and publish a FreeSense optional package port, and how it reaches Development and Stable appliances.
 ---
 
-Optional packages are FreeBSD ports that wrap a runtime (for example `tftp-hpa` or `haproxy`)
-with the FreeSense WebUI pages, configuration hooks, privileges, and service registration that
-make it a managed integration. This page explains where a package lives, how to build it, and how
-an accepted change reaches appliances. For what the package does once it is installed, see
+Optional packages are FreeBSD ports that wrap a runtime, for example `tftp-hpa` or `haproxy`, with
+the FreeSense WebUI pages, configuration hooks, privileges, and service registration that make it a
+managed integration. This page explains where a package lives, how to build it, and how an accepted
+change reaches appliances. For what the package does once it is installed, see
 [package integration](/developers/package-integration/) and the
 [WebUI menu system](/developers/webui-menu-system/).
 
-Contributions target the `main` branches, which feed the rolling **Development 1.1** line. A
-package reaches Stable 1.0.x only through a new, explicitly sealed patch release.
+Contributions target the `main` branches, which feed the rolling **Development 1.2** line. A package
+change reaches **Stable 1.1** only through a new, sealed patch release.
 
 ## Where package sources live
 
@@ -21,17 +19,18 @@ An optional package touches up to three repositories:
 
 | Repository | What it contributes |
 | --- | --- |
-| [`freesense-packages`](https://github.com/FreeSense-org/freesense-packages) | The package port (`<category>/FreeSense-pkg-<name>/`), shared package framework (`Mk/bsd.freesense-package.mk`), architecture policy, and CI audits. Also holds plain-named overrides of stock ports that a package needs, such as `net/haproxy`. |
+| [`freesense-packages`](https://github.com/FreeSense-org/freesense-packages) | The package port (`<category>/FreeSense-pkg-<name>/`), the shared package framework (`Mk/bsd.freesense-package.mk`), the architecture policy, catalog policy files, and CI audits. Also holds plain-named overrides of stock ports that a package needs, such as `net/haproxy`. |
 | [`freesense`](https://github.com/FreeSense-org/freesense) | The build list `tools/conf/pfPorts/poudriere_packages`, port options in `tools/conf/pfPorts/make.conf`, and the product catalog `src/etc/freesense-package-catalog.json` that the Package Manager reads. |
 | [`freesense-system-ports`](https://github.com/FreeSense-org/freesense-system-ports) | System-only ports, including `sysutils/FreeSense-platform-abi`, which every optional package depends on. Optional package ports never go here. |
 
-System-image ports must not be added to `freesense-packages`; `tools/boundary_audit.py` rejects
-them. This boundary is what lets a System-only change ship without rebuilding Optional Packages.
+System ports must not be added to `freesense-packages`. `tools/boundary_audit.py` rejects them,
+for example `sysutils/FreeSense-upgrade` or `sysutils/FreeSense-repoc`. This boundary is what lets a
+System-only change ship without rebuilding Optional Packages.
 
 ## Anatomy of a package port
 
-Package ports use the `FreeSense-pkg-<name>` naming convention. The part after the prefix is the
-package's short name, used by the catalog and by the WebUI. The TFTP server is a compact example:
+Package ports are named `FreeSense-pkg-<name>`. The part after the prefix is the package's short
+name, used by the catalog and the WebUI. The TFTP server is a compact example:
 
 ```text
 ftp/FreeSense-pkg-tftpd/
@@ -51,7 +50,7 @@ ftp/FreeSense-pkg-tftpd/
             └── tftp_files.php               # custom WebUI page
 ```
 
-`files/` mirrors the target filesystem, so a file's path under `files/` is where it is installed.
+`files/` mirrors the target filesystem: a file's path under `files/` is where it is installed.
 
 ### Makefile
 
@@ -61,7 +60,7 @@ directory and substitute the package version into the manifests:
 ```make
 PORTNAME=	FreeSense-pkg-tftpd
 PORTVERSION=	0.1.3
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	ftp
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -69,6 +68,7 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	dev@freesense.org
 COMMENT=	FreeSense package for tftp server
+
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/libexec/in.tftpd:ftp/tftp-hpa
@@ -93,23 +93,28 @@ do-install:
 .include <bsd.port.mk>
 ```
 
-Rules that CI enforces:
+Rules that CI enforces (`tools/catalog_audit.py` and `quality.yml`):
 
-- `MAINTAINER` must be an `@freesense.org` address.
-- `NO_CHECKSUM=yes` is not allowed.
-- Privilege files are listed in `pkg-plist` with their absolute path, for example
-  `/etc/inc/priv/tftpd.priv.inc`, followed by `@dir /etc/inc/priv` and `@dir /etc/inc`.
-- Do not include `Mk/bsd.freesense-package.mk` yourself; the build injects it (see below).
-- Do not reference Netgate infrastructure URLs or commit credential material.
+- `MAINTAINER` of a `FreeSense*` port must be an `@freesense.org` address.
+- `NO_CHECKSUM=yes` isn't allowed.
+- Privilege files are listed in `pkg-plist` with an absolute path, for example
+  `/etc/inc/priv/tftpd.priv.inc`. A relative `etc/inc/priv/` entry fails the audit.
+- Retired wrappers listed in the audit must not be restored.
+- No active upstream vendor infrastructure: the audit rejects the upstream project's package, file,
+  GitLab, and code-signing hosts in Makefiles, and the quality workflow rejects any `http(s)` URL on
+  those vendor domains in files other than `NOTICE` and Markdown.
+- No credential material, such as private keys.
+
+Don't include `Mk/bsd.freesense-package.mk` yourself; the build injects it (see below).
 
 Variant ports can reuse a template directory with `MASTERDIR`, as
 `net-mgmt/FreeSense-pkg-zabbix-agent7` does. Template directories are listed in
-`policy/catalog-templates.txt` and are not published on their own.
+`policy/catalog-templates.txt` and aren't published on their own.
 
 ### Install and deinstall scripts
 
 `pkg(8)` runs `files/pkg-install.in` and `files/pkg-deinstall.in`. Both hand control to the
-FreeSense package framework rather than doing work themselves:
+FreeSense package framework instead of doing work themselves:
 
 ```sh
 #!/bin/sh
@@ -126,29 +131,78 @@ ${PKG_ROOTDIR}/usr/local/bin/php -f ${PKG_ROOTDIR}/etc/rc.packages %%PORTNAME%% 
 
 ### Platform compatibility binding
 
-Every optional package must declare which release train it was built for, so a 1.0 appliance
-cannot install a package built for 1.1. `Mk/bsd.freesense-package.mk` adds:
+Every optional package declares which release train it was built for, so a 1.1 appliance can't
+install a package built for 1.2 and the other way round. `Mk/bsd.freesense-package.mk` adds:
 
 ```make
 FREESENSE_PACKAGE_TRAIN?=	0.0
 RUN_DEPENDS+=	FreeSense-platform-abi=${FREESENSE_PACKAGE_TRAIN}.0:sysutils/FreeSense-platform-abi
 ```
 
-The ports-overlay helper (`freesense/tools/ci/freesense-ports-overlay.sh`) inserts the include into
-every `FreeSense-pkg-*` Makefile when it assembles the build tree, so a new package cannot forget
-it. Official builds set the train from the release policy (for example `1.1`). An ad-hoc build that
-does not set `FREESENSE_PACKAGE_TRAIN` falls back to `0.0` and deliberately produces a package that
-no real appliance accepts.
+The ports overlay helper (`freesense/tools/ci/freesense-ports-overlay.sh`) inserts the include into
+every `FreeSense-pkg-*` Makefile when it assembles the build tree, so a new package can't forget it.
 
-## Building locally
+Official builds derive the train from the major and minor product version
+(`tools/builder_defaults.sh`). The product version comes from `PRODUCT_VERSION`, or from
+`freesense/src/etc/version` when that isn't set:
 
-Official package builds run in FreeBSD 16 Poudriere jails on the project build runner. A local build
-uses the same scripts. You need a FreeBSD 16 build host with Poudriere and checkouts of
+| Source | Product version | Train |
+| --- | --- | --- |
+| Stable 1.1.0 release lock | `1.1.0-RELEASE` | `1.1` |
+| `main` (Development) | `1.2.0-DEVELOPMENT` | `1.2` |
+
+A build that doesn't set `FREESENSE_PACKAGE_TRAIN` and runs outside the builder falls back to
+`0.0`, which deliberately produces a package that no real appliance accepts.
+
+## Architecture policy
+
+Optional packages are built for each architecture in the build policy: `amd64` and `aarch64`.
+`architecture-policy.json` in `freesense-packages` lists packages that are temporarily excluded on
+an architecture:
+
+```json
+{
+  "schema_version": "freesense.optional-package-architectures/v1",
+  "architectures": {
+    "amd64": { "exclude": [] },
+    "aarch64": {
+      "exclude": [
+        {
+          "origin": "security/FreeSense-pkg-suricata",
+          "reason": "Suricata OPTIONS diverge from official packages and still require a Rust source build under qemu-user emulation.",
+          "issue": "https://github.com/FreeSense-org/freesense/issues/53",
+          "review_date": "2026-09-11"
+        }
+      ]
+    }
+  }
+}
+```
+
+`tools/validate-architecture-policy.py` runs in the `architecture-policy.yml` workflow on every pull
+request and push to `main`. It requires:
+
+- exactly the `amd64` and `aarch64` architectures;
+- for every exclusion, exactly the fields `origin`, `reason`, `issue`, and `review_date`;
+- an `origin` that exists in the repository and appears only once per architecture;
+- a technical `reason` of at least 20 characters and an HTTPS `issue` link;
+- a `review_date` no more than 180 days in the past and no more than 30 days in the future.
+
+At 1.1.0, Suricata and the Web Gateway local antivirus (`www/FreeSense-pkg-WebGateway-AV`) are
+excluded on `aarch64` because their dependencies need Rust source builds under emulation. Stable
+1.1.0 published amd64 only. Starting with 1.1.1, Stable also publishes arm64 System and Optional
+Packages, so the exclusions apply to Stable arm64 as well as Development arm64. The policy file is an
+input of the Optional Packages fingerprint, so changing it triggers a rebuild.
+
+## Build locally
+
+Official package builds run in FreeBSD 16 Poudriere jails on the project build infrastructure. A
+local build uses the same scripts. You need a FreeBSD 16 build host with Poudriere, and checkouts of
 `freesense`, `freesense-packages`, and `freesense-system-ports`.
 
 :::note
-There is no packaged local-build script yet. The sequence below mirrors the CI stage
-`freesense-os-base/scripts/runner/stages/packages.sh`; adjust paths to your host.
+There is no packaged local-build script yet. The steps below mirror the CI packages stage in
+`freesense-os-base` (`scripts/runner/stages/packages.sh`). Adjust paths to your host.
 :::
 
 1. Place the overlays where the helper expects them, or export their locations:
@@ -159,7 +213,9 @@ There is no packaged local-build script yet. The sequence below mirrors the CI s
    export FREESENSE_SYSTEM_OVERLAY_DIR=/root/freesense-system-ports
    ```
 
-2. In the `freesense` checkout, create the build configuration and set the train you are targeting:
+2. In the `freesense` checkout, create the build configuration. The train follows
+   `src/etc/version`. Set it explicitly only to build for a different train, for example `1.1` for
+   a Stable fix:
 
    ```sh
    cp build.conf.sample build.conf
@@ -167,8 +223,8 @@ There is no packaged local-build script yet. The sequence below mirrors the CI s
    ```
 
 3. Create the Poudriere jail and ports tree, then assemble the overlay. The overlay merges
-   `freesense-system-ports`, then `freesense-packages`, file by file over the pinned upstream
-   FreeBSD ports tree:
+   `freesense-system-ports`, then `freesense-packages`, file by file over the pinned FreeBSD ports
+   tree:
 
    ```sh
    ./build.sh --setup-poudriere
@@ -184,23 +240,27 @@ There is no packaged local-build script yet. The sequence below mirrors the CI s
    To build a set the way CI does, list origins in `tools/conf/pfPorts/poudriere_bulk` and run
    `./build.sh --update-pkg-repo`. Setting `FREESENSE_PORT_TESTS=1` adds Poudriere's `-t` test flag.
 
-Jails are named `FreeSense_main_<arch>` (`amd64` or `aarch64`) and the ports tree `FreeSense_main`.
-Package origins use `%%PRODUCT_NAME%%` in the build list, which expands to `FreeSense`.
+Jails are named `FreeSense_main_<arch>` (`amd64` or `aarch64`), and the ports tree
+`FreeSense_main`. Package origins use `%%PRODUCT_NAME%%` in the build list, which expands to
+`FreeSense`.
 
-To try the result on a lab appliance, install the package file with `pkg add` on a disposable
-Development system and confirm that its menu entries, service, and catalog details appear. Never
-side-load a test build onto a production appliance.
+<!-- needs verification: jail and ports-tree names, build.sh options and FREESENSE_PORT_TESTS are
+carried over from the previous page; not re-run for 1.1.0. -->
 
-## Adding a new package
+To try the result, install the package file with `pkg add` on a disposable Development lab system
+and confirm that its menu entries, service, and catalog details appear. Never side-load a test build
+onto a production appliance.
 
-1. **Create the port** in `freesense-packages/<category>/FreeSense-pkg-<name>/` following the
+## Add a new package
+
+1. **Create the port** in `freesense-packages/<category>/FreeSense-pkg-<name>/`, following the
    anatomy above. If the runtime needs a changed third-party port, add a plain-named override in
    the same repository.
 2. **Add it to the build list** in `freesense/tools/conf/pfPorts/poudriere_packages` as
    `<category>/%%PRODUCT_NAME%%-pkg-<name>`. Third-party ports are pulled in as dependencies and
    are never listed as roots. Port options belong in `tools/conf/pfPorts/make.conf`.
 3. **Add a catalog entry** keyed by the short name in
-   `freesense/src/etc/freesense-package-catalog.json`:
+   `freesense/src/etc/freesense-package-catalog.json` (catalog `schema_version` 1):
 
    ```json
    "tftpd": {
@@ -215,25 +275,27 @@ side-load a test build onto a production appliance.
    }
    ```
 
-   `resource_profile` is `lightweight`, `moderate`, or `intensive`. `configure_path` and
-   `status_path` must be absolute WebUI paths that exist in the base system or in a package's
-   `files/usr/local/www`. The [catalog](/packages/catalog/) explains how operators see these fields.
-4. **Handle architectures.** If the package cannot build on ARM64 yet, add an exclusion to
-   `freesense-packages/architecture-policy.json` with the `origin`, a meaningful `reason`, an HTTPS
-   `issue` link, and a near-term `review_date`. `tools/validate-architecture-policy.py` rejects
-   vague or stale exclusions.
-5. **Document it.** Add the package to `src/data/package-coverage.json` in `freesense-docs` and
-   cover it in the matching package guide; the documentation validator fails on an uncovered
-   catalog entry. If the package has a dedicated guide, add a context-help mapping in
-   `freesense/src/etc/inc/freesense-docs.inc`
-   (see [WebUI context help](/reference/context-help/)).
-6. **Open matching pull requests.** Use the same branch name in `freesense` and
-   `freesense-packages`: package CI checks out the `freesense` branch with the same name, falling
+   Required fields are `display_name`, `category`, `support`, `last_tested_release`,
+   `resource_profile`, `capabilities`, and `services`. `support` must be `supported`.
+   `resource_profile` is `lightweight`, `moderate`, or `intensive`. `configure_path` and the
+   optional `status_path` must be absolute WebUI paths that exist in the base system or in a
+   package's `files/usr/local/www`. The [catalog](/packages/catalog/) explains how operators see
+   these fields.
+4. **Place the menu entry.** Give each `<menu>` in the manifest a `<group>` so it lands in the right
+   column of the grouped menus. See [WebUI menu system](/developers/webui-menu-system/).
+5. **Handle architectures.** If the package can't build on `aarch64` yet, add an exclusion to
+   `architecture-policy.json` as described above.
+6. **Document it.** Add the package to `src/data/package-coverage.json` in `freesense-docs` and cover
+   it in the matching package guide; the documentation validator fails on an uncovered catalog
+   entry. If the package has a dedicated guide, add a context-help mapping in
+   `freesense/src/etc/inc/freesense-docs.inc` (see [WebUI context help](/reference/context-help/)).
+7. **Open matching pull requests.** Use the same branch name in `freesense` and
+   `freesense-packages`. Package CI checks out the `freesense` branch with the same name, falling
    back to `main`, so the catalog and the port are validated together.
 
-## Validation
+## Validate
 
-Run these from the `freesense-packages` checkout before opening a pull request:
+Run these from the `freesense-packages` checkout before you open a pull request:
 
 ```sh
 python3 tools/boundary_audit.py
@@ -243,10 +305,11 @@ php -l <each new .php and .inc file>
 sh -n files/pkg-install.in files/pkg-deinstall.in
 ```
 
-`catalog_audit.py` checks that every published `FreeSense-pkg-*` origin exists, is in the build list,
-has a complete `supported` catalog entry with real WebUI destinations, and is not a retired wrapper
-returning by accident. On `RELENG_*` branches it runs with `--release`, which also forbids any
-remaining exclusion.
+`catalog_audit.py` checks that every `FreeSense-pkg-*` origin in the build list exists, has a
+complete `supported` catalog entry with real WebUI destinations, and that every wrapper is either in
+the build list, a declared template, or listed in `policy/rc-exclusions.txt`. On `RELENG_*`
+branches CI runs it with `--release`, which also fails while `policy/rc-exclusions.txt` contains any
+entry.
 
 In the `freesense` checkout, validate the catalog and the package framework:
 
@@ -263,40 +326,42 @@ The same checks run in GitHub Actions on every pull request (`quality.yml` and
 
 Raise `PORTREVISION` whenever you change a package's files without changing the upstream runtime,
 and reset it when `PORTVERSION` changes. Appliances upgrade only to a higher package version, so an
-unchanged version means an installed system will not receive your fix. The version is substituted
-into `<version>` in the manifest and `info.xml` at staging time; do not hard-code it there.
+unchanged version means installed systems won't receive your fix. The version is substituted into
+`<version>` in the manifest and `info.xml` at staging time; don't hard-code it there.
 
 ## From merge to appliance
 
-Optional Packages are planned, built, and signed independently of the System repository:
+Optional Packages are planned, built, and signed independently of the System repository.
 
-1. The Development multi-architecture cycle (`freesense-os-base/.github/workflows/development-multiarch.yml`)
-   computes an Optional Packages fingerprint for each architecture. It combines the
-   `freesense-packages` commit, the package build options in `make.conf`, the architecture policy,
-   the package train, the pinned FreeBSD platform, the signing public key, and the build recipe.
-2. If the fingerprint is new, the packages stage builds the set in parallel shards against the
-   matching System repository, checks that every dependency resolves within the System plus
-   Optional set, and signs the repository.
+1. The Development planning cycle in `freesense-os-base` computes an Optional Packages fingerprint
+   for each architecture. Its inputs include the `freesense-packages` commit, the package build
+   options in `make.conf`, the architecture policy, the package train, the pinned FreeBSD platform,
+   the signing key, and the build recipe.
+2. If the fingerprint is new, the packages stage builds the set against the matching System
+   repository, checks that every dependency resolves within the System and Optional Packages set,
+   and signs the repository.
 3. The repository is published to an immutable, fingerprint-addressed path under
    `pkg.freesense.org/v1/artifacts/packages/<train>/`. The signed channel manifest then points the
-   `devel` channel at the verified System and Optional Packages pair.
+   Development channel at the verified System and Optional Packages pair.
 4. Appliances on the Development channel see the new version in **System → Package Manager**.
 
-What triggers a rebuild:
+What triggers an Optional Packages rebuild:
 
 | Change | Optional Packages rebuild? |
 | --- | --- |
 | A commit to `freesense-packages` | Yes |
 | `tools/conf/pfPorts/make.conf` in `freesense` | Yes |
 | `architecture-policy.json` | Yes |
-| The 14-day FreeBSD platform pin advances | Yes |
+| The FreeBSD platform pin advances (normally every 14 days) | Yes |
 | Only System code, including `freesense-system-ports` | No; the existing repository is reused |
 | Only `poudriere_packages` or the catalog JSON in `freesense` | No; these change the System fingerprint only |
 
 Because the build list and catalog live in `freesense`, adding a package to `poudriere_packages`
-does not by itself start an Optional Packages build. Merge the `freesense` change first and the
+doesn't start an Optional Packages build by itself. Merge the `freesense` change first and the
 `freesense-packages` port second, so the port commit produces the new fingerprint that builds it.
 
-Stable is different: a 1.0.x release lock in `freesense-os-base/config/releases/` pins an exact
-`packages_sha`, and Stable is published manually from a sealed lock. A package change reaches Stable
-only through a new tagged patch release. See the [release process](/guides/release-process/).
+Stable works differently. A Stable release is an exact, sealed lock in
+`freesense-os-base/config/releases/<version>.json`. The 1.1.0 lock pins `package_train` `1.1`, the
+`packages_sha`, the System sources, and the FreeBSD pin. Stable is published from that lock, so a
+package change reaches Stable only through a new tagged patch release. Ordinary fixes aren't
+backported to 1.0.x. See the [release process](/guides/release-process/).
