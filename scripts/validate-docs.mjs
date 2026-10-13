@@ -9,44 +9,56 @@ const catalogPath = process.argv[2] ?? resolve(root, '../freesense-src/src/etc/f
 const osBaseRoot = resolve(process.argv[3] ?? resolve(root, '../freesense-os-base'));
 const sourceRoot = resolve(root, 'src/content-source');
 
-if (manifest.schema_version !== 1 || !manifest.channels?.devel || !manifest.channels?.stable) {
-	throw new Error('docs manifest must declare Development and Stable channels');
+const buildPolicy = JSON.parse(readFileSync(resolve(osBaseRoot, 'config/build-policy.json'), 'utf8'));
+const { stable_train: stableTrain, development_train: developmentTrain } = buildPolicy.release;
+const trainPattern = (train) => new RegExp(`^${train.replaceAll('.', '\\.')}\\.\\d+$`);
+
+if (manifest.schema_version !== 1 || !manifest.channels?.devel || !manifest.channels?.stable || !manifest.channels?.frozen) {
+	throw new Error('docs manifest must declare the Stable, Development, and frozen channels');
 }
-if (editions.schema_version !== 1 || !editions.stable || !editions.devel) {
-	throw new Error('edition registry must declare Stable and Development editions');
+if (manifest.channels.candidate) throw new Error('docs manifest must not declare the retired Candidate channel');
+if (editions.schema_version !== 2 || !editions.stable || !editions.devel || !editions.frozen) {
+	throw new Error('edition registry must declare Stable, Development, and frozen editions');
 }
-if (!/^1\.0\.\d+$/.test(editions.stable.release) || editions.stable.lifecycle !== 'supported') {
-	throw new Error('Stable edition must identify a supported 1.0.x release');
+if (editions.stable.train !== stableTrain || !trainPattern(stableTrain).test(editions.stable.release) ||
+	editions.stable.lifecycle !== 'supported') {
+	throw new Error(`Stable edition must identify a supported ${stableTrain}.x release`);
 }
-if (editions.devel.release !== '1.1.0' || editions.devel.lifecycle !== 'experimental') {
-	throw new Error('Development edition must identify the experimental 1.1.0 train');
+if (editions.devel.release !== buildPolicy.release.development_version || editions.devel.train !== developmentTrain ||
+	editions.devel.label !== `${developmentTrain} Development` || editions.devel.lifecycle !== 'experimental') {
+	throw new Error('Development docs edition does not match the current build policy');
 }
-if (editions.stable.route_prefix !== '' || editions.devel.route_prefix !== '/1.1') {
-	throw new Error('edition routes must use the Stable root and the /1.1 Development prefix');
+if (editions.frozen.lifecycle !== 'frozen' || editions.frozen.train === stableTrain) {
+	throw new Error('the frozen edition must be an earlier, frozen Stable train');
 }
-for (const output of ['src/content/docs/index.mdx', 'src/content/docs/1.1/index.mdx']) {
-	if (!existsSync(resolve(root, output))) throw new Error(`generated edition entry is missing: ${output}`);
+const expectedRoutes = { stable: '', devel: `/${developmentTrain}`, frozen: `/${editions.frozen.train}` };
+for (const [edition, route] of Object.entries(expectedRoutes)) {
+	if (editions[edition].route_prefix !== route) {
+		throw new Error(`${edition} edition must be served at '${route || '/'}', not '${editions[edition].route_prefix}'`);
+	}
+	if (manifest.channels[edition].path !== `${route}/`) {
+		throw new Error(`docs manifest ${edition} path must be ${route}/`);
+	}
+	const entry = `src/content/docs${route}/index.mdx`;
+	if (!existsSync(resolve(root, entry))) throw new Error(`generated edition entry is missing: ${entry}`);
 }
 const releasesDirectory = resolve(osBaseRoot, 'config/releases');
-const stableLocks = readdirSync(releasesDirectory)
-	.filter((file) => /^1\.0\.\d+\.json$/.test(file))
+const sealedLocks = (train) => readdirSync(releasesDirectory)
+	.filter((file) => trainPattern(train).test(file.replace(/\.json$/, '')))
 	.map((file) => JSON.parse(readFileSync(resolve(releasesDirectory, file), 'utf8')))
 	.filter((release) => release.sealed === true)
 	.sort((left, right) => right.release.localeCompare(left.release, undefined, { numeric: true }));
-const latestStable = stableLocks[0];
-if (!latestStable) throw new Error('no sealed Stable release lock is available for edition validation');
-if (editions.stable.release !== latestStable.release) {
-	throw new Error(`Stable docs identify ${editions.stable.release}, but latest sealed release is ${latestStable.release}`);
-}
-for (const field of ['source_sha', 'packages_sha']) {
-	if (editions.stable[field] !== latestStable[field]) {
-		throw new Error(`Stable docs ${field} does not match release ${latestStable.release}`);
+for (const edition of ['stable', 'frozen']) {
+	const latest = sealedLocks(editions[edition].train)[0];
+	if (!latest) throw new Error(`no sealed ${editions[edition].train}.x release lock is available for edition validation`);
+	if (editions[edition].release !== latest.release) {
+		throw new Error(`${edition} docs identify ${editions[edition].release}, but the latest sealed release is ${latest.release}`);
 	}
-}
-const buildPolicy = JSON.parse(readFileSync(resolve(osBaseRoot, 'config/build-policy.json'), 'utf8'));
-if (editions.devel.release !== buildPolicy.release.development_version ||
-	editions.devel.label !== `${buildPolicy.release.development_train} Development`) {
-	throw new Error('Development docs edition does not match the current build policy');
+	for (const field of ['source_sha', 'packages_sha', 'system_ports_sha']) {
+		if (editions[edition][field] !== latest[field]) {
+			throw new Error(`${edition} docs ${field} does not match release ${latest.release}`);
+		}
+	}
 }
 for (const field of manifest.documentation_contract ?? []) {
   if (!['source', 'ports', 'os_definition', 'freebsd'].includes(field)) {
@@ -69,4 +81,4 @@ for (const name of Object.keys(catalog)) {
 for (const name of Object.keys(documented)) {
   if (!catalog[name]) throw new Error(`package coverage contains unknown package: ${name}`);
 }
-console.log(`Docs validation passed: ${Object.keys(catalog).length} published packages covered across ${editions.stable.label} and ${editions.devel.label}.`);
+console.log(`Docs validation passed: ${Object.keys(catalog).length} published packages covered across ${editions.stable.label} and ${editions.devel.label}; ${editions.frozen.label} is frozen.`);

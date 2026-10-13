@@ -2,95 +2,30 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
-const navigation = [
-  {
-    label: 'Get started',
-    items: [
-      ['Introduction', 'introduction'],
-      ['Hardware and virtualization', 'getting-started/hardware-and-virtualization'],
-      ['Installation', 'getting-started/installation'],
-      ['Cloud images', 'getting-started/cloud-images'],
-      ['Raspberry Pi appliances', 'getting-started/raspberry-pi', ['devel']],
-      ['First boot & setup', 'getting-started/first-boot'],
-    ],
-  },
-  {
-    label: 'Base OS',
-    items: [
-      ['System administration', 'base-os/system-administration'],
-      ['Interfaces and networking', 'base-os/interfaces-and-networking'],
-      ['Firewall and NAT', 'base-os/firewall-and-nat'],
-      ['Routing and high availability', 'base-os/routing-and-high-availability'],
-      ['Built-in services', 'base-os/built-in-services'],
-      ['Built-in VPN', 'base-os/built-in-vpn'],
-    ],
-  },
-  {
-    label: 'Optional packages',
-    items: [
-      ['Package catalog', 'packages/catalog'],
-      ['Install and manage packages', 'packages/installing-packages'],
-      ['Custom repositories', 'packages/custom-repositories', ['devel']],
-      ['Security and filtering', 'packages/security-and-filtering'],
-      ['VPN and private networking', 'packages/vpn-and-private-networking'],
-      ['Routing, services, and delivery', 'packages/routing-services-and-delivery'],
-      ['Monitoring and automation', 'packages/monitoring-and-automation'],
-      ['System and diagnostics', 'packages/system-and-diagnostics'],
-      ['Secure Web Gateway', 'packages/web-gateway', ['devel']],
-    ],
-  },
-  {
-    label: 'Package development',
-    items: [
-      ['Building optional packages', 'developers/building-optional-packages'],
-      ['Package integration', 'developers/package-integration'],
-      ['WebUI menu system', 'developers/webui-menu-system'],
-    ],
-  },
-  {
-    label: 'Operate and troubleshoot',
-    items: [
-      ['Monitoring and logs', 'operations/monitoring-and-logs'],
-      ['Diagnostics and troubleshooting', 'operations/diagnostics-and-troubleshooting'],
-      ['ZFS boot environments', 'operations/zfs-boot-environments'],
-      ['Status and diagnostics reference', 'reference/menu-guide'],
-    ],
-  },
-  {
-    label: 'Releases',
-    items: [
-      ['Updates and release channels', 'guides/updates-and-channels'],
-      ['Release process and provenance', 'guides/release-process'],
-      ['Version compatibility', 'releases/compatibility'],
-      ['Stable release line', 'releases/stable'],
-      ['Development release line', 'releases/development'],
-    ],
-  },
-  {
-    label: 'Reference and contribution',
-    items: [
-      ['Migration boundaries', 'guides/migrating'],
-      ['Configuration recipes', 'recipes'],
-      ['WebUI menu reference', 'reference/menu-guide'],
-      ['WebUI context help', 'reference/context-help'],
-      ['Glossary', 'reference/glossary'],
-      ['Documentation policy', 'contributors/documentation-policy'],
-    ],
-  },
-];
+import editions from './src/data/editions.json' with { type: 'json' };
+import { frozenNavigation, navigation } from './src/data/navigation.mjs';
 
-const editionNavigation = (edition) => navigation.map((section) => ({
+const toSidebarItems = (items, edition, prefix) => items
+  .filter((item) => !Array.isArray(item) || !item[2] || item[2].includes(edition))
+  .map((item) => {
+    if (!Array.isArray(item)) {
+      return { label: item.label, collapsed: item.collapsed, items: toSidebarItems(item.items, edition, prefix) };
+    }
+    const [label, slug] = item;
+    return prefix ? { label, link: `${prefix}/${slug}/` } : { label, slug };
+  });
+
+const editionNavigation = (sections, edition) => sections.map((section) => ({
   label: section.label,
-  items: section.items
-    .filter(([, , availableIn]) => !availableIn || availableIn.includes(edition))
-    .map(([label, slug]) => edition === 'devel'
-      ? { label, link: `/1.1/${slug}/` }
-      : { label, slug }),
+  items: toSidebarItems(section.items, edition, editions[edition].route_prefix),
 }));
 
+// One top-level group per edition; EditionSidebar shows only the group that
+// matches the current route prefix.
 const sidebar = [
-  { label: 'Stable 1.0.7', items: editionNavigation('stable') },
-  { label: 'Development 1.1', items: editionNavigation('devel') },
+  { label: editions.stable.label, items: editionNavigation(navigation, 'stable') },
+  { label: editions.devel.label, items: editionNavigation(navigation, 'devel') },
+  { label: editions.frozen.label, items: editionNavigation(frozenNavigation, 'frozen') },
 ];
 
 // Docs site -> docs.freesense.org (Cloudflare Pages).

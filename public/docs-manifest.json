@@ -2,23 +2,23 @@
   "schema_version": 1,
   "project": "FreeSense",
   "channels": {
-    "devel": {
-      "label": "Development",
-      "path": "/1.1/",
-      "support_tier": "development",
-      "description": "Current documentation for the actively developed FreeSense line."
-    },
-    "candidate": {
-      "label": "Candidate",
-      "path": "/releases/candidate/",
-      "support_tier": "preview",
-      "description": "Documentation frozen with a release candidate and used for acceptance testing."
-    },
     "stable": {
       "label": "Stable",
       "path": "/",
       "support_tier": "supported",
-      "description": "Immutable documentation for promoted, supported releases."
+      "description": "Documentation for the supported FreeSense 1.1.x Stable line."
+    },
+    "devel": {
+      "label": "Development",
+      "path": "/1.2/",
+      "support_tier": "development",
+      "description": "Documentation for the rolling, experimental FreeSense 1.2 Development line."
+    },
+    "frozen": {
+      "label": "1.0 (frozen)",
+      "path": "/1.0/",
+      "support_tier": "unmaintained",
+      "description": "Frozen documentation for the earlier 1.0.x Stable line. It is no longer updated."
     }
   },
   "documentation_contract": ["source", "ports", "os_definition", "freebsd"]

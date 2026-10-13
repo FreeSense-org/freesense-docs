@@ -1,0 +1,74 @@
+---
+title: Release process
+description: How FreeSense builds, verifies, versions, and publishes the Stable and Development lines.
+---
+
+FreeSense has two active release lines with different promises:
+
+| Line | Purpose | Support policy |
+| --- | --- | --- |
+| **Stable 1.0.x** | Production and normal use | Supported; sealed except for explicit maintenance or security patch releases |
+| **Development 1.1** | Integration testing, contributors, and disposable labs | **Experimental; no support** |
+
+The release identity is preserved with Git tags. `1.0.0` identifies the original Stable release;
+if a necessary security or maintenance fix is made, its tested source is tagged and published as a
+new patch release such as `1.0.1`. Routine feature development does not enter the 1.0.x line.
+
+## Independent System and package builds
+
+The System repository and optional-package repository have separate immutable input fingerprints.
+That separation avoids rebuilding optional packages for every System change.
+
+1. The Development cycle is scheduled daily at 01:00 UTC; GitHub can start scheduled runs later
+   than that. It freezes the FreeSense source, System ports, optional-package sources, and pinned
+   FreeBSD inputs, then computes a System and an optional-package fingerprint for each architecture
+   (amd64 and ARM64).
+2. A component whose fingerprint has already been built and published is reused rather than
+   rebuilt. Only a new fingerprint starts a System or optional-package build.
+3. If only System code changes while package sources and the FreeBSD platform remain compatible,
+   the System is rebuilt and the existing optional-package repository is reused.
+4. A package-source change, a package build-option change, or an accepted FreeBSD pin change
+   produces a new package fingerprint and therefore a new optional-package build.
+5. The System and optional-package repositories for both architectures are verified and then
+   published together as one Development pair, so the channel never points at a half-updated set.
+
+The FreeBSD source, ports, world seed, worker image, and worker tools are content-addressed and
+pinned as one reviewed platform input. A scheduled check runs daily at 02:00 UTC but performs the
+expensive rollover work only near the end of the active window. It advances the pin by exactly 14
+days through one reusable pull request.
+
+## Repository verification and release-bundle publication
+
+System and optional-package repositories are signed and verified independently. Rolling 1.1
+workflows never promote their repositories into Stable. A Stable patch is published manually from
+an exact checked 1.0.x release lock, and the Stable pointer can move only to a higher 1.0 patch as
+one verified System and optional-package pair.
+
+An installer/cloud build consumes an exact matching repository pair. Publication is ordered so a
+channel can never advertise a partial bundle:
+
+1. assemble the architecture's installer (amd64 ISO or ARM64 UEFI IMG) plus UFS and ZFS QCOW2/raw images from the selected signed repositories;
+2. verify completion markers, SHA-256 checksums, sizes, and the shared bundle fingerprint;
+3. boot-smoke amd64 with KVM and ARM64 with `qemu-system-aarch64` `virt`, AAVMF, virtio, and TCG;
+4. upload all five files to immutable paths on `downloads.freesense.org` and verify them; then
+5. publish the small architecture-aware `freesense.download/v3` document as
+   `stable.<architecture>.json` or `devel.<architecture>.json`; the unqualified document remains
+   the amd64 compatibility alias.
+
+Historical ISO-only `freesense.download/v1` channel documents remain readable.
+
+The website keeps no release version in its source. It reads those two channel documents at request
+time, so Stable and Development can be published independently without rebuilding the website or
+overwriting the other channel.
+
+## Upgrade boundary
+
+Moving from Stable 1.0.x to Development 1.1 is a one-way updater transition. The updater does not
+offer a package downgrade from 1.1 to 1.0. To return, boot an intact 1.0 boot environment or install
+a tagged 1.0.x image, then continue on the Stable update path from that running 1.0 system.
+
+Before testing Development, export the configuration and keep verified recovery media. Development
+is experimental and receives no production or support commitment.
+
+Security issues should be reported privately through GitHub private vulnerability reporting, not
+in a public issue.

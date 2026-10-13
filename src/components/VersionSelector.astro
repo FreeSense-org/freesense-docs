@@ -1,12 +1,18 @@
 ---
 import editions from '../data/editions.json';
+import { editionForPath, editionNames, logicalPath } from '../lib/edition.mjs';
+import { isPublishedIn } from '../data/navigation.mjs';
 
 const pathname = Astro.url.pathname;
-const currentEdition = pathname === '/1.1' || pathname.startsWith('/1.1/') ? 'devel' : 'stable';
+const currentEdition = editionForPath(pathname);
+// The frozen edition has its own page set, so it links to its root.
 const counterpartPath = (edition) => {
-  const logicalPath = currentEdition === 'devel' ? pathname.replace(/^\/1\.1(?=\/|$)/, '') : pathname;
-  const normalizedPath = logicalPath === '' ? '/' : logicalPath;
-  return `${editions[edition].route_prefix}${normalizedPath}`;
+  if (edition === 'frozen' && currentEdition !== 'frozen') return `${editions.frozen.route_prefix}/`;
+  if (currentEdition === 'frozen' && edition !== 'frozen') return `${editions[edition].route_prefix}/`;
+  const path = logicalPath(pathname);
+  const slug = path.replace(/^\/|\/$/g, '');
+  if (slug && !isPublishedIn(slug, edition)) return `${editions[edition].route_prefix}/`;
+  return `${editions[edition].route_prefix}${path}`;
 };
 ---
 
@@ -14,7 +20,7 @@ const counterpartPath = (edition) => {
   <span class="edition-selector__label">Version</span>
   <select aria-label="Documentation version" data-version-selector>
     {
-      ['stable', 'devel'].map((edition) => {
+      editionNames.map((edition) => {
         const details = editions[edition];
         return (
         <option value={counterpartPath(edition)} selected={edition === currentEdition}>{details.label}</option>

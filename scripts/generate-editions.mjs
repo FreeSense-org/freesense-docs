@@ -1,15 +1,24 @@
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { dirname, extname, relative, resolve, sep } from 'node:path';
+import { isPublishedIn } from '../src/data/navigation.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const sourceRoot = resolve(root, 'src/content-source');
 const overridesRoot = resolve(root, 'src/content-overrides');
+const frozenRoot = resolve(root, 'src/content-frozen');
 const outputRoot = resolve(root, 'src/content/docs');
-const editions = [
-  { name: 'stable', routePrefix: '' },
-  { name: 'devel', routePrefix: '1.1' },
-];
+const registry = JSON.parse(await readFile(resolve(root, 'src/data/editions.json'), 'utf8'));
+// Maintained editions are built from the shared source plus their overrides; a
+// frozen edition is materialized only from its own snapshot under
+// src/content-frozen/<prefix>/ and never picks up shared-source edits.
+const editions = ['stable', 'devel', 'frozen'].map((name) => ({
+  name,
+  routePrefix: registry[name].route_prefix.replace(/^\/+/, ''),
+  frozen: registry[name].lifecycle === 'frozen',
+  label: registry[name].label,
+}));
+const editionPrefixes = new Set(editions.map((edition) => edition.routePrefix).filter(Boolean));
 const editBaseUrl = 'https://github.com/FreeSense-org/freesense-docs/edit/main/';
 
 function assertOutputPath(target) {
@@ -43,7 +52,7 @@ function rewriteUrl(url, edition, docRoots) {
   const segments = pathname.split('/').filter(Boolean);
   const firstSegment = segments[0];
   if (!firstSegment || !docRoots.has(firstSegment)) return url;
-  if (firstSegment === '1.1') return url;
+  if (editionPrefixes.has(firstSegment)) return url;
   return `${edition.routePrefix ? `/${edition.routePrefix}` : ''}${pathname}${suffix}`;
 }
 
@@ -55,6 +64,11 @@ function rewriteDocumentationUrls(content, edition, docRoots) {
   rewritten = rewritten.replace(
     /href=(['"])(\/[^'"\s>]+)\1/g,
     (match, quote, url) => match.replace(url, rewriteUrl(url, edition, docRoots)),
+  );
+  // Starlight hero actions and other frontmatter links.
+  rewritten = rewritten.replace(
+    /^(\s*link:\s*)(\/\S+)$/gm,
+    (match, key, url) => `${key}${rewriteUrl(url, edition, docRoots)}`,
   );
   return rewritten;
 }
@@ -69,6 +83,12 @@ function sourceEditUrl(sourcePath) {
   return `${editBaseUrl}${relativePath}`;
 }
 
+function injectFrozenBanner(content, edition) {
+  const release = edition.label.replace(/ \(frozen\)$/, '');
+  const banner = `banner:\n  content: 'Frozen FreeSense ${release} documentation, no longer maintained. <a href="/">Read the current Stable documentation</a>.'\n`;
+  return content.replace(/^---\r?\n/, `---\n${banner}`);
+}
+
 function injectEditUrl(content, editUrl) {
   if (/^---\r?\n/.test(content)) {
     return content.replace(/^---\r?\n/, `---\neditUrl: ${editUrl}\n`);
@@ -80,13 +100,15 @@ if (!existsSync(sourceRoot)) {
   throw new Error(`shared documentation source is missing: ${sourceRoot}`);
 }
 
-const sourceFiles = await listSourceFiles(sourceRoot);
-const docRoots = new Set(sourceFiles.map((sourceFile) => {
-  const sourcePath = relative(sourceRoot, sourceFile).split(sep);
+const collectDocRoots = (files, base) => new Set(files.map((sourceFile) => {
+  const sourcePath = relative(base, sourceFile).split(sep);
   return sourcePath.length === 1
     ? sourcePath[0].replace(/\.(md|mdx)$/, '')
     : sourcePath[0];
 }));
+const sourceFiles = await listSourceFiles(sourceRoot);
+const docRoots = collectDocRoots(sourceFiles, sourceRoot);
+const slugOf = (relativePath) => relativePath.split(sep).join('/').replace(/\.(md|mdx)$/, '').replace(/\/index$/, '');
 
 // The output directory is entirely generated. Remove every previous generated
 // entry, while retaining its tracked .gitignore, so removed source pages cannot
@@ -98,21 +120,31 @@ for (const entry of await readdir(outputRoot, { withFileTypes: true })) {
   await rm(generatedTarget, { recursive: true, force: true });
 }
 
+let written = 0;
 for (const edition of editions) {
-  for (const sharedSource of sourceFiles) {
-    const relativePath = relative(sourceRoot, sharedSource);
+  const editionSourceRoot = edition.frozen ? resolve(frozenRoot, edition.routePrefix) : sourceRoot;
+  if (edition.frozen && !existsSync(editionSourceRoot)) {
+    throw new Error(`frozen edition ${edition.name} has no snapshot at ${editionSourceRoot}`);
+  }
+  const editionFiles = edition.frozen ? await listSourceFiles(editionSourceRoot) : sourceFiles;
+  const editionRoots = edition.frozen ? collectDocRoots(editionFiles, editionSourceRoot) : docRoots;
+  for (const editionSource of editionFiles) {
+    const relativePath = relative(editionSourceRoot, editionSource);
+    if (!edition.frozen && !isPublishedIn(slugOf(relativePath), edition.name)) continue;
     const editionOverride = resolve(overridesRoot, edition.name, relativePath);
-    const selectedSource = existsSync(editionOverride) ? editionOverride : sharedSource;
+    const selectedSource = !edition.frozen && existsSync(editionOverride) ? editionOverride : editionSource;
     const target = resolve(outputRoot, edition.routePrefix, relativePath);
     assertOutputPath(target);
     await mkdir(dirname(target), { recursive: true });
 
     let content = await readFile(selectedSource, 'utf8');
     content = injectEditUrl(content, sourceEditUrl(selectedSource));
-    content = rewriteDocumentationUrls(content, edition, docRoots);
+    if (edition.frozen) content = injectFrozenBanner(content, edition);
+    content = rewriteDocumentationUrls(content, edition, editionRoots);
     content = rewriteEditionAssets(content, edition);
     await writeFile(target, content, 'utf8');
+    written += 1;
   }
 }
 
-console.log(`Materialized ${sourceFiles.length} shared documentation files at / and /1.1/.`);
+console.log(`Materialized ${written} documentation files for ${editions.map((edition) => `/${edition.routePrefix}`).join(', ')}.`);
