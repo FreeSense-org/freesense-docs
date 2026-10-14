@@ -15,6 +15,7 @@ published as patch releases such as `1.1.1`. Earlier artifacts stay immutable.
 
 | Release | Date | Notes |
 | --- | --- | --- |
+| 1.1.5 | 2026-10-14 | [Release notes](/releases/1.1.5/) · updates and package changes work again on 1.1.1 and later (one console command first); the update window opens at once; Threat Shield save and map fixes |
 | 1.1.4 | 2026-10-14 | [Release notes](/releases/1.1.4/) · Threat Shield 1.1.0: GeoIP and DNS redirection work, IP threat lists, inbound protection, threat map |
 | 1.1.3 | 2026-10-14 | [Release notes](/releases/1.1.3/) · multi-line settings keep their line breaks; Threat Shield settings and query log; no stray VLAN interfaces |
 | 1.1.2 | 2026-10-14 | [Release notes](/releases/1.1.2/) · Tailscale and WireGuard keys kept out of logs and process lists |

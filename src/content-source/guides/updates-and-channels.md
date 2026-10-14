@@ -48,9 +48,11 @@ are Development-only.
    base-system and System package commits, Optional Packages commits (from 1.1.3), and notes the
    release names itself. A release without base-system changes says so and links to the release
    notes in this documentation.
-3. Select **Install update**. The page is locked behind a progress overlay with the from and to
-   versions and an elapsed timer; **Show details** shows the updater output. Leaving the page asks
-   for confirmation.
+3. Select **Install update**. The page is locked behind a progress window with the from and to
+   versions, what the updater is doing now (for example "Fetching FreeSense-base"), a progress bar
+   and an elapsed timer; **Show details** shows the updater output. From 1.1.5 the window opens
+   at once and follows the updater, which runs on its own; reloading the page reattaches to it.
+   Leaving the page asks for confirmation.
 4. The firewall reboots to finish the update.
 
 ![System Update showing the installed system and the status Up to date](__ASSET_ROOT__/screenshots/updates/system-update.png)
@@ -59,6 +61,13 @@ On a ZFS installation the update runs in a cloned boot environment with a first-
 and one automatic rollback; on UFS it runs in place. The
 [upgrade guide](/guides/upgrading-from-1.0/#what-happens-on-zfs) describes both, and
 [ZFS boot environments](/operations/zfs-boot-environments/) covers the settings.
+
+:::caution[1.1.1 to 1.1.4 cannot update on their own]
+The updater in 1.1.1 to 1.1.4 loses the selected channel, so updates and package changes stop with
+"Another instance of FreeSense-upgrade is running". Run the
+[console command in the 1.1.5 notes](/releases/1.1.5/#before-you-update-from-111-to-114) once,
+then update to 1.1.5 as usual.
+:::
 
 ### The dashboard update check
 
