@@ -27,9 +27,9 @@ package catalog. See [Security and filtering packages](/packages/security-and-fi
 it with Suricata and CrowdSec.
 
 :::note[Package version 1.1.0]
-This page describes **Threat Shield package 1.1.0** (`FreeSense-pkg-ThreatShield-1.1.0`). Systems
-on the Development line receive it through their normal package updates. Stable 1.1 systems
-receive it in a later 1.1 package update. Check the installed version under
+This page describes **Threat Shield package 1.1.0** (`FreeSense-pkg-ThreatShield-1.1.0`). Stable
+systems get it with [FreeSense 1.1.4](/releases/1.1.4/); Development systems get it with their
+normal package updates. Check the installed version under
 **System → Package Manager → Installed Packages**.
 
 Package 1.0.0_6 and older (FreeSense 1.1.0 to 1.1.3) generate the **GeoIP** and **DNS redirection**

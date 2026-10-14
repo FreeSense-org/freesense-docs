@@ -4,10 +4,10 @@
     "label": "1.1 Stable",
     "route_prefix": "",
     "train": "1.1",
-    "release": "1.1.3",
+    "release": "1.1.4",
     "lifecycle": "supported",
     "source_sha": "75c28d93b623f591dc052e3548acb23adefd7b6c",
-    "packages_sha": "6beb4bf08ba1772ab973df19d79fbade40e988ea",
+    "packages_sha": "b11b6e6b4f89c43a61773c9647539f323adc3a7e",
     "system_ports_sha": "5e9287acf00007d633c7ae80ae9bba9ce7b0f038",
     "freebsd_source_sha": "a52c50b4b7c2652954ef1bd34710a4b1fc8ef391",
     "freebsd_ports_sha": "2e67f384802ff04abd34e706fb098e4cd999e7e6"
