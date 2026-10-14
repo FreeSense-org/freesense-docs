@@ -117,9 +117,10 @@ Each row has these actions:
    - **Background services**: the services it registers;
    - **Recent updates**: up to three recent notes for the package, if any have been published.
 5. Choose **Install package**. To back out, choose **Cancel**.
-6. Wait until the status changes from **In progress** to **Completed**. The page is locked
-   while the operation runs. Use **Show details** to follow the output. Don't close or reload
-   the page.
+6. A progress window opens at once and shows what the Package Manager is doing, a progress bar
+   and the elapsed time, until the status changes from **In progress** to **Completed**. Use
+   **Show details** to follow the output. The operation runs on its own: if you reload the page,
+   it reattaches to the running operation.
 7. When it finishes, the page reloads so the package's menu entries appear. Configure the
    package from its own page, or from **Installed Packages → Manage → Open configuration**.
 
@@ -263,7 +264,9 @@ For the full upgrade procedure from 1.0, see [Upgrading from 1.0](/guides/upgrad
 You can see package versions in several places:
 
 - **Installed Packages**: the installed version, and the available version when an update
-  exists. Each version number links to the package changelog.
+  exists. Each version number links to the package changelog. From 1.1.5 versions are shown
+  without the port revision (`1.1` for `1.1_8`); the full version is in the tooltip. An update
+  that only changes the revision shows as `1.0.0 (build 7)`.
 - **Available Packages**: the version the repository currently offers.
 - **Manage** (`pkg_control.php`): the installed **Integration version**.
 - The console or SSH shell: `pkg info -x FreeSense-pkg` lists installed Optional Packages and
@@ -310,8 +313,10 @@ to save the log before you try again. Then check:
 
 - the firewall has working DNS, a default route, and access to the package repository;
 - there is enough free disk space and memory, especially for **Intensive** packages;
-- no other update or package operation is running. "Another instance of FreeSense-upgrade is
-  running" means that one is;
+- no other update or package operation is running. The progress window says so when one is;
+  wait for it to finish and try again. On 1.1.1 to 1.1.4, "Another instance of
+  FreeSense-upgrade is running" appears for every operation; see the
+  [1.1.5 notes](/releases/1.1.5/#before-you-update-from-111-to-114);
 - **Need attention** packages on Installed Packages. Use **Reinstall** for a **Missing** package.
 
 When you report a problem, include the FreeSense version, the package name and version, the

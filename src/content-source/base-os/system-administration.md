@@ -13,7 +13,7 @@ WebUI; the step-by-step procedures are in
 
 | Area | Menu path | What it controls |
 | --- | --- | --- |
-| Identity and time | **System → General Setup** | Hostname and domain, DNS server settings, localization (time zone, NTP servers, language), WebUI appearance |
+| Identity and time | **System → General Setup** | Hostname and domain, DNS server settings, localization (time zone, NTP servers, language), WebUI appearance, login page (hostname, version, message) |
 | Administrator access | **System → Advanced → Admin Access** | WebUI protocol and port, Secure Shell, Login Protection, serial and console options |
 | Accounts | **System → User Manager** | Users, groups, privileges, authentication servers (LDAP, RADIUS) |
 | Trust | **System → Certificates** | Certificate authorities, certificates, and revocation lists |
