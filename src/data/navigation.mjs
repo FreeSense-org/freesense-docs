@@ -67,6 +67,8 @@ export const navigation = [
       pkg('Security and filtering', [
         ['Overview', 'packages/security-and-filtering'],
         ['Threat Shield & DNS Protection', 'packages/threat-shield'],
+        ['Threat Shield inbound protection', 'packages/threat-shield-inbound'],
+        ['Threat Shield threat map', 'packages/threat-shield-map'],
         ['Secure Web Gateway', 'packages/web-gateway'],
         ['Suricata', 'packages/suricata'],
         ['CrowdSec', 'packages/crowdsec'],

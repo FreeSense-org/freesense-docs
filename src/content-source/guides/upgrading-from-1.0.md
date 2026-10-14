@@ -20,9 +20,10 @@ is not a supported way to go back to 1.0. Take a configuration backup before you
 2. **Check your packages.** Compare **System → Package Manager → Installed Packages** with the
    [1.1 package catalog](/packages/catalog/):
    - **pfBlockerNG is not available in 1.1.** Write down its lists and settings and plan to use
-     [Threat Shield](/packages/threat-shield/) for DNS filtering (its GeoIP blocking does not take
-     effect in 1.1.0). For
-     plain IP block lists, a URL table alias with a firewall rule is a built-in alternative.
+     [Threat Shield](/packages/threat-shield/) for DNS filtering. From Threat Shield package
+     1.1.0 it also loads IP block lists and enforces GeoIP country blocking (package 1.0.0 does
+     not load those rules). A URL table alias with a firewall rule is a built-in alternative for
+     plain IP block lists.
      Removing pfBlockerNG before the upgrade is the predictable path.
      <!-- needs verification: behaviour of an installed pfBlockerNG package during the 1.0 -> 1.1 upgrade (left installed, removed, or reinstall error) -->
    - **Prometheus Node Exporter** renames its interface metrics from `node_pfsense_*` to
