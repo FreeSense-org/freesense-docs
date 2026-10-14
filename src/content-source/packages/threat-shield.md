@@ -29,6 +29,15 @@ rules are loaded with `pfctl -sr | grep ThreatShield` and `pfctl -sn | grep 'por
 <!-- needs verification: confirm on a 1.1.0 system that no "ThreatShield GeoIP" rules appear in pfctl -sr after saving an enabled GeoIP policy, and that no rdr for port 53 appears with DNS redirection on. -->
 :::
 
+:::note[Fixed in Threat Shield 1.0.0_6 (FreeSense 1.1.3)]
+Before package version 1.0.0_6, saving **Settings** from a browser failed with "Settings could not
+be saved to config.xml; the previous settings were restored.", and the **Query log** never marked a
+query as **Blocked**, so **Allow** did not appear. Update the package under
+**System → Package Manager → Installed Packages**. If you changed settings from the console or the
+API on an older version, check that **Upstream servers**, **Bootstrap DNS** and **Fallback DNS**
+still have one entry per line.
+:::
+
 ## Install
 
 1. Open **System → Package Manager → Available Packages**.

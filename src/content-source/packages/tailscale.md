@@ -147,10 +147,12 @@ Turn on **Syslog Logging** to also send the daemon's own output to syslog.
 | Firewall's own DNS changed after enabling | **Accept DNS** is on. Turn it off if the firewall should keep its own resolver settings. |
 | Need to start over | Use **Logout and Clean**, then save a new auth key. |
 
-:::caution[Auth key in the system log]
-The start-up script logs the full `tailscale up` command line, which includes `--auth-key`.
-Treat the system log, and any remote syslog copy of it, as containing the key. Use a non-reusable
-key so a logged key cannot add more machines.
+:::caution[Auth key in the system log before 1.1.2]
+Up to FreeSense 1.1.1, the start-up script logged the full `tailscale up` command line, including
+`--auth-key`, and passed the key on the command line. From [1.1.2](/releases/1.1.2/) the key goes
+through a root-only temporary file and is never logged. If a key was used on 1.1.0 or 1.1.1, treat
+the system log and any remote syslog copy as containing it: revoke the key in the Tailscale admin
+console and save a new one. Prefer non-reusable keys, so a leaked key cannot add more machines.
 :::
 
 :::note[Changes in FreeSense 1.1]
