@@ -69,6 +69,8 @@ open **Interfaces → Assignments**, add the `tun_wg` device (for example `tun_w
 interface, and set its addresses there. After you assign a tunnel, its addresses and MTU come from
 the interface configuration, not from the tunnel page.
 
+![WireGuard Tunnels with one tunnel and two roaming peers](__ASSET_ROOT__/screenshots/packages/wireguard-tunnels.png)
+
 :::caution[Keep a way back in]
 A wrong route or rule on a tunnel that you use for administration can lock you out at once. Save a
 configuration backup and keep console or LAN access available until the tunnel works in both

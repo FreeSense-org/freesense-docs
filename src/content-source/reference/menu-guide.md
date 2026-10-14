@@ -4,8 +4,8 @@ description: The FreeSense 1.1 top menu - every built-in entry, its group, and w
 ---
 
 This reference lists the built-in entries of the FreeSense 1.1 WebUI top menu. The documentation
-describes the interface with menu paths and field labels rather than screenshots, so the paths here
-are the ones used throughout the manual, written as **Menu → Entry → Tab**.
+names pages by their menu paths and field labels, so the paths here are the ones used throughout the
+manual, written as **Menu → Entry → Tab**.
 
 ## How the menu works
 
@@ -19,6 +19,10 @@ are the ones used throughout the manual, written as **Menu → Entry → Tab**.
 - Many pages have a tab bar for related pages. When the tabs do not fit, the rest move into **More**.
 - The **Help** menu may be labelled with the hostname instead, depending on the user setting for the
   hostname in the menu.
+
+![The System menu open as a grouped panel with General, Access and Network groups and a filter box](__ASSET_ROOT__/screenshots/reference/menu-system.png)
+
+![Menu search opened with Ctrl+K, showing results for vpn with their menu and group](__ASSET_ROOT__/screenshots/reference/menu-search.png)
 
 ## System
 
@@ -102,6 +106,8 @@ from its name (for example Threat Shield and Suricata under **Services → Secur
 Web Gateway under **Services → Proxy**, WireGuard, Tailscale, and ZeroTier status pages under
 **Status → VPN**). Entries are sorted alphabetically within each group. Some packages also add a tab to
 a built-in page, such as **Client Export** on **VPN → OpenVPN**.
+
+![The Services menu with built-in and package entries in the Network, Routing, Security, Proxy, Monitoring and Other groups](__ASSET_ROOT__/screenshots/reference/menu-services.png)
 
 The [package catalog](/packages/catalog/) lists each package's configuration and status pages.
 Contributors can find how entries are defined, grouped, and filtered in the

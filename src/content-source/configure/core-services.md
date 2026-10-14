@@ -21,6 +21,10 @@ FreeSense uses Kea for DHCP and DHCPv6.
 5. Add **Static Mappings** for devices that need a fixed address.
 6. Save and check **Status → DHCP Leases** after a client connects.
 
+![The Kea DHCP server settings for the IOT interface with the address pool range](__ASSET_ROOT__/screenshots/services/dhcp-server.png)
+
+![Static mappings on the IOT interface with IP address, hostname, MAC address and description](__ASSET_ROOT__/screenshots/services/dhcp-static-mappings.png)
+
 On the **Settings** tab:
 
 - **DNS Registration** registers leases with the DNS Resolver; **Early DNS Registration** registers

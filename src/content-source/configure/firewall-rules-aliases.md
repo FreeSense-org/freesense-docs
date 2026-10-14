@@ -28,6 +28,8 @@ For long aliases: once an alias has more than 20 entries, the edit page shows a 
 the entries with an "n of m shown" count. Filtering only hides rows; **Save** still keeps every entry,
 and new or empty rows stay visible while a filter is active.
 
+![Firewall aliases of type host, network and port, with their values and descriptions](__ASSET_ROOT__/screenshots/firewall/aliases.png)
+
 URL and URL Table aliases download their list from a web server. In 1.1 the list can also be a
 `.tgz` or `.tar.gz` archive. Check the refresh interval for URL Table aliases and confirm the source
 is one you trust, because its content becomes firewall policy.
@@ -43,7 +45,11 @@ is one you trust, because its content becomes firewall policy.
 5. Enable **Log packets that are handled by this rule** while you validate it.
 6. Select **Save**, drag the rule into position if needed, and select **Apply Changes**.
 
+![Editing a pass rule on the IOT interface that allows TCP to the Web_Ports alias](__ASSET_ROOT__/screenshots/firewall/rule-edit.png)
+
 **Protocol** now also offers **IPIP** for IP-in-IP encapsulated traffic.
+
+![A rule set for an IoT network: DNS to the firewall, cameras to the file server, block private networks, then web ports only](__ASSET_ROOT__/screenshots/firewall/rules-iot.png)
 
 ## Rule-writing checklist
 

@@ -26,6 +26,8 @@ Use a different monitor address for each WAN. The firewall adds a static route f
 address through its gateway unless **Do not add static route for gateway monitor IP address via the
 chosen interface** is enabled.
 
+![System, Routing, Gateways with the WAN DHCP gateway and the default gateway settings](__ASSET_ROOT__/screenshots/routing/gateways.png)
+
 ## Add a static route
 
 1. Open **System → Routing → Static Routes** and select **Add**.

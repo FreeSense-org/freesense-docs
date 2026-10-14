@@ -61,6 +61,8 @@ Open **Status → System Logs**. The tabs select the log:
 Each log page has a **Log settings** button for that log's display and retention settings. The
 console menu also offers **10) Filter Logs** to follow the firewall log live.
 
+![The firewall log in Normal view with blocked packets, the matching rule and source and destination](__ASSET_ROOT__/screenshots/operations/firewall-log.png)
+
 ## REST API
 
 Monitoring systems can read status and logs through the REST API instead of scraping WebUI pages.

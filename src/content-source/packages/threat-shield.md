@@ -73,6 +73,10 @@ kept for local host names.
    client, then check the **Query log** tab.
 8. On **Feeds**, review the four default blocklists and the **Download** interval.
 
+![Threat Shield settings in Primary DNS mode, listening on LAN, GUEST and IOT, with encrypted upstreams](__ASSET_ROOT__/screenshots/packages/threat-shield-settings.png)
+
+![Threat Shield overview with query and block counters, top queried domains and top blocked domains](__ASSET_ROOT__/screenshots/packages/threat-shield-overview.png)
+
 Clients that already receive the firewall's interface address as their DNS server (the DHCP
 default) start using Threat Shield immediately in primary mode. No DHCP change is needed.
 

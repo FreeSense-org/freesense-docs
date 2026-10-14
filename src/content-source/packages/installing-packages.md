@@ -65,6 +65,8 @@ The row actions are **Review and install** (for packages that are not installed)
 installed packages** (for installed ones), and links to more information and the project
 website.
 
+![Available Packages with source, version, capability chips, requirements and status](__ASSET_ROOT__/screenshots/packages/available.png)
+
 ### Installed Packages
 
 The tiles show **Installed**, **Up to date**, **Updates available** and **Need attention**. Each
@@ -97,6 +99,8 @@ Each row has these actions:
   install from.
 - **More information** opens the project website.
 - **Remove** uninstalls the package.
+
+![Installed Packages with the status tiles, filters and per-package actions](__ASSET_ROOT__/screenshots/packages/installed.png)
 
 ## Install a package
 

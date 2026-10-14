@@ -44,6 +44,8 @@ build under emulation.
 Tabs: **Overview**, **Listeners**, **TLS inspection**, **Policies**, **Identity**,
 **Threat protection**, **Feeds**, **Cache & upstreams**, **Status**, **Diagnostics**.
 
+![The Web Gateway overview with service state and the seven protection layers](__ASSET_ROOT__/screenshots/packages/web-gateway-overview.png)
+
 ## First-time setup
 
 Start with an explicit proxy and tunnel-only HTTPS. It needs no certificates on clients and is

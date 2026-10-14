@@ -21,6 +21,8 @@ The examples use `https://192.168.1.1` as the firewall's WebGUI address. Replace
 4. Leave **Allow HTTP** unchecked.
 5. Select **Save**.
 
+![System, REST API, Settings with the API enabled on the WebGUI port and the request log options](__ASSET_ROOT__/screenshots/api/settings.png)
+
 ## Step 2: Create an API user with limited privileges
 
 Use a dedicated local user for each integration instead of the `admin` account. In this example the user may read system information, read and change firewall aliases, and check for updates and list packages, through the API only.
@@ -39,7 +41,11 @@ Use a dedicated local user for each integration instead of the `admin` account. 
 
 5. Save. The **REST API** line under **Effective Privileges** should now read "Allowed".
 
+![Effective Privileges of the automation user with the REST API line reading Allowed](__ASSET_ROOT__/screenshots/api/user-privileges.png)
+
 The `REST API - ...` privileges grant API access only. This user cannot open the corresponding WebUI pages, and its API key cannot reach any other area.
+
+Because changing aliases changes firewall policy, **REST API - Firewall aliases: write** is marked as an admin privilege, and the page shows *Security notice: This user effectively has administrator-level access*. That is expected for this walkthrough.
 
 :::tip
 To manage many integrations, put the privileges on a group (**System → User Manager → Groups**) and make the API users members of it.
@@ -52,6 +58,10 @@ To manage many integrations, put the privileges on a group (**System → User Ma
 3. Enter a **Description** that says where the key is used, for example `Ansible on mgmt01`.
 4. Optionally limit the key further: **Scopes → Only the scopes selected below**, and an expiry in **Expires after (days)**. Leave **Read-only** unchecked for this walkthrough, because step 6 creates an alias.
 5. Create the key and copy it from the **API key created** panel. It is shown only once.
+
+![The Create API Key dialog for the automation user with a description and a 90-day expiry](__ASSET_ROOT__/screenshots/api/create-key.png)
+
+![The API key created panel; the secret part of the key is masked in this picture](__ASSET_ROOT__/screenshots/api/key-created.png)
 
 Store the key in an environment variable on the client instead of typing it into commands:
 

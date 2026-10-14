@@ -30,6 +30,8 @@ The built-in rows show the address and priority from the system's repository con
 Each custom row shows its **Address**, its **Verification** (**Fingerprint**, **Public key** or
 **Unsigned**), its **Priority** and whether it is **Enabled**.
 
+![The Repositories tab with the locked FreeSense repositories, FreeBSD-ports and three custom repositories](__ASSET_ROOT__/screenshots/packages/repositories.png)
+
 When the FreeBSD repository is enabled, only its main package repository is used. FreeBSD's
 kernel-module repository stays off, because those modules are built for FreeBSD's kernel, not
 the FreeSense kernel.

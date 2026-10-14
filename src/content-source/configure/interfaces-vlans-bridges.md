@@ -36,6 +36,8 @@ Keep a tested local console (or virtual console) available and save a configurat
 Use the search field above the list to find an interface by name, port, or address. If a LAGG member
 port is missing from the selector, that is expected: assign the LAGG instead.
 
+![Interface Assignments listing WAN, LAN and two VLAN interfaces with their ports and addresses](__ASSET_ROOT__/screenshots/interfaces/assignments.png)
+
 ## Adjust link settings
 
 Open the interface (for example **Interfaces → LAN**) and expand **Link Settings**:
@@ -63,6 +65,8 @@ Open **Interfaces → NIC Settings**.
 Applying can interrupt traffic on the adapter for a moment. A Realtek adapter with unexplained drops
 or corruption is a common case for turning checksum offload off.
 
+![NIC Settings showing each adapter's hardware, link speed, MTU and offload state](__ASSET_ROOT__/screenshots/interfaces/nic-settings.png)
+
 ## VLANs
 
 A VLAN is an isolated Layer 2 segment carried over a tagged parent interface.
@@ -75,6 +79,8 @@ A VLAN is an isolated Layer 2 segment carried over a tagged parent interface.
 
 A switch VLAN alone is not a security policy: rules on the VLAN interface decide what the segment can
 reach. For stacked tags from a carrier, use **QinQs** instead.
+
+![The VLANs tab with VLAN 20 and VLAN 30 on the LAN port](__ASSET_ROOT__/screenshots/interfaces/vlans.png)
 
 ## Bridges
 
@@ -128,6 +134,10 @@ Create tunnels under **Interfaces → Assignments → VXLANs**. Each tunnel has:
 
 FreeSense names the interface (`vxlan0`, `vxlan1`, …) when the tunnel is first saved and never reuses
 a name that another tunnel owns.
+
+![The VXLAN edit page for a unicast tunnel on WAN with VNI 1100 and the automatic firewall rule enabled](__ASSET_ROOT__/screenshots/interfaces/vxlan-edit.png)
+
+![The VXLANs tab listing vxlan0 with its parent, VNI, remote address and description](__ASSET_ROOT__/screenshots/interfaces/vxlan-list.png)
 
 A VXLAN keeps the same MAC address for its whole life, so switches and neighbours do not see a new
 address when the tunnel is recreated after a WAN address change. The edit page shows it. To use a

@@ -49,6 +49,8 @@ are Development-only.
    for confirmation.
 4. The firewall reboots to finish the update.
 
+![System Update showing the installed system and the status Up to date](__ASSET_ROOT__/screenshots/updates/system-update.png)
+
 On a ZFS installation the update runs in a cloned boot environment with a first-boot health check
 and one automatic rollback; on UFS it runs in place. The
 [upgrade guide](/guides/upgrading-from-1.0/#what-happens-on-zfs) describes both, and
