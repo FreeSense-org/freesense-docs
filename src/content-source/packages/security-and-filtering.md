@@ -11,7 +11,7 @@ separately from the System, so installing or updating them does not change the b
 
 | Package | Purpose | Guide | Notes |
 | --- | --- | --- | --- |
-| Threat Shield & DNS Protection | DNS filtering with blocklists, per-client profiles, rewrites and a query log (AdGuard Home) | [Threat Shield](/packages/threat-shield/) | New in 1.1; replaces pfBlockerNG for DNS blocklists. GeoIP rules do not load in 1.1.0 (known issue). Moderate. |
+| Threat Shield & DNS Protection | DNS filtering with blocklists, an allowlist, per-client profiles and a query log (AdGuard Home); from package 1.1.0 also IP threat lists, country blocking, inbound reputation checks and a threat map | [Threat Shield](/packages/threat-shield/) | New in 1.1; replaces pfBlockerNG. GeoIP rules load from package 1.1.0 (not in 1.0.0). Moderate. |
 | Secure Web Gateway | Explicit or transparent web proxy (Squid 7) with domain policy, TLS inspection, identity, feeds and ICAP | [Secure Web Gateway](/packages/web-gateway/) | Intensive. Supported in 1.1. |
 | Web Gateway Local Antivirus | ClamAV scanning for the Web Gateway through c-icap | [Secure Web Gateway](/packages/web-gateway/#threat-protection) | Intensive. Not built for arm64. |
 | Suricata IDS/IPS | Signature-based intrusion detection and prevention per interface | [Suricata](/packages/suricata/) | Intensive. Not built for arm64. |
@@ -31,9 +31,12 @@ Suricata and Web Gateway Local Antivirus are not built for arm64 on Stable or De
 - **Detect exploits and attacks in traffic, and optionally drop them**: Suricata. It needs the most
   CPU and the most tuning.
 - **Ban addresses that misbehave, automatically and temporarily**: CrowdSec.
-- **Block whole countries**: Threat Shield has a GeoIP policy, but in 1.1.0 its firewall rules are
-  not loaded. Until that is fixed, use a firewall alias of country networks in your own rules, or
-  Suricata's GeoIP keywords.
+- **Block whole countries**: Threat Shield's GeoIP policy. Its firewall rules are loaded from
+  Threat Shield package 1.1.0; with package 1.0.0 they are not, so use a firewall alias of country
+  networks in your own rules or Suricata's GeoIP keywords until you have 1.1.0.
+- **Keep known bad sources away from services you expose**: Threat Shield
+  [inbound protection](/packages/threat-shield-inbound/) (reputation checks and flood limits) or
+  CrowdSec.
 - **Publicly trusted certificates for services on the firewall**: ACME Certificates.
 
 The packages combine well when each has a clear job. A common set is Threat Shield for DNS,
@@ -43,9 +46,10 @@ have the hardware headroom and someone to review their alerts and logs.
 ## Replacing pfBlockerNG
 
 pfBlockerNG is not part of FreeSense 1.1. Its DNS blocklist function is covered by
-[Threat Shield](/packages/threat-shield/). Threat Shield does not download IP reputation lists;
-for address-based blocking use [Suricata IP reputation](/packages/suricata/) or
-[CrowdSec](/packages/crowdsec/). pfBlockerNG settings are not converted, so recreate your feeds and
+[Threat Shield](/packages/threat-shield/). From package 1.1.0, Threat Shield also loads IP threat
+lists (such as Spamhaus DROP and FireHOL) into firewall tables; with package 1.0.0, use
+[Suricata IP reputation](/packages/suricata/) or [CrowdSec](/packages/crowdsec/) for
+address-based blocking. pfBlockerNG settings are not converted, so recreate your feeds and
 allow lists in Threat Shield after upgrading.
 
 <!-- needs verification: what happens to an installed pfBlockerNG package and its firewall rules during the 1.0 -> 1.1 upgrade. -->

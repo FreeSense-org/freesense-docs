@@ -54,7 +54,7 @@ be built for arm64 in the build environment. Raspberry Pi images are only availa
 | [Secure Web Gateway](/packages/web-gateway/) | Security | Intensive | Outbound web security gateway based on Squid 7: explicit and transparent proxying, TLS inspection modes, web policy, user authentication and logging. |
 | [Web Gateway Local Antivirus](/packages/web-gateway/) | Security | Intensive | Optional companion to the Secure Web Gateway that adds local malware scanning with ClamAV through c-icap. Scanning stays off until you enable it. |
 | [Suricata IDS/IPS](/packages/suricata/) | Security | Intensive | Network intrusion detection and prevention engine with ruleset management and event browsing. |
-| [Threat Shield & DNS Protection](/packages/threat-shield/) | Security | Moderate | DNS filtering and automatic threat-feed updates with AdGuard Home. GeoIP blocking does not take effect in 1.1.0. |
+| [Threat Shield & DNS Protection](/packages/threat-shield/) | Security | Moderate | Network-wide DNS filtering with AdGuard Home, IP threat lists, country blocking, inbound reputation checks and a live threat map. GeoIP blocking takes effect from package 1.1.0. |
 | [OpenVPN Client Export](/packages/openvpn-client-export/) | VPN | Lightweight | Exports ready-to-use client configurations and bundles for the built-in OpenVPN servers. |
 | [Tailscale](/packages/tailscale/) | VPN | Lightweight | Joins the firewall to a Tailscale mesh network, which is built on WireGuard. |
 | [WireGuard](/packages/wireguard/) | VPN | Lightweight | Fast, modern site-to-site and remote-access VPN tunnels. |
@@ -144,7 +144,8 @@ For guides grouped by purpose, see [security and filtering](/packages/security-a
 
 [Threat Shield & DNS Protection](/packages/threat-shield/) (`FreeSense-pkg-ThreatShield`) is new in
 1.1. It combines DNS filtering and automatic threat-feed updates in one package, with its own
-status page. Its GeoIP country policy does not take effect in 1.1.0 (a known issue).
+status page. In package 1.0.0 its GeoIP country policy does not take effect; package 1.1.0 fixes
+that and adds IP threat lists, inbound protection and a [threat map](/packages/threat-shield-map/).
 
 ### pfBlockerNG removed
 

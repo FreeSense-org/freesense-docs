@@ -64,8 +64,9 @@ that user's privileges. See the [REST API overview](/api/overview/).
 `freesense` and the system ports from `freesense-system-ports`) for one channel. A System-only change produces a System build without rebuilding
 Optional Packages.
 
-**Threat Shield** - An Optional Package that combines DNS filtering, automatic threat-feed
-synchronization, and GeoIP country blocking, configured under **Services → Threat Shield**. See
+**Threat Shield** - An Optional Package that combines DNS filtering, IP threat lists, GeoIP
+country blocking, inbound reputation checks and a live threat map, configured under
+**Services → Threat Shield**. See
 [Threat Shield](/packages/threat-shield/).
 
 **VXLAN** - Virtual Extensible LAN: an interface type that carries an Ethernet segment inside UDP

@@ -177,7 +177,7 @@ or between modes.
 then configure it under **Services → Threat Shield** and watch it under **Status → Threat Shield
 Status**. See [Threat Shield](/packages/threat-shield/).
 
-![The Threat Shield overview](__ASSET_ROOT__/screenshots/packages/threat-shield-overview.png)
+![The Threat Shield overview](__ASSET_ROOT__/screenshots/packages/threat-shield-overview-1.0.png)
 
 ## Web Gateway
 
