@@ -1,5 +1,6 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { navigation } from '../src/data/navigation.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const manifest = JSON.parse(readFileSync(resolve(root, 'public/docs-manifest.json'), 'utf8'));
@@ -59,6 +60,20 @@ for (const edition of ['stable', 'frozen']) {
 			throw new Error(`${edition} docs ${field} does not match release ${latest.release}`);
 		}
 	}
+}
+// Every release-notes page must be in the sidebar, or readers can't find it.
+const navigationSlugs = new Set();
+const collectSlugs = (items) => {
+	for (const item of items) {
+		if (Array.isArray(item)) navigationSlugs.add(item[1]);
+		else collectSlugs(item.items ?? []);
+	}
+};
+collectSlugs(navigation);
+for (const file of readdirSync(resolve(sourceRoot, 'releases'))) {
+	if (!/^\d+\.\d+\.\d+\.mdx?$/.test(file)) continue;
+	const slug = `releases/${file.replace(/\.mdx?$/, '')}`;
+	if (!navigationSlugs.has(slug)) throw new Error(`${slug} has no sidebar entry in src/data/navigation.mjs`);
 }
 for (const field of manifest.documentation_contract ?? []) {
   if (!['source', 'ports', 'os_definition', 'freebsd'].includes(field)) {
