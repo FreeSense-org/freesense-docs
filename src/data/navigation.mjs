@@ -26,6 +26,7 @@ export const navigation = [
     items: [
       ['Upgrading from 1.0', 'guides/upgrading-from-1.0'],
       ['Updates and release channels', 'guides/updates-and-channels'],
+      ['Release notes 1.1.4', 'releases/1.1.4'],
       ['Release notes 1.1.3', 'releases/1.1.3'],
       ['Release notes 1.1.2', 'releases/1.1.2'],
       ['Release notes 1.1.1', 'releases/1.1.1'],
