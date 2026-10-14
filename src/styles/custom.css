@@ -130,6 +130,20 @@ header.header {
 
 :root[data-theme='light'] .docs-edition-note { background: #fff3ef; }
 
+/* WebUI screenshots: frame them so the dark product UI stands apart from the page. */
+.sl-markdown-content img[src*='/_astro/'] {
+  display: block;
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .28);
+}
+
+:root[data-theme='light'] .sl-markdown-content img[src*='/_astro/'] {
+  box-shadow: 0 6px 20px rgba(15, 23, 42, .16);
+}
+
+.sl-markdown-content .screenshot-link { cursor: zoom-in; }
+
 @media (min-width: 50rem) {
   .sidebar-content { padding-top: 1.35rem; }
 }

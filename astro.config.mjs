@@ -42,6 +42,25 @@ export default defineConfig({
       },
       favicon: '/favicon.svg',
       customCss: ['./src/styles/custom.css'],
+      head: [
+        {
+          // Open WebUI screenshots full size: they are scaled down to the content width.
+          tag: 'script',
+          content: `document.addEventListener('DOMContentLoaded', () => {
+  for (const img of document.querySelectorAll(".sl-markdown-content img[src*='/_astro/']")) {
+    if (img.closest('a')) continue;
+    const link = document.createElement('a');
+    link.href = img.currentSrc || img.src;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.className = 'screenshot-link';
+    link.title = 'Open the full-size image';
+    img.replaceWith(link);
+    link.append(img);
+  }
+});`,
+        },
+      ],
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/FreeSense-org' },
       ],

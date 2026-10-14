@@ -8,6 +8,7 @@ const sourceRoot = resolve(root, 'src/content-source');
 const overridesRoot = resolve(root, 'src/content-overrides');
 const frozenRoot = resolve(root, 'src/content-frozen');
 const outputRoot = resolve(root, 'src/content/docs');
+const assetsRoot = resolve(root, 'src/assets');
 const registry = JSON.parse(await readFile(resolve(root, 'src/data/editions.json'), 'utf8'));
 // Maintained editions are built from the shared source plus their overrides; a
 // frozen edition is materialized only from its own snapshot under
@@ -73,8 +74,10 @@ function rewriteDocumentationUrls(content, edition, docRoots) {
   return rewritten;
 }
 
-function rewriteEditionAssets(content, edition) {
-  const assetRoot = edition.routePrefix ? '../../../assets/' : '../../assets/';
+// __ASSET_ROOT__ resolves to src/assets/ relative to the generated page, so
+// images work at any depth and in every edition.
+function rewriteEditionAssets(content, target) {
+  const assetRoot = `${relative(dirname(target), assetsRoot).split(sep).join('/')}/`;
   return content.replaceAll('__ASSET_ROOT__/', assetRoot);
 }
 
@@ -141,7 +144,7 @@ for (const edition of editions) {
     content = injectEditUrl(content, sourceEditUrl(selectedSource));
     if (edition.frozen) content = injectFrozenBanner(content, edition);
     content = rewriteDocumentationUrls(content, edition, editionRoots);
-    content = rewriteEditionAssets(content, edition);
+    content = rewriteEditionAssets(content, target);
     await writeFile(target, content, 'utf8');
     written += 1;
   }

@@ -97,6 +97,8 @@ Switch to the **Targets** view and select **Add target**. Choose the **Storage t
 **Description**, and set **Keep** (how many backups of this firewall to retain; default 30). Optionally
 include RRD graph data, the firewall's SSH host keys, or extra data such as DHCP leases.
 
+![Adding an S3-compatible remote backup target for Cloudflare R2](__ASSET_ROOT__/screenshots/access/remote-backup-target.png)
+
 | Storage type | Fields | Notes |
 | --- | --- | --- |
 | S3-compatible | **Endpoint URL**, **Region**, **Bucket**, optional **Prefix**, **Path-style URLs**, **Access key ID**, **Secret access key** | AWS: `https://s3.<region>.amazonaws.com`. Cloudflare R2: `https://<account-id>.r2.cloudflarestorage.com` with region `auto`. Most MinIO setups need path-style URLs. Use a key limited to the bucket with read, write, list, and delete permissions. |

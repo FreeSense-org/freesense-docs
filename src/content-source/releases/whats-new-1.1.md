@@ -105,6 +105,8 @@ is cached, and dashboard widgets no longer stack requests or poll from hidden br
 
 See the [menu guide](/reference/menu-guide/).
 
+![The grouped Services menu in 1.1](__ASSET_ROOT__/screenshots/reference/menu-services.png)
+
 ## VXLAN
 
 **What it is.** VXLAN tunnels carry Layer 2 Ethernet frames over UDP between two or more endpoints.
@@ -119,6 +121,8 @@ tunnel traffic on the parent interface.
 **How to use it.** Open **Interfaces → Assignments → VXLANs**, add a tunnel (parent interface or
 virtual IP, address family, unicast peer or multicast group, VNI, ports), then assign it on
 **Interface Assignments**. See [VXLAN](/configure/interfaces-vlans-bridges/#vxlan).
+
+![Adding a VXLAN tunnel](__ASSET_ROOT__/screenshots/interfaces/vxlan-edit.png)
 
 ## Remote backups
 
@@ -172,6 +176,8 @@ or between modes.
 **How to use it.** Install **Threat Shield** from **System → Package Manager → Available Packages**,
 then configure it under **Services → Threat Shield** and watch it under **Status → Threat Shield
 Status**. See [Threat Shield](/packages/threat-shield/).
+
+![The Threat Shield overview](__ASSET_ROOT__/screenshots/packages/threat-shield-overview.png)
 
 ## Web Gateway
 

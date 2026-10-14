@@ -279,9 +279,13 @@ The WebGUI port has no API rate limit of its own; login protection still applies
 - **Authentication log.** Failed authentications are always written to the authentication log, independent of the request log setting.
 - **Configuration history.** Changes made through the API appear in **Diagnostics → Backup & Restore → Configuration History** with the user and `API key <id>` as the source.
 
+![Status, REST API with request counters, requests per hour and the request log](__ASSET_ROOT__/screenshots/api/status.png)
+
 ## The API Explorer and the Guide
 
 **System → REST API → API Explorer** lists every endpoint available on this firewall, including endpoints added by installed packages, grouped by area. For each endpoint it shows the method, path, scope, WebUI page, parameters and body, and whether the signed-in user could call it. **Try it** sends a real request from the browser to `/api/v1` with an API key that you paste; the key stays in the browser (in memory, or optionally in sessionStorage until the tab closes). Write requests ask for confirmation before they are sent. **Download openapi.json** saves the same document as `GET /api/v1/openapi.json` without needing a key.
+
+![The API Explorer showing the reference for POST /api/v1/firewall/aliases](__ASSET_ROOT__/screenshots/api/explorer.png)
 
 "Try it" uses the WebGUI port. If the API is served only on listeners, the Explorer can show the reference but cannot send requests.
 

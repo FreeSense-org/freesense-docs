@@ -64,6 +64,8 @@ later under **System → Certificates**.
 | Username | `admin` |
 | Password | `freesense` |
 
+![The FreeSense sign-in page](__ASSET_ROOT__/screenshots/getting-started/sign-in.png)
+
 :::danger[Change the default password]
 The default password is public. FreeSense shows a warning while the `admin` account still uses it.
 Set a strong password in the setup wizard or under **System → User Manager**.
@@ -75,10 +77,14 @@ On a new installation, the first sign-in opens the setup wizard. It sets the hos
 DNS servers, time server and time zone, WAN and LAN configuration, and the administrator password.
 You can run it again at any time from **System → Setup Wizard**.
 
+![Setup wizard step 2, General Information, with the Hostname and Domain fields](__ASSET_ROOT__/screenshots/getting-started/setup-wizard.png)
+
 After the wizard, the WebUI opens **Home**, the dashboard. The top menu groups pages by area:
 **System**, **Interfaces**, **Firewall**, **Services**, **VPN**, **Status**, **Diagnostics**, and
 **Help**. Press **Ctrl+K** (or select **Search** in the menu bar) to find any page by name. See the
 [WebUI menu reference](/reference/menu-guide/).
+
+![The dashboard after setup: System Information, Interfaces, Gateways and Traffic Graphs widgets](__ASSET_ROOT__/screenshots/getting-started/dashboard.png)
 
 ## Check the new system
 

@@ -8,6 +8,8 @@ web-managed firewall (rules, NAT, VPNs, DHCP, DNS, traffic shaping, monitoring, 
 package manager) on a pinned **FreeBSD 16** base. FreeSense has a single edition: every feature is
 in the same free build.
 
+![The FreeSense dashboard with system information, interfaces, gateways and traffic graphs](__ASSET_ROOT__/screenshots/getting-started/dashboard.png)
+
 ## Open from top to bottom
 
 FreeSense is a fully open derivative of **pfSense® CE**, itself derived from **m0n0wall** and built

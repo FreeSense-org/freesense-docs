@@ -7,12 +7,23 @@ FreeSense documentation is original project work. Do not copy vendor documentati
 screenshots, diagrams, tables, branding, or navigation wording. External documentation can show that
 a topic needs coverage, but it is never a source to copy from.
 
-## No screenshots or images
+## Screenshots
 
-Pages contain no screenshots or other images of the product. Describe the interface in text instead:
-menu paths in bold with arrows, such as **System → Package Manager → Available Packages**, and field
-labels exactly as the WebUI shows them. Text stays accurate across theme changes, can be searched and
-translated, and cannot leak addresses, keys, or other secrets the way a screenshot can.
+Text comes first: write menu paths in bold with arrows, such as
+**System → Package Manager → Available Packages**, and field labels exactly as the WebUI shows them,
+so a page can be followed without its pictures. Add a screenshot where it explains something text
+cannot do as well: what a page looks like the first time, where a control sits, or how a status
+display reads.
+
+- Take screenshots from a FreeSense system running the documented edition, in the default dark theme.
+- Use test-lab data only: private addresses, invented names and descriptions, no real keys,
+  passwords, tokens, public addresses, or customer data. Check every image for secrets before
+  committing it.
+- Crop to the part of the page the text discusses, and keep the top menu only when it matters.
+- Store images as PNG in `src/assets/screenshots/<section>/` with a descriptive file name, and
+  reference them as `![Alt text](__ASSET_ROOT__/screenshots/<section>/<file>.png)` so every edition
+  resolves them. The alt text says what the image shows.
+- Replace a screenshot when the page it shows changes.
 
 ## Evidence standard
 

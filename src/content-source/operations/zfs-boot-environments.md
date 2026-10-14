@@ -82,6 +82,8 @@ Open **System → Boot Environments**. The **Environments** tab lists every boot
 | Created | When the environment was created |
 | Space | Space the environment uses in the pool |
 
+![Boot Environments listing the running environment and the pre-upgrade environment with health and version](__ASSET_ROOT__/screenshots/operations/boot-environments.png)
+
 ### Create a boot environment
 
 1. Select **Create snapshot** in the page header.

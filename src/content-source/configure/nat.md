@@ -30,6 +30,10 @@ All NAT settings are under **Firewall → NAT**, on the tabs **Port Forward**, *
 The rule on the WAN tab sees the translated (internal) destination, so an associated rule shows the
 internal address and port.
 
+![A port forward from the WAN address on HTTPS to the NAS alias](__ASSET_ROOT__/screenshots/nat/port-forward-edit.png)
+
+![The Port Forward list with the new rule and the Apply Changes prompt](__ASSET_ROOT__/screenshots/nat/port-forward-apply.png)
+
 ## Choose an outbound NAT mode
 
 Open **Firewall → NAT → Outbound** and pick a **Mode**:
