@@ -41,9 +41,13 @@ are Development-only.
 ## Check for and install updates
 
 1. Open **System → Update**. The **System Update** tab shows the **Installed system** version, the
-   **Available system** version when a newer one exists, and the update status.
-2. Read the **What is new** panel, which lists the release notes from the channel's release
-   document when they are available.
+   **Available system** version when a newer one exists, and the update status. From 1.1.3 versions
+   are shown as the release (`1.1.3`); the full package version, such as `1.1.3_4`, is in the
+   tooltip. Two Development builds of the same release show as `1.2.0 (build N)`.
+2. Read the **What is new** panel, which lists the changes from the channel's release document:
+   base-system and System package commits, Optional Packages commits (from 1.1.3), and notes the
+   release names itself. A release without base-system changes says so and links to the release
+   notes in this documentation.
 3. Select **Install update**. The page is locked behind a progress overlay with the from and to
    versions and an elapsed timer; **Show details** shows the updater output. Leaving the page asks
    for confirmation.
