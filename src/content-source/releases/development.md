@@ -50,5 +50,13 @@ Moving from Stable 1.1 to Development 1.2 is one-way: the updater never offers S
 Development system. Returning to Stable means reinstalling from a Stable installer and restoring a
 configuration backup.
 
+## Build names
+
+Development builds are named `1.2.0-dev.YYYYMMDD.G`: the version of the line, the UTC date of the
+FreeSense source commit, and the build generation, for example
+`FreeSense-1.2.0-dev.20261015.412-amd64.iso`. Builds published before October 2026 use the older
+`1.2.0-gG` form. On an installed system, **System → Update** shows the System package version
+of the same build, `1.2.0.a.YYYYMMDD.HHMM_G`.
+
 The exact current build is shown in the live Development release document,
 `https://pkg.freesense.org/v1/releases/devel.json`, and in the provenance attached to its images.
