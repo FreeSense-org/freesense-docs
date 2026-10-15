@@ -27,6 +27,9 @@ the next number.
 
 Release notes for the earlier 1.0.x line are in the [frozen 1.0 documentation](/1.0/).
 
+To try the fixes lined up for the next patch before it is released, a test system can switch to the
+**Testing** channel; see [Updates & release channels](/guides/updates-and-channels/).
+
 ## Architectures
 
 Stable publishes **amd64** (installer ISO plus UFS and ZFS cloud disks). Starting with
