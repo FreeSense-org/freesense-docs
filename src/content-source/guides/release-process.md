@@ -7,8 +7,26 @@ FreeSense has two active release lines with different promises:
 
 | Line | Purpose | Support policy |
 | --- | --- | --- |
-| **Stable 1.1.x** | Production and normal use | Supported; changes only through tagged patch releases such as `1.1.1` |
+| **Stable 1.1.x** | Production and normal use | Supported; changes only through tagged patch releases such as `1.1.5` |
 | **Development 1.2** | Integration testing, contributors, disposable labs | **Experimental; no support** |
+
+## Versions, branches, and tags
+
+| Line | Version on the system | Release name | Source branch | Tag |
+| --- | --- | --- | --- | --- |
+| Stable | `1.1.N-RELEASE` | `1.1.N` | `RELENG_1_1` | `v1.1.N` |
+| Development | `1.2.0-DEVELOPMENT` | `1.2.0-dev.YYYYMMDD.G` (source commit date, build generation) | `main` | none |
+
+New work lands on `main` in the FreeSense repositories and ships in the nightly Development build.
+A fix for the Stable line is then copied (cherry-picked) to the `RELENG_1_1` maintenance branch,
+and only commits on that branch can become a Stable release. Every Stable release is tagged
+`v1.1.N` in all four build repositories; tags are never moved.
+
+A Stable version number is used exactly once. A release that is cancelled or found broken is
+marked withdrawn (`config/releases/withdrawn.json` in `freesense-os-base`) and the fix ships as the
+next number. Stable patches are cut for security fixes, broken updates or regressions, or a
+reviewed batch of fixes, and at least 24 hours apart unless a security or broken-update fix needs
+to go out sooner.
 
 FreeSense 1.1.0 replaced 1.0.x as the Stable line. The 1.0.x releases remain published and
 auditable, but ordinary fixes are not backported to them. The frozen 1.0 documentation is at
@@ -36,16 +54,27 @@ Every Stable release is defined by a sealed release lock in the `freesense-os-ba
 | `freebsd_osversion` | FreeBSD `osversion` of the pinned platform |
 | `package_train` | Package train, for example `1.1` |
 | `sealed` | `true` once the release is final |
+| `notes` | Hand-written release notes, including the releases it supersedes |
+| `soak_override` | Optional reason to publish sooner than 24 hours after the previous release |
+
+Locks are append-only: once merged, a lock is never edited or deleted.
 
 For 1.1.0 the lock is `config/releases/1.1.0.json`: source `0318257`, System ports `26853c0`,
 optional packages `ce79191`, FreeBSD source `a52c50b4`, `osversion` 1600027, package train `1.1`.
 See the [1.1.0 release notes](/releases/1.1.0/).
 
-A Stable release is published manually from its checked lock. Publishing builds the System and then
-the Optional Packages from the lock, signs the Stable channel into the channel manifests, and then
-builds and publishes the installer and cloud images. Once the channel is signed, installed Stable
-systems can update to the release, even before the images and the download page are updated. The
-Stable channel only ever moves forward.
+A Stable release is published in two manual steps from its checked lock:
+
+1. **Test build.** The System and then the Optional Packages are built from the lock into their own
+   repositories. Nothing changes for installed systems. The test build is upgrade-tested from the
+   current Stable release on a test system.
+2. **Seal.** After a maintainer approves it, the build checks that the test build is complete, that
+   its sources are on `RELENG_1_1`, and that the previous release is at least 24 hours old. It then
+   signs the Stable channel into the channel manifests, tags the release, and builds and publishes
+   the installer and cloud images.
+
+Once the channel is signed, installed Stable systems can update to the release, even before the
+images and the download page are updated. The Stable channel only ever moves forward.
 
 ## Independent System and Optional Packages builds
 

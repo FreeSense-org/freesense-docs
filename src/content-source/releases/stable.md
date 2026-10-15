@@ -4,19 +4,22 @@ description: The supported FreeSense 1.1.x production line, its release notes, a
 ---
 
 Stable is the supported FreeSense production line. It currently tracks **1.1.x**. The first release
-of the line is tagged `1.1.0`; it replaced 1.0.x as the supported line on 2026-10-13.
+of the line is `1.1.0`; it replaced 1.0.x as the supported line on 2026-10-13.
 
 Each Stable release is built from a sealed release lock that records the exact source, ports,
 optional package, and FreeBSD revisions, so a published release can be audited and recreated (see
-[Release process](/guides/release-process/)). Necessary fixes are built, tested, tagged, and
-published as patch releases such as `1.1.1`. Earlier artifacts stay immutable.
+[Release process](/guides/release-process/)). Fixes are made on the `RELENG_1_1` maintenance
+branch, built and upgrade-tested as a test build, and then published as patch releases such as
+`1.1.5`. Every published release is tagged `v1.1.N` in the FreeSense repositories. Earlier
+artifacts stay immutable, and a version number is never reused: a withdrawn release is replaced by
+the next number.
 
 ## Release notes
 
 | Release | Date | Notes |
 | --- | --- | --- |
 | 1.1.5 | 2026-10-14 | [Release notes](/releases/1.1.5/) · updates and package changes work again on 1.1.1 and later (one console command first); the update window opens at once; Threat Shield save and map fixes |
-| 1.1.4 | 2026-10-14 | [Release notes](/releases/1.1.4/) · Threat Shield 1.1.0: GeoIP and DNS redirection work, IP threat lists, inbound protection, threat map |
+| 1.1.4 | 2026-10-14 | **Withdrawn**, superseded by 1.1.5 · [Release notes](/releases/1.1.4/) · Threat Shield 1.1.0: GeoIP and DNS redirection work, IP threat lists, inbound protection, threat map |
 | 1.1.3 | 2026-10-14 | [Release notes](/releases/1.1.3/) · multi-line settings keep their line breaks; Threat Shield settings and query log; no stray VLAN interfaces |
 | 1.1.2 | 2026-10-14 | [Release notes](/releases/1.1.2/) · Tailscale and WireGuard keys kept out of logs and process lists |
 | 1.1.1 | October 2026 | [Release notes](/releases/1.1.1/) · adds arm64 (generic UEFI installer); amd64 code unchanged from 1.1.0 |
