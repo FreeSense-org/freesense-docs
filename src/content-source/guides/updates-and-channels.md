@@ -1,6 +1,6 @@
 ---
 title: Updates & release channels
-description: How FreeSense delivers signed updates, how the Stable 1.1 and Development 1.2 channels differ, and which channel changes are one-way.
+description: How FreeSense delivers signed updates, how the Stable 1.1, Testing 1.1, and Development 1.2 channels differ, and which channel changes are one-way.
 ---
 
 FreeSense updates are package-based. System updates are installed from the official signed
@@ -17,12 +17,19 @@ report. Requests identify only as `FreeSense/<version>`.
 | Channel | Release line | Intended use | Support |
 | --- | --- | --- | --- |
 | **Stable** | 1.1.x: 1.1.0 and later patch releases such as 1.1.1 | Production and normal use | Supported |
+| **Testing** | Nightly builds of the next 1.1 patch, for example 1.1.6 before its release | Trying Stable fixes before they are released, on test systems | **Pre-release; no support** |
 | **Development** | Rolling 1.2 builds, rebuilt nightly | Contributors, integration testing, disposable labs | **Experimental; no support** |
 
 Stable advances only through tagged releases built from a sealed release lock. Fixes that are
 needed on Stable are published as patch releases. FreeSense 1.1.0 replaced the 1.0.x line; 1.0.x
 releases stay published, but ordinary fixes are not backported to them. Read
 [Upgrading from 1.0](/guides/upgrading-from-1.0/) to move a 1.0 firewall.
+
+Testing (shown as **FreeSense 1.1 Testing**) follows the 1.1 maintenance branch: every fix that is
+lined up for the next Stable patch, built every night as that patch number. On a Testing system
+**System → Update** shows a version such as `1.1.6.a.20261016.1200_3`. When that patch is released
+on Stable, Testing moves on to the next patch number. Testing publishes no installer images; install
+Stable and then switch.
 
 Development receives current 1.2 work every night. A Development build that passed its signature,
 integrity, and boot checks is still experimental: verification proves the artifact is the one the
@@ -87,9 +94,13 @@ The list offers only channels whose release is the same as or newer than the run
 | From | To | Allowed |
 | --- | --- | --- |
 | 1.0.x Stable | 1.1 Stable | Yes, the normal upgrade path. One-way. |
-| 1.1 Stable | 1.2 Development | Yes, but one-way and unsupported. |
-| 1.2 Development | 1.1 Stable | No |
+| 1.1 Stable | 1.1 Testing | Yes. |
+| 1.1 Testing | 1.1 Stable | Only once Stable has released the patch Testing is on (for example 1.1.6). Until then Stable would be a downgrade and is not listed. |
+| 1.1 Stable or Testing | 1.2 Development | Yes, but one-way and unsupported. |
+| 1.2 Development | 1.1 Stable or Testing | No |
 | 1.1 (any channel) | 1.0 | No |
+
+A 1.0.x system also lists 1.1 Testing. Upgrade 1.0 systems to 1.1 Stable instead.
 
 A channel that would downgrade the running system is not listed, and the page refuses it with
 "That firmware branch would downgrade the running system and cannot be selected."

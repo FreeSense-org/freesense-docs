@@ -15,9 +15,12 @@ FreeSense has two active release lines with different promises:
 | Line | Version on the system | Release name | Source branch | Tag |
 | --- | --- | --- | --- | --- |
 | Stable | `1.1.N-RELEASE` | `1.1.N` | `RELENG_1_1` | `v1.1.N` |
+| Testing | `1.1.N-DEVELOPMENT` (the next patch) | none: update channel only, no images | `RELENG_1_1` | none |
 | Development | `1.2.0-DEVELOPMENT` | `1.2.0-dev.YYYYMMDD.G` (source commit date, build generation) | `main` | none |
 
 New work lands on `main` in the FreeSense repositories and ships in the nightly Development build.
+Every night the `RELENG_1_1` maintenance branch is also built as the next Stable patch and published
+on the **Testing** channel, so test systems can try Stable fixes before they are released.
 A fix for the Stable line is then copied (cherry-picked) to the `RELENG_1_1` maintenance branch,
 and only commits on that branch can become a Stable release. Every Stable release is tagged
 `v1.1.N` in all four build repositories; tags are never moved.
