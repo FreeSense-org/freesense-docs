@@ -11,6 +11,8 @@ dashboard and can back them up, update them, check them against policies and set
 :::caution[Development only]
 Fleet is part of the Development line (FreeSense 1.2). It is not in Stable 1.1. Development
 builds are experimental and unsupported; do not manage production firewalls with them yet.
+See [Fleet status and known issues](/packages/fleet-status/) for what was tested and what does not
+work yet.
 :::
 
 What Fleet gives you:
@@ -190,5 +192,6 @@ On the firewall, run `freesense-join leave`. It leaves the fleet and keeps its l
 - [Fleet HA pairs](/packages/fleet-ha/)
 - [Fleet policies](/packages/fleet-policies/)
 - [Fleet updates, templates and schedules](/packages/fleet-operations/)
+- [Fleet status and known issues](/packages/fleet-status/)
 - [Tailscale](/packages/tailscale/)
 - [Install and manage packages](/packages/installing-packages/)
