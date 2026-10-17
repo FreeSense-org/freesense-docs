@@ -1,12 +1,13 @@
 ---
 title: FreeSense Fleet
-description: Manage many FreeSense firewalls from one controller with FreeSense Fleet - groups, joining, a live dashboard, backups, updates, policies and HA pairs.
+description: Manage many FreeSense firewalls from one controller with FreeSense Fleet - guided joining, groups, a live dashboard and wall-screen view, internet monitoring, backups, updates, policies and HA pairs.
 ---
 
 FreeSense Fleet is central management for FreeSense. One firewall runs the **Fleet controller**
 (the optional package `FreeSense-pkg-Fleet`); every other firewall joins it with the **Fleet
 agent**, which is part of FreeSense itself. From the controller you see every firewall on one
-dashboard and can back them up, update them, check them against policies and set up HA pairs.
+dashboard and on a wall screen, and can back them up, update them, check them against policies and
+set up HA pairs. A new firewall joins from its own WebUI by pasting an invitation.
 
 :::caution[Development only]
 Fleet is part of the Development line (FreeSense 1.2). It is not in Stable 1.1. Development
@@ -20,18 +21,29 @@ What Fleet gives you:
 - **One dashboard** for every firewall: state, availability over 24 hours, alerts and updates.
 - **Groups** such as *Branch offices* or *Retail stores*, used to filter lists and to target
   backups, updates, schedules and policies.
-- **Joining with an approval code**: a join link plus a separate join key, and a 6-digit code you
-  compare before you approve.
+- **Guided joining**: make an invitation on the controller, paste it into **Add to fleet** on the
+  new firewall, and compare a 6-digit code before you approve. Fleet tunnel, Tailscale (installed
+  for you) or a direct connection. See [Add a firewall to a Fleet](/packages/fleet-join/).
+- **Connection points**: choose the interfaces and ports the controller listens on; Fleet opens
+  and closes the ports with locked firewall rules. See
+  [connection points and firewall rules](/packages/fleet-connect/).
+- **A live view for a wall screen**: panels on one side, a paged firewall list on the other, per
+  screen layout, groups and sound. See [Fleet live view](/packages/fleet-live-view/).
+- **Internet monitoring**: packet loss, latency, jitter, a quality score and failover alerts for
+  every firewall. See [internet connectivity](/packages/fleet-internet/).
 - **Backups** of every firewall, kept on the controller, with retention rules.
 - **Updates and rollouts** with maintenance windows, **templates** and **schedules**. See
   [Fleet updates, templates and schedules](/packages/fleet-operations/).
 - **Policies** that check, fix or lock settings on every firewall. See
   [Fleet policies](/packages/fleet-policies/).
-- **HA pairs** set up from two firewalls in one wizard. See [Fleet HA pairs](/packages/fleet-ha/).
+- **HA pairs** set up from two firewalls in a step-by-step guide. See
+  [Fleet HA pairs](/packages/fleet-ha/).
 - **Activity**: every action runs as an operation with live progress.
+- **Settings** for everything, in sections. See [Fleet settings](/packages/fleet-settings/).
 
 Firewalls open the connection to the controller, so they can sit behind NAT. Only the controller
-must be reachable on its enrollment port (TCP 8443) and tunnel port (UDP 51830).
+must be reachable: on its enrollment port (TCP, 8443 by default) and tunnel port (UDP, 51830 by
+default), or in a tailnet with no public port at all.
 
 ## Install the controller
 
@@ -39,13 +51,20 @@ must be reachable on its enrollment port (TCP 8443) and tunnel port (UDP 51830).
    Packages**.
 2. Install **FreeSense Fleet** (`FreeSense-pkg-Fleet`, category System).
 3. Open **Status → FreeSense Fleet**, then **Settings → Controller**.
-4. Turn on **Run this firewall as a FreeSense Fleet controller**.
-5. In **Address firewalls use to reach this controller**, enter the public address or DNS name
-   of this firewall (or the address of a port forward to it).
-6. Keep the default ports unless they clash with something else, and select **Save**.
+4. A step-by-step guide starts. **Switch on**, then choose **Where firewalls connect**: one row
+   per interface firewalls reach this controller on (WAN for the internet, LAN for your own
+   networks, Tailscale for a tailnet), with the port. Leave the address empty and Fleet finds it
+   itself; enter a public address or DNS name when the controller sits behind NAT.
+5. Let Fleet open the ports (**Firewall rules**), or manage them yourself.
+6. Choose whether firewalls may also connect over **Tailscale**, review, and select **Switch
+   on**.
+
+See [connection points and firewall rules](/packages/fleet-connect/) for the details.
 
 The page confirms *Saved. FreeSense Fleet is running.* A Fleet icon appears in the top bar; it
-turns from green to a warning colour when something in the fleet needs attention.
+turns from green to a warning colour when something in the fleet needs attention, such as an
+offline firewall, a failing policy rule or a firewall without internet. **Settings →
+Self-check** tests that firewalls can reach and trust the controller.
 
 The controller itself is listed first under **Firewalls** as *Fleet server*. It is not managed
 by Fleet and keeps a self-backup.
@@ -73,64 +92,18 @@ uses cannot be deleted.
 
 Each new firewall needs an invitation.
 
-1. Open **Firewalls → Add and approve**.
-2. Under **The new firewall reaches this controller**, keep **Over the internet** (the Fleet
-   tunnel) or choose **Over Tailscale** when the controller is in a tailnet.
-3. Fill in:
-   - **Name**: how the firewall is shown in Fleet, for example *Aarhus branch*.
-   - **Access**: **Monitor only** (Fleet reads status and backups) or **Managed** (Fleet may also
-     change the configuration).
-   - **Group** and **Site**: the group it joins, and the site token for its naming pattern.
-   - **Hostname**: leave empty to use the group's pattern.
-   - **Its public address** (optional): the enrollment port accepts this address until the
-     invitation expires, even when **Settings → Access** allows only a list.
-   - **Valid for**: 1 hour to 30 days.
-4. Select **Create invitation**.
+1. On the controller, open **Firewalls → Add and approve** and select **Add a firewall**. The
+   guide asks for a name and access, how the firewall connects, and how long the invitation is
+   valid, then gives you **one text** to paste. It is shown once.
+2. On the new firewall, open **System → Central Management → Add to fleet**, paste the text and
+   follow the steps. A 6-digit code appears.
+3. Back on the controller, approve the firewall **only when the code matches**.
 
-![The Add a firewall form filled in for a managed branch firewall](__ASSET_ROOT__/screenshots/packages/fleet-invite.png)
+![The invitation guide on the controller: how the new firewall connects](__ASSET_ROOT__/screenshots/packages/fleet-invite-guide.png)
 
-The page shows a **Join link** and a **Join key**. The key is shown only once: copy it and send it
-by a different channel than the link.
-
-### Join from the new firewall
-
-On the new firewall, open the console and choose option **17**, or run:
-
-```sh
-freesense-join join '<link>'
-```
-
-Paste the link, then type the join key when asked. The firewall checks the controller's
-certificate, proves the key and then shows a 6-digit code:
-
-```text
-OK      Connecting to the controller
-OK      Checking the controller's certificate
-OK      Proving the join key
-WAITING Waiting for approval. Ask the administrator to approve this box and compare the code: 138090
-```
-
-### Approve
-
-Back on the controller, **Add and approve** lists the firewall under **Waiting for approval**
-with the same code. Approve it **only when the codes match**; a different code means someone else
-is using the invitation. Select **Reject** in that case.
-
-![A firewall waiting for approval with its 6-digit code](__ASSET_ROOT__/screenshots/packages/fleet-approve.png)
-
-After approval the firewall sets up the tunnel, sends its first heartbeat and appears in the list:
-
-```text
-OK      Setting up the tunnel
-OK      First heartbeat
-
-Joined https://fleet.example.net:8443 as node-a7359b57fba68155 (managed).
-```
-
-An open invitation can be withdrawn with **Revoke** under **Open invitations**.
-
-For many firewalls at once, use **Deployment Factory** (seed disks and cloud-init seeds that join
-by themselves).
+All the details, the console route (`freesense-join join`), Tailscale and many firewalls at once
+with the Deployment Factory are on
+[Add a firewall to a Fleet](/packages/fleet-join/).
 
 ## The firewall list
 
@@ -143,7 +116,9 @@ policy problems or without rollback protection.
 
 Select a firewall to open its own page: **Overview**, **System**, **Stats**, **Updates**,
 **Policies**, **Backups**, **Manage** and **Events**. **Groups → Change** on the Overview moves it
-between groups.
+between groups. **Stats** has one range picker (1 hour to 30 days) and four groups of charts:
+availability and load, network, internet and activity. Lists filter as soon as you choose a
+state, group or version.
 
 ![The page of one firewall with its version, rollback protection, tunnel address and groups](__ASSET_ROOT__/screenshots/packages/fleet-firewall.png)
 
@@ -164,7 +139,8 @@ whole dashboard.
 
 ![The Fleet dashboard with six online firewalls, fleet pulse and needs attention](__ASSET_ROOT__/screenshots/packages/fleet-dashboard.png)
 
-**Open live view** and **NOC screens** show the same data full screen for a wall display.
+**Open live view** and **NOC screens** show the same data full screen for a wall display. See
+[Fleet live view and NOC screens](/packages/fleet-live-view/).
 
 ## Backups
 
@@ -185,13 +161,19 @@ one to follow each firewall live. **Alerts** and **Alert channels** send problem
 
 ## Remove a firewall
 
-On the firewall, run `freesense-join leave`. It leaves the fleet and keeps its last configuration.
+On the firewall, open **System → Central Management** and select **Leave the fleet**, or run
+`freesense-join leave`. It leaves the fleet and keeps its last configuration.
 
 ## Related pages
 
+- [Add a firewall to a Fleet](/packages/fleet-join/)
+- [Fleet connection points and firewall rules](/packages/fleet-connect/)
+- [Fleet live view and NOC screens](/packages/fleet-live-view/)
+- [Fleet internet connectivity and quality](/packages/fleet-internet/)
 - [Fleet HA pairs](/packages/fleet-ha/)
 - [Fleet policies](/packages/fleet-policies/)
 - [Fleet updates, templates and schedules](/packages/fleet-operations/)
+- [Fleet settings](/packages/fleet-settings/)
 - [Fleet status and known issues](/packages/fleet-status/)
 - [Tailscale](/packages/tailscale/)
 - [Install and manage packages](/packages/installing-packages/)
