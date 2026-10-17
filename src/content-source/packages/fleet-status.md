@@ -58,8 +58,8 @@ then, 0.2.0_1 still has them.
   one network card), the activity progress bar, the newest-version tile, invitations (**New key**),
   and group list colours.
 
-Still open: on the cloud image, setting the admin password through the configuration library does
-not save; set it in the WebUI or the console.
+- **Cloud images:** the admin password set after the first boot is no longer reset when the
+  image re-reads its cloud-init data (fixed in the cloud-init adapter, also for Stable 1.1).
 
 ## Not tested yet on 1.2
 
