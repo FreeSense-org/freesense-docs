@@ -18,7 +18,10 @@ Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/pa
 2. Enter a **Name** and a **Description**.
 3. Under **For**, choose all firewalls, one or more groups, or single firewalls. A policy for one
    firewall or a group wins over a policy for all firewalls, rule by rule.
-4. Switch on the rules you want. Rules are grouped in areas:
+4. Switch on the rules you want. The editor shows one **area** at a time: pick the area in the
+   list on the left (it shows how many of its rules are on). The search box looks through all
+   areas, and an area with a field that needs fixing opens by itself when you save. Rules are
+   grouped in areas:
 
    | Area | Rules |
    | --- | --- |
@@ -35,12 +38,26 @@ Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/pa
    - **Lock**: the firewall refuses saves that break the rule, also while the controller is
      offline. A console administrator can suspend the lock (break-glass).
 
-   Not every rule offers every mode.
+   Not every rule offers every mode. **What are Fix and Lock?** next to the search box explains
+   them in a small window.
 6. Select **Save policy**.
 
 ![The policy editor with the Security rules on and WebGUI over HTTPS locked](__ASSET_ROOT__/screenshots/packages/fleet-policy-edit.png)
 
 Pinned and allowed version rules also stop updates and rollouts that would break them.
+
+Two rules deserve a note:
+
+- **WebGUI login protection** checks the firewall's login protection (sshguard): it fails when
+  the pass list covers every address, or when the attack score that triggers a block is above
+  the limit you set. Fleet never fixes or locks it, and it never changes a firewall's
+  anti-lockout rule: switching
+  that rule from afar could lock the administrator out or open the WebUI on a WAN-only firewall.
+- **Update channel** accepts the Development channel that Development firewalls report.
+
+A firewall that starts failing a rule of high severity raises the alert *A firewall started
+failing a High policy rule*. Failing rules also count in the Fleet headline, the top-bar icon and
+the [live view](/packages/fleet-live-view/).
 
 ## Compliance
 
@@ -63,4 +80,5 @@ instead of changing the policy. An exception has a reason and an end date, and i
 
 - [FreeSense Fleet](/packages/fleet/)
 - [Fleet HA pairs](/packages/fleet-ha/)
+- [Fleet live view and NOC screens](/packages/fleet-live-view/)
 - [Fleet status and known issues](/packages/fleet-status/)

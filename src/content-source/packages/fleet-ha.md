@@ -24,22 +24,25 @@ a problem, such as both firewalls claiming MASTER.
 
 ## Set up a pair
 
-1. Open **Firewalls → HA pairs** and select **Set up a pair**.
-2. Choose the **Primary (MASTER)** and the **Secondary (BACKUP)**, then select **Read their
-   interfaces**.
-3. Under **Shared addresses and sync**, tick **Share** for each network that gets a shared (CARP)
-   address. Fleet fills in the first free address; check that nothing else on the network uses
-   it. Leave **VHID** on *auto* unless you need a fixed one.
-4. Choose the **Sync interface**. States (pfsync) and the configuration go over it.
-5. Under **The primary pushes to the secondary**, choose what configuration sync copies:
+**Firewalls → HA pairs → Set up a pair** is a step-by-step guide. A bar at the top shows the
+steps, and **Back** keeps everything you chose.
+
+1. **Firewalls.** Choose the **Primary (MASTER)** and the **Secondary (BACKUP)**, then select
+   **Read their interfaces**. Fleet reads both firewalls. Two interfaces that share one network
+   card on a firewall are named and not offered, because their addresses cannot be told apart.
+2. **Shared addresses.** Tick **Share** for each network that gets a shared (CARP) address. Fleet
+   fills in the first free address; check that nothing else on the network uses it. Leave
+   **VHID** on *auto* unless you need a fixed one.
+3. **Sync.** Choose the **Sync interface**: states (pfsync) and the configuration go over it, so
+   a direct link between the two is best. If you choose the WAN, a warning says that state sync is
+   not encrypted and would cross the internet. Then choose what configuration sync copies:
    firewall rules, aliases and NAT are on by default; schedules, static routes, DHCP server, DNS
-   forwarder, traffic shaper and Wake-on-LAN are optional. Users and certificates are not offered:
-   syncing them would replace the secondary's Fleet access.
-6. Select **Review**. The **Review** section below the form lists what Fleet will do.
+   forwarder, traffic shaper and Wake-on-LAN are optional. Users and certificates are not
+   offered: syncing them would replace the secondary's Fleet access.
+4. **Review.** It lists what will happen on both firewalls. Nothing has changed yet. Select
+   **Set up ... as a pair**.
 
 ![The review: shared address, state sync, configuration sync user and new passwords](__ASSET_ROOT__/screenshots/packages/fleet-ha-review.png)
-
-7. Select **Set up ... as a pair**.
 
 Fleet creates a user `fleet-hasync` on the secondary with only the HA sync privilege, and new
 random CARP and sync passwords that it does not keep. Each firewall is changed under
@@ -49,11 +52,11 @@ The setup runs as an operation in **Activity**. It takes about a minute:
 
 ![The finished setup: DC1 edge A is MASTER and DC1 edge B BACKUP](__ASSET_ROOT__/screenshots/packages/fleet-ha-activity.png)
 
-:::note[Known issue]
-When one firewall of a pair loses power, Fleet can briefly report a split-brain and then
-"healthy again" while that firewall is still down. See
-[Fleet status and known issues](/packages/fleet-status/).
-:::
+When one firewall of a pair stops answering, for example after a power cut, Fleet reports the
+pair as **Member down** and says which firewall carries the shared addresses. It reports
+*split-brain* (both MASTER) or *no MASTER* only when the firewalls really say so, and it never
+calls a pair healthy while a member does not answer. An alert (*An HA pair has two MASTERs, none,
+or a member down*) is sent, and reboots and updates are held until the pair is healthy again.
 
 ## The pair list
 
@@ -62,9 +65,11 @@ addresses with their VHID, and where configuration sync comes from.
 
 ![An HA pair in the Healthy state](__ASSET_ROOT__/screenshots/packages/fleet-ha-pairs.png)
 
-**Pair a group** sets up several pairs from one group.
+**Pair a group** sets up several pairs from one group. HA pairs also appear in the
+[live view](/packages/fleet-live-view/), with the role of each member and the last change.
 
 ## Related pages
 
 - [FreeSense Fleet](/packages/fleet/)
 - [Fleet policies](/packages/fleet-policies/)
+- [Fleet live view and NOC screens](/packages/fleet-live-view/)

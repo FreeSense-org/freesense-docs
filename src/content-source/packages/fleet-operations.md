@@ -1,11 +1,13 @@
 ---
 title: Fleet updates, templates and schedules
-description: Run many FreeSense firewalls day to day with Fleet - maintenance windows and rollouts, configuration templates, schedules, connections and the NOC live view.
+description: Run many FreeSense firewalls day to day with Fleet - maintenance windows and rollouts, configuration templates, schedules, users and alert channels.
 ---
 
 This page covers the day-to-day tools of [FreeSense Fleet](/packages/fleet/): updating firewalls
-in safe steps, pushing the same settings to many firewalls, running jobs on a schedule, and
-showing the fleet on a wall screen.
+in safe steps, pushing the same settings to many firewalls, running jobs on a schedule, keeping
+the same users on many firewalls and sending alerts. The wall-screen view and internet monitoring
+have their own pages: [live view](/packages/fleet-live-view/) and
+[internet connectivity](/packages/fleet-internet/).
 
 :::caution[Development only]
 Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/packages/fleet/).
@@ -63,9 +65,11 @@ template of each kind.
 
 ### Add and apply a template
 
-1. Open **Templates** and select a kind, for example **Time and NTP**.
+1. Open **Templates** and select **Add template**. In the window that opens, choose a kind, for
+   example **Time and NTP** (for aliases there are also ready-made starters).
 2. Enter a **Name** and **Description**, choose **For** (all firewalls, groups or single
-   firewalls) and fill in the settings.
+   firewalls) and fill in the settings. Rule and port-forward rows start empty, with hints in the
+   fields.
 3. Select **Save and preview**. Saving changes nothing on the firewalls.
 4. Check **What applying changes**: each firewall with its changes, read from its newest backup.
    Open a row to see each change, for example `NTP servers pool.ntp.org → 0.dk.pool.ntp.org, …`.
@@ -112,7 +116,7 @@ A schedule backs up, reboots or updates firewalls at a set time.
 ![A schedule that reboots the Retail stores group every Sunday at 06:00](__ASSET_ROOT__/screenshots/packages/fleet-schedule-add.png)
 
 The list shows each schedule's next run and last result, with **Run now**, **Pause**, **Change**
-and **Delete**. **Run now** asks first for a reboot or update.
+and **Delete**. **Run now** asks first for a reboot or update, and starts it at once when you confirm.
 
 ![The Schedules list](__ASSET_ROOT__/screenshots/packages/fleet-schedules.png)
 
@@ -123,28 +127,6 @@ come back online before the next one starts:
 
 Times are in the controller's time zone. A run the controller misses by more than 15 minutes is
 recorded as missed, not run late.
-
-## Connections
-
-**Firewalls → Connections** shows how Fleet reaches each firewall. Every firewall joins over the
-Fleet tunnel (WireGuard). Fleet can also reach a firewall directly on an internal network, or over
-Tailscale; the tunnel then stays as the fallback, so a path that stops answering never cuts a
-firewall off. Choose the method for the whole fleet, a group or one firewall.
-
-![Connections: six firewalls on the Fleet tunnel](__ASSET_ROOT__/screenshots/packages/fleet-connections.png)
-
-## NOC live view
-
-**Dashboard → Open live view** shows the fleet full screen: a one-line summary, counters for
-online, late and offline firewalls, and a card per firewall with its groups, version and policy
-results. Problems come first. Choose a **Style**, turn sound on for alerts, and select **Full
-screen**.
-
-![The live view with six online firewalls](__ASSET_ROOT__/screenshots/packages/fleet-noc.png)
-
-For a wall screen that never logs in, add a screen under **Dashboard → NOC screens → Add screen**.
-Each screen has its own link, works only from its allowed networks, and can hide names when the
-screen is in a public place.
 
 ## Users
 
@@ -157,7 +139,9 @@ Fleet can keep the same accounts on many firewalls. Local accounts on a firewall
    SSH public keys. With no password the user can sign in with SSH keys only. SSH needs a group
    with the *User - System: Shell account access* privilege.
 3. Open **Users → Sync** and select **Sync N firewalls**. Each firewall gets a safety backup first,
-   and only accounts Fleet made are changed or removed.
+   and only accounts Fleet made are changed or removed. A firewall that was never synced shows
+   *Waiting for the first sync*; only a difference that appears after a sync is shown as a change
+   on the firewall, with **Adopt** and **Ignore**.
 
 ![Adding a user with an SSH key to the shop-support group](__ASSET_ROOT__/screenshots/packages/fleet-user-add.png)
 
@@ -186,48 +170,12 @@ unencrypted). For a receiver with a self-signed or private-CA
 certificate, enter its SHA-256 fingerprint under **Trust this certificate**. A delivery that
 fails is retried every minute.
 
-## Internet connectivity
-
-Fleet can watch the internet connection of every firewall, not only whether the firewall answers
-the controller. Each firewall already measures its gateways (latency, jitter and packet loss);
-with this option on, the controller keeps that history for the whole fleet and tells you when a
-connection goes bad.
-
-1. Open **Settings → Monitoring** and turn on **Watch the internet connection of each firewall**.
-2. Check the thresholds: a connection is **poor** at 5 % packet loss, 150 ms latency or 30 ms
-   jitter, and **down** at 20 % loss or when the firewall marks the gateway down. A firewall is
-   reported after **2 bad checks in a row**, read every **5 minutes**.
-3. Select **Save**. The first values appear within a few minutes.
-
-What you get:
-
-- **Firewalls → Internet**: every gateway in the fleet with its state, latency, jitter and loss
-  now, and for the chosen range (24 hours, 7 days or 30 days) its **quality score**, average loss,
-  **flaps** and **minutes with loss**. Sort by lowest quality, most loss or most flaps.
-- **Quality score** (0–100): 100 is a clean, steady line. Packet loss weighs most, then flaps
-  (the gateway changing between up, poor and down), then latency and jitter against the
-  thresholds. 90 and above is excellent, 75 good, 50 unstable, below 50 bad.
-- **Firewalls list**: the score and the current latency and loss under each firewall's state.
-- **Firewall page → Stats → Internet**: quality per range, each gateway now, and the firewall's
-  failovers and outages.
-- **Alerts**: *A firewall lost its internet*, *… is poor*, *… is unstable (flapping)* (more than
-  4 changes in an hour by default), *A firewall moved to another WAN*, and *… works again*
-  (only after a problem was reported). When at least three firewalls and 30 % of the fleet lose
-  their internet at once, you get one *upstream outage* alert instead of one per firewall.
-- **NOC live view**: an **Internet** status ring, an **Internet** list column with the score
-  (`Q 94`) and latency and loss, and the panels *Internet now*, *Internet quality* (latency and
-  loss charts), *Connection quality* (lowest scores first), *Worst internet connections*,
-  *Internet, last 24 hours* and *Failovers and internet outages*. A screen can beep when a
-  firewall loses its internet.
-
-On a firewall with several WANs, the default gateway decides. When it is down and another
-gateway works, the firewall is shown as **poor** ("default gateway down"), and a change of
-default gateway is reported as a failover. Turn on **Keep the history of every gateway** to
-keep the history of the other gateways too.
-
 ## Related pages
 
 - [FreeSense Fleet](/packages/fleet/)
+- [Fleet live view and NOC screens](/packages/fleet-live-view/)
+- [Fleet internet connectivity and quality](/packages/fleet-internet/)
+- [Fleet connection points and firewall rules](/packages/fleet-connect/)
 - [Fleet policies](/packages/fleet-policies/)
 - [Fleet HA pairs](/packages/fleet-ha/)
 - [Fleet status and known issues](/packages/fleet-status/)
