@@ -8,7 +8,7 @@ the list of firewalls on the other. It is made for a wall screen in a network op
 and every screen can have its own layout.
 
 :::caution[Development only]
-Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/packages/fleet/).
+Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/configure/fleet/).
 :::
 
 ![The live view: status rings, panels on the left, the firewall list grouped by firewall group on the right](__ASSET_ROOT__/screenshots/packages/fleet-noc.png)
@@ -17,7 +17,7 @@ Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/pa
 
 - **Header.** The header text on the left (and an optional second line), then **status rings**:
   the share of the fleet that is **Online**, **Late** and **Offline**, and **Internet** while
-  [internet monitoring](/packages/fleet-internet/) is on. **Policy fails** and **HA problems**
+  [internet monitoring](/configure/fleet-internet/) is on. **Policy fails** and **HA problems**
   appear as amber rings only when there are some. A ring with offline firewalls glows red. On the
   right are the clock, how fresh the data is, the sound button, **Style** and **Full screen**.
 - **Panels (left).** General information and charts. When they do not fit, the screen turns to
@@ -40,7 +40,7 @@ The data is read again every 10 seconds.
 | **Availability** | Every firewall over the last 24 hours, with the ones that had trouble first |
 | **CPU and memory**, **Traffic**, **State tables**, **Temperature** | Fleet-wide charts for the chosen range |
 | **Alerts**, **Operations**, **Backups**, **Policy compliance**, **Versions**, **Busiest firewalls**, **Outages** | The latest alerts, running operations with progress, backup freshness, the rules that fail most, the versions in the fleet, the firewalls under most load, and outages per day |
-| **Internet now**, **Internet quality**, **Worst internet connections**, **Connection quality**, **Internet availability**, **Failovers and internet outages** | The [internet panels](/packages/fleet-internet/), shown while internet monitoring is on |
+| **Internet now**, **Internet quality**, **Worst internet connections**, **Connection quality**, **Internet availability**, **Failovers and internet outages** | The [internet panels](/configure/fleet-internet/), shown while internet monitoring is on |
 
 ## The live view and NOC screens
 
@@ -113,7 +113,7 @@ rows do not link to firewall pages.
 
 ## Related pages
 
-- [FreeSense Fleet](/packages/fleet/)
-- [Fleet internet connectivity and quality](/packages/fleet-internet/)
-- [Fleet HA pairs](/packages/fleet-ha/)
-- [Fleet status and known issues](/packages/fleet-status/)
+- [FreeSense Fleet](/configure/fleet/)
+- [Fleet internet connectivity and quality](/configure/fleet-internet/)
+- [Fleet HA pairs](/configure/fleet-ha/)
+- [Fleet status and known issues](/configure/fleet-status/)

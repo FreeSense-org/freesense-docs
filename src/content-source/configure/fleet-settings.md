@@ -7,22 +7,22 @@ description: Where every FreeSense Fleet setting lives - controller, monitoring,
 value in Fleet is a setting, with its allowed range and default in the help text under it.
 
 :::caution[Development only]
-Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/packages/fleet/).
+Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/configure/fleet/).
 :::
 
 ## The sections
 
 | Section | What it holds |
 | --- | --- |
-| **Controller** | Switches the controller on and sets where firewalls connect. See [connection points and firewall rules](/packages/fleet-connect/). |
-| **Monitoring** | How often the controller asks each firewall for its status (15 seconds by default), when a silent firewall counts as **degraded** (1 minute) or **offline** (5 minutes), and the [internet monitoring](/packages/fleet-internet/) option with its thresholds. |
+| **Controller** | Switches the controller on and sets where firewalls connect. See [connection points and firewall rules](/configure/fleet-connect/). |
+| **Monitoring** | How often the controller asks each firewall for its status (15 seconds by default), when a silent firewall counts as **degraded** (1 minute) or **offline** (5 minutes), and the [internet monitoring](/configure/fleet-internet/) option with its thresholds. |
 | **Actions and notices** | Reboots, backups and restores started from Fleet: whether you are told when an action is done or fails, how long a failed action shows in the top bar and how long a result stays on the firewall's tile, and when a reboot counts as failed. |
 | **Backups** | When a changed configuration is backed up, how long backups are kept, how many firewalls are backed up at once, and how long a restored firewall waits before it goes back by itself. |
-| **Updates** | How often the controller checks for updates, when an update counts as done or failed, how long rollouts wait between rings, and whether firewalls without rollback protection (UFS) are included in group updates. See [updates, templates and schedules](/packages/fleet-operations/). |
+| **Updates** | How often the controller checks for updates, when an update counts as done or failed, how long rollouts wait between rings, and whether firewalls without rollback protection (UFS) are included in group updates. See [updates, templates and schedules](/configure/fleet-operations/). |
 | **Schedules** | How late a missed schedule may still run (15 minutes by default). |
 | **Access** | Who may reach the enrollment port: **Exposure** (open for joining, or only an allowed list) and the **Allowed list**, and whether Fleet turns off the key expiry of firewalls on a Tailscale path. |
 | **Standby server** | A second FreeSense with the Fleet package keeps a verified, encrypted copy of this controller and can take over. Firewalls learn its address automatically and move to it by themselves. |
-| **Self-check** | Everything firewalls need to reach and trust the controller, checked now, with repair buttons. See [Self-check](/packages/fleet-connect/#self-check). |
+| **Self-check** | Everything firewalls need to reach and trust the controller, checked now, with repair buttons. See [Self-check](/configure/fleet-connect/#self-check). |
 | **Advanced** | Values you rarely change: how long invitations are valid, how many wrong join keys burn an invitation, and rows per page in lists. |
 
 ![Settings, Backups: one setting per row and retention as one sentence](__ASSET_ROOT__/screenshots/packages/fleet-settings-backups.png)
@@ -45,8 +45,8 @@ Where something takes several steps, Fleet uses a **step-by-step guide**: a bar 
 one step is shown at a time, **Back** is on the left and the forward button on the right, and a
 **Review** step lists what will happen before anything changes. Short guides open in a window,
 such as **Add a firewall** and **Add template**; longer ones are a page, such as
-[Add to fleet](/packages/fleet-join/) on a new firewall, the
-[HA pair wizard](/packages/fleet-ha/) and the first-run guide of the controller. Buttons in
+[Add to fleet](/configure/fleet-join/) on a new firewall, the
+[HA pair wizard](/configure/fleet-ha/) and the first-run guide of the controller. Buttons in
 windows, guides and forms are always in one row on the right, with **Cancel** or **Back** first
 and the main button last.
 
@@ -55,7 +55,7 @@ is kept in the address so you can bookmark it.
 
 ## Related pages
 
-- [FreeSense Fleet](/packages/fleet/)
-- [Fleet connection points and firewall rules](/packages/fleet-connect/)
-- [Fleet internet connectivity and quality](/packages/fleet-internet/)
-- [Fleet status and known issues](/packages/fleet-status/)
+- [FreeSense Fleet](/configure/fleet/)
+- [Fleet connection points and firewall rules](/configure/fleet-connect/)
+- [Fleet internet connectivity and quality](/configure/fleet-internet/)
+- [Fleet status and known issues](/configure/fleet-status/)

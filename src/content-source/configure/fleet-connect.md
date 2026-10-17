@@ -8,7 +8,7 @@ page covers how you choose **where** it is reachable, how Fleet opens and closes
 you, and how to check that it works.
 
 :::caution[Development only]
-Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/packages/fleet/).
+Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/configure/fleet/).
 :::
 
 ## Connection points
@@ -116,7 +116,7 @@ the rules and **Restart the tunnel**.
 
 ## Related pages
 
-- [Add a firewall to a Fleet](/packages/fleet-join/)
-- [FreeSense Fleet](/packages/fleet/)
-- [Fleet settings](/packages/fleet-settings/)
-- [Fleet status and known issues](/packages/fleet-status/)
+- [Add a firewall to a Fleet](/configure/fleet-join/)
+- [FreeSense Fleet](/configure/fleet/)
+- [Fleet settings](/configure/fleet-settings/)
+- [Fleet status and known issues](/configure/fleet-status/)

@@ -8,7 +8,7 @@ also set up a new pair from two managed firewalls: the shared addresses, state s
 configuration sync on both, in one wizard.
 
 :::caution[Development only]
-Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/packages/fleet/).
+Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/configure/fleet/).
 :::
 
 Fleet never works on both firewalls of a pair at once: the BACKUP goes first, and the MASTER only
@@ -66,10 +66,10 @@ addresses with their VHID, and where configuration sync comes from.
 ![An HA pair in the Healthy state](__ASSET_ROOT__/screenshots/packages/fleet-ha-pairs.png)
 
 **Pair a group** sets up several pairs from one group. HA pairs also appear in the
-[live view](/packages/fleet-live-view/), with the role of each member and the last change.
+[live view](/configure/fleet-live-view/), with the role of each member and the last change.
 
 ## Related pages
 
-- [FreeSense Fleet](/packages/fleet/)
-- [Fleet policies](/packages/fleet-policies/)
-- [Fleet live view and NOC screens](/packages/fleet-live-view/)
+- [FreeSense Fleet](/configure/fleet/)
+- [Fleet policies](/configure/fleet-policies/)
+- [Fleet live view and NOC screens](/configure/fleet-live-view/)

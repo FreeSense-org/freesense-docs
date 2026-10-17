@@ -13,7 +13,9 @@ const toSidebarItems = (items, edition, prefix) => items
     }
     const [label, slug] = item;
     return prefix ? { label, link: `${prefix}/${slug}/` } : { label, slug };
-  });
+  })
+  // A group whose pages are all left out of this edition is not shown empty.
+  .filter((item) => !item.items || item.items.length > 0);
 
 const editionNavigation = (sections, edition) => sections.map((section) => ({
   label: section.label,

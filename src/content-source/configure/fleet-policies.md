@@ -8,7 +8,7 @@ HTTPS. Fleet checks each rule against what each firewall reports and its newest 
 backup, and shows the result under **Policies → Compliance**.
 
 :::caution[Development only]
-Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/packages/fleet/).
+Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/configure/fleet/).
 :::
 
 
@@ -57,7 +57,7 @@ Two rules deserve a note:
 
 A firewall that starts failing a rule of high severity raises the alert *A firewall started
 failing a High policy rule*. Failing rules also count in the Fleet headline, the top-bar icon and
-the [live view](/packages/fleet-live-view/).
+the [live view](/configure/fleet-live-view/).
 
 ## Compliance
 
@@ -78,7 +78,7 @@ instead of changing the policy. An exception has a reason and an end date, and i
 
 ## Related pages
 
-- [FreeSense Fleet](/packages/fleet/)
-- [Fleet HA pairs](/packages/fleet-ha/)
-- [Fleet live view and NOC screens](/packages/fleet-live-view/)
-- [Fleet status and known issues](/packages/fleet-status/)
+- [FreeSense Fleet](/configure/fleet/)
+- [Fleet HA pairs](/configure/fleet-ha/)
+- [Fleet live view and NOC screens](/configure/fleet-live-view/)
+- [Fleet status and known issues](/configure/fleet-status/)

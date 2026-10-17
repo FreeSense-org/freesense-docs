@@ -9,10 +9,13 @@ agent**, which is part of FreeSense itself. From the controller you see every fi
 dashboard and on a wall screen, and can back them up, update them, check them against policies and
 set up HA pairs. A new firewall joins from its own WebUI by pasting an invitation.
 
+To see what the package installs, what the agent does on a managed firewall and how joining works,
+read [How Fleet is installed and works on the firewalls](/configure/fleet-install/).
+
 :::caution[Development only]
 Fleet is part of the Development line (FreeSense 1.2). It is not in Stable 1.1. Development
 builds are experimental and unsupported; do not manage production firewalls with them yet.
-See [Fleet status and known issues](/packages/fleet-status/) for what was tested and what does not
+See [Fleet status and known issues](/configure/fleet-status/) for what was tested and what does not
 work yet.
 :::
 
@@ -23,29 +26,32 @@ What Fleet gives you:
   backups, updates, schedules and policies.
 - **Guided joining**: make an invitation on the controller, paste it into **Add to fleet** on the
   new firewall, and compare a 6-digit code before you approve. Fleet tunnel, Tailscale (installed
-  for you) or a direct connection. See [Add a firewall to a Fleet](/packages/fleet-join/).
+  for you) or a direct connection. See [Add a firewall to a Fleet](/configure/fleet-join/).
 - **Connection points**: choose the interfaces and ports the controller listens on; Fleet opens
   and closes the ports with locked firewall rules. See
-  [connection points and firewall rules](/packages/fleet-connect/).
+  [connection points and firewall rules](/configure/fleet-connect/).
 - **A live view for a wall screen**: panels on one side, a paged firewall list on the other, per
-  screen layout, groups and sound. See [Fleet live view](/packages/fleet-live-view/).
+  screen layout, groups and sound. See [Fleet live view](/configure/fleet-live-view/).
 - **Internet monitoring**: packet loss, latency, jitter, a quality score and failover alerts for
-  every firewall. See [internet connectivity](/packages/fleet-internet/).
+  every firewall. See [internet connectivity](/configure/fleet-internet/).
 - **Backups** of every firewall, kept on the controller, with retention rules.
 - **Updates and rollouts** with maintenance windows, **templates** and **schedules**. See
-  [Fleet updates, templates and schedules](/packages/fleet-operations/).
+  [Fleet updates, templates and schedules](/configure/fleet-operations/).
 - **Policies** that check, fix or lock settings on every firewall. See
-  [Fleet policies](/packages/fleet-policies/).
+  [Fleet policies](/configure/fleet-policies/).
 - **HA pairs** set up from two firewalls in a step-by-step guide. See
-  [Fleet HA pairs](/packages/fleet-ha/).
+  [Fleet HA pairs](/configure/fleet-ha/).
 - **Activity**: every action runs as an operation with live progress.
-- **Settings** for everything, in sections. See [Fleet settings](/packages/fleet-settings/).
+- **Settings** for everything, in sections. See [Fleet settings](/configure/fleet-settings/).
 
 Firewalls open the connection to the controller, so they can sit behind NAT. Only the controller
 must be reachable: on its enrollment port (TCP, 8443 by default) and tunnel port (UDP, 51830 by
 default), or in a tailnet with no public port at all.
 
 ## Install the controller
+
+Only the controller needs the package; managed firewalls need nothing installed (see
+[how Fleet is installed](/configure/fleet-install/)).
 
 1. On the firewall that becomes the controller, open **System → Package Manager → Available
    Packages**.
@@ -59,7 +65,7 @@ default), or in a tailnet with no public port at all.
 6. Choose whether firewalls may also connect over **Tailscale**, review, and select **Switch
    on**.
 
-See [connection points and firewall rules](/packages/fleet-connect/) for the details.
+See [connection points and firewall rules](/configure/fleet-connect/) for the details.
 
 The page confirms *Saved. FreeSense Fleet is running.* A Fleet icon appears in the top bar; it
 turns from green to a warning colour when something in the fleet needs attention, such as an
@@ -103,7 +109,7 @@ Each new firewall needs an invitation.
 
 All the details, the console route (`freesense-join join`), Tailscale and many firewalls at once
 with the Deployment Factory are on
-[Add a firewall to a Fleet](/packages/fleet-join/).
+[Add a firewall to a Fleet](/configure/fleet-join/).
 
 ## The firewall list
 
@@ -140,7 +146,7 @@ whole dashboard.
 ![The Fleet dashboard with six online firewalls, fleet pulse and needs attention](__ASSET_ROOT__/screenshots/packages/fleet-dashboard.png)
 
 **Open live view** and **NOC screens** show the same data full screen for a wall display. See
-[Fleet live view and NOC screens](/packages/fleet-live-view/).
+[Fleet live view and NOC screens](/configure/fleet-live-view/).
 
 ## Backups
 
@@ -166,14 +172,14 @@ On the firewall, open **System → Central Management** and select **Leave the f
 
 ## Related pages
 
-- [Add a firewall to a Fleet](/packages/fleet-join/)
-- [Fleet connection points and firewall rules](/packages/fleet-connect/)
-- [Fleet live view and NOC screens](/packages/fleet-live-view/)
-- [Fleet internet connectivity and quality](/packages/fleet-internet/)
-- [Fleet HA pairs](/packages/fleet-ha/)
-- [Fleet policies](/packages/fleet-policies/)
-- [Fleet updates, templates and schedules](/packages/fleet-operations/)
-- [Fleet settings](/packages/fleet-settings/)
-- [Fleet status and known issues](/packages/fleet-status/)
+- [Add a firewall to a Fleet](/configure/fleet-join/)
+- [Fleet connection points and firewall rules](/configure/fleet-connect/)
+- [Fleet live view and NOC screens](/configure/fleet-live-view/)
+- [Fleet internet connectivity and quality](/configure/fleet-internet/)
+- [Fleet HA pairs](/configure/fleet-ha/)
+- [Fleet policies](/configure/fleet-policies/)
+- [Fleet updates, templates and schedules](/configure/fleet-operations/)
+- [Fleet settings](/configure/fleet-settings/)
+- [Fleet status and known issues](/configure/fleet-status/)
 - [Tailscale](/packages/tailscale/)
 - [Install and manage packages](/packages/installing-packages/)
