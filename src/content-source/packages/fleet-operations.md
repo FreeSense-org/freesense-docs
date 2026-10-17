@@ -181,7 +181,8 @@ times can be changed. An offline firewall counts as an outage in the availabilit
 To send alerts somewhere, add a channel under **Activity → Alert channels**: e-mail (it uses
 **System → Advanced → Notifications**), a webhook, Slack or Teams, Telegram, ntfy or Gotify. Pick
 the alerts the channel wants, the lowest severity, and an optional daily report, then select
-**Send test**. Webhook addresses must use `https://`. For a receiver with a self-signed or private-CA
+**Send test**. Webhook addresses use `https://` (`http://` is accepted for a lab, but alerts then travel
+unencrypted). For a receiver with a self-signed or private-CA
 certificate, enter its SHA-256 fingerprint under **Trust this certificate**. A delivery that
 fails is retried every minute.
 
