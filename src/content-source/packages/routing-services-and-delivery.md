@@ -26,7 +26,7 @@ procedure and the [package catalog](/packages/catalog/) for every package.
 
 Versions for FRR, HAProxy, BIND and FreeRADIUS are those in the 1.1.0 Stable Optional Packages
 repository. The smaller daemons come from the FreeBSD package set for the pinned platform. Stable
-packages are published for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64.
+packages are published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64.
 
 Related packages documented elsewhere: [ACME Certificates](/packages/acme/) issues the
 certificates HAProxy and FreeRADIUS use, and the [Secure Web Gateway](/packages/web-gateway/)

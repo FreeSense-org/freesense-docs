@@ -21,7 +21,7 @@ does nothing elsewhere.
 The installer writes `/usr/local/share/vmware-tools/tools.conf`, sets up the two rc scripts, and
 starts both services.
 
-Stable packages are published for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64. The port is built for amd64 and aarch64.
+Stable packages are published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64. The port is built for amd64 and aarch64.
 
 ## Where to find it
 

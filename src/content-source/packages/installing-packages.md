@@ -254,7 +254,7 @@ A system update keeps your installed packages and their settings. After any syst
 :::note[Known issue in 1.1.0]
 During an upgrade test, the Secure Web Gateway service was found stopped after the reboot. It
 started normally by hand. If a package service is stopped after an update, start it from
-**Manage** or **Status → Services**. See the [1.1.0 release notes](/releases/1.1.0/).
+**Manage** or **Status → Services**. See the [1.1.0 release notes](/releases/previous-1.1/#freesense-110).
 :::
 
 For the full upgrade procedure from 1.0, see [Upgrading from 1.0](/guides/upgrading-from-1.0/).
@@ -316,7 +316,7 @@ to save the log before you try again. Then check:
 - no other update or package operation is running. The progress window says so when one is;
   wait for it to finish and try again. On 1.1.1 to 1.1.4, "Another instance of
   FreeSense-upgrade is running" appears for every operation; see the
-  [1.1.5 notes](/releases/1.1.5/#before-you-update-from-111-to-114);
+  [1.1.9 notes](/releases/1.1.9/#before-you-update-from-111-to-114);
 - **Need attention** packages on Installed Packages. Use **Reinstall** for a **Missing** package.
 
 When you report a problem, include the FreeSense version, the package name and version, the

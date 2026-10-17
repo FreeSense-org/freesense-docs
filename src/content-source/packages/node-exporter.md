@@ -20,7 +20,7 @@ dashboards. For a push model, use [Telegraf](/packages/telegraf/) instead.
    *Monitoring*, resource profile *Lightweight*) and choose **Install**.
 
 The install pulls in `node_exporter` and `python312`, which runs the FreeSense interface
-collector. Stable packages are published for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64.
+collector. Stable packages are published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64.
 
 On the first install the package saves default settings: the default collector set, port
 `9100` and extra flags `--log.level=warn`. It doesn't start the exporter until you choose an

@@ -21,7 +21,7 @@ move to blocking only after tuning.
 2. Install **Suricata IDS/IPS** (category Security, resource profile Intensive).
 
 Architecture: amd64 only. Suricata is not built for arm64, neither for Stable arm64 (from
-[1.1.1](/releases/1.1.1/)) nor for Development (1.2) arm64, because its build options still need a
+[1.1.1](/releases/previous-1.1/#freesense-111)) nor for Development (1.2) arm64, because its build options still need a
 Rust source build under emulation.
 
 ## Where to find it

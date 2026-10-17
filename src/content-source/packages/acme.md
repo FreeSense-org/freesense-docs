@@ -17,7 +17,7 @@ Use it when a service on the firewall needs a publicly trusted certificate that 
 2. Install **ACME Certificates** (category Security, resource profile Lightweight).
 
 It depends on `socat` and the PHP `ssh2` extension, which are installed with it. Stable packages are
-published for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64.
+published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64.
 
 ## Where to find it
 

@@ -29,7 +29,7 @@ publishing and TLS termination of your own servers, use [HAProxy](/packages/hapr
 
 The gateway is **disabled after installation** and defaults to tunnel-only HTTPS.
 
-Architecture: amd64 and arm64. On arm64 (Stable from [1.1.1](/releases/1.1.1/), and Development
+Architecture: amd64 and arm64. On arm64 (Stable from [1.1.1](/releases/previous-1.1/#freesense-111), and Development
 1.2), the gateway is available but the Local Antivirus companion is not built, because ClamAV still needs a Rust source
 build under emulation.
 

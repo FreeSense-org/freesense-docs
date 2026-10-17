@@ -20,7 +20,7 @@ command lines.
 1. Open **System → Package Manager → Available Packages**.
 2. Find **Network Diagnostics** (package `FreeSense-pkg-Diagnostics`) and select **Install**.
 
-Stable packages are published for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64.
+Stable packages are published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64.
 
 ## Where to find it
 

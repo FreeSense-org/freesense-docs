@@ -9,7 +9,7 @@ and some keep the data on the firewall. This page compares them and links to a f
 each one. All of them are installed from **System → Package Manager → Available Packages**, as
 [Installing and managing packages](/packages/installing-packages/) describes.
 
-Stable packages are published for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64.
+Stable packages are published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64.
 
 ## The packages
 

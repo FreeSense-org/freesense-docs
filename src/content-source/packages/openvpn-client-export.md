@@ -22,7 +22,7 @@ the server side see [Built-in VPN](/base-os/built-in-vpn/).
 When it is installed over an older configuration, the installer converts the old
 "random local port" option to the newer **Bind mode** setting.
 
-Stable packages are published for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64. The Windows installers it produces are for Windows
+Stable packages are published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64. The Windows installers it produces are for Windows
 clients, independent of the firewall's architecture.
 
 ## Where to find it

@@ -5,12 +5,12 @@ description: A guided tour of the main changes in FreeSense 1.1, what each one i
 
 FreeSense 1.1.0 was released on 2026-10-13 and replaces 1.0.x as the supported Stable line. This
 page walks through the main changes, why they matter, and where to find them. The
-[1.1.0 release notes](/releases/1.1.0/) list every change in short form, and
+[1.1.0 release notes](/releases/previous-1.1/#freesense-110) list every change in short form, and
 [Upgrading from 1.0](/guides/upgrading-from-1.0/) explains how to move an existing firewall.
 
 :::note[Architecture]
 Stable 1.1.0 is published for **amd64** only. Generic arm64 (UEFI) support arrives in the
-[1.1.1](/releases/1.1.1/) patch release, which ships the generic arm64 installer image built from
+[1.1.1](/releases/previous-1.1/#freesense-111) patch release, which ships the generic arm64 installer image built from
 the same sources as 1.1.0. The Raspberry Pi appliance images are not part of
 1.1; they are available only on the [Development line](/releases/development/).
 :::
@@ -166,7 +166,7 @@ right after a failed upgrade, not a supported way to return to an older release.
 **What it is.** Threat Shield & DNS Protection is an optional package for DNS filtering with
 automatically updated threat feeds. It uses a native AdGuard Home build alongside the DNS Resolver.
 Its GeoIP country blocking and DNS redirect options do not take effect in 1.1.0 (see the
-[known issues](/releases/1.1.0/#known-issues)).
+[known issues](/releases/previous-1.1/#known-issues-in-110)).
 
 **Why it matters.** Threat Shield replaces pfBlockerNG, which is no longer offered in 1.1. Many
 fixes landed before 1.1.0: settings that never saved, a generated configuration that stopped AdGuard
@@ -198,7 +198,7 @@ written for FreeSense from the advisory descriptions. They cover command executi
 settings, unsafe OpenVPN push values, dashboard layout include paths, custom Kea configuration, a
 leaked backup passphrase, and a series of cross-site scripting issues. Custom Kea JSON now requires
 administrator access or the new **WebCfg - Services: DHCP Server: Edit Custom Kea Configuration**
-privilege. See the [security section of the release notes](/releases/1.1.0/#security).
+privilege. See the [security section of the release notes](/releases/previous-1.1/#security-in-110).
 
 ## Other changes worth knowing
 

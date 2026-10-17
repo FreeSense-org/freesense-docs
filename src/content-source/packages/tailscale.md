@@ -23,7 +23,7 @@ instead.
 The package creates the **Tailscale** interface group during installation. It does not start the
 daemon until you enable it.
 
-Stable packages are published for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64.
+Stable packages are published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64.
 
 ## Where to find it
 
@@ -149,7 +149,7 @@ Turn on **Syslog Logging** to also send the daemon's own output to syslog.
 
 :::caution[Auth key in the system log before 1.1.2]
 Up to FreeSense 1.1.1, the start-up script logged the full `tailscale up` command line, including
-`--auth-key`, and passed the key on the command line. From [1.1.2](/releases/1.1.2/) the key goes
+`--auth-key`, and passed the key on the command line. From [1.1.2](/releases/previous-1.1/#freesense-112) the key goes
 through a root-only temporary file and is never logged. If a key was used on 1.1.0 or 1.1.1, treat
 the system log and any remote syslog copy as containing it: revoke the key in the Tailscale admin
 console and save a new one. Prefer non-reusable keys, so a leaked key cannot add more machines.

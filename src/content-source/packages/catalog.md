@@ -41,7 +41,7 @@ The descriptions here summarize each package's own package description.
 
 ## All packages
 
-Every package below is available for **amd64**. Starting with [1.1.1](/releases/1.1.1/), Stable
+Every package below is available for **amd64**. Starting with [1.1.1](/releases/previous-1.1/#freesense-111), Stable
 also publishes Optional Packages for **arm64** (1.1.0 itself was amd64 only). The Optional Packages
 architecture policy leaves two packages out of arm64 builds: Suricata and Web Gateway Local Antivirus. Both depend on Rust code that can't yet
 be built for arm64 in the build environment. Raspberry Pi images are only available on the

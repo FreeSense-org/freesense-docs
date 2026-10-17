@@ -29,7 +29,7 @@ boots the ISO installer with 4096 MiB of memory (freesense-os-base scripts/runne
 For sizing by workload, see [Hardware and virtualization](/getting-started/hardware-and-virtualization/).
 
 :::note[amd64 and arm64]
-The Stable amd64 installer is an ISO. Starting with [1.1.1](/releases/1.1.1/), Stable also ships a
+The Stable amd64 installer is an ISO. Starting with [1.1.1](/releases/previous-1.1/#freesense-111), Stable also ships a
 generic arm64 UEFI installer image; FreeSense 1.1.0 itself was amd64 only. The arm64 procedure is
 in [Install on arm64](#install-on-arm64).
 :::
@@ -167,7 +167,7 @@ interface, update, or disk change makes the WebUI unreachable.
 
 ## Install on arm64
 
-The generic arm64 installer is published on Stable starting with [1.1.1](/releases/1.1.1/) and on
+The generic arm64 installer is published on Stable starting with [1.1.1](/releases/previous-1.1/#freesense-111) and on
 the Development 1.2 line. Stable 1.1.0 had no arm64 installer.
 
 - The **generic arm64 installer** is a compressed disk image (`FreeSense-*-arm64-installer.img.xz`)

@@ -14,7 +14,7 @@ and **Status → System Logs** are always there without any package.
 | [Automation](/packages/automation/) | Scheduled jobs and service checks | **Services → Automation** | None |
 
 All three are lightweight packages. Install them from
-**System → Package Manager → Available Packages**. Stable publishes them for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64.
+**System → Package Manager → Available Packages**. Stable publishes them for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64.
 
 ## Which one do you need?
 

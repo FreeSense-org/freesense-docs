@@ -7,7 +7,7 @@ FreeSense has two active release lines with different promises:
 
 | Line | Purpose | Support policy |
 | --- | --- | --- |
-| **Stable 1.1.x** | Production and normal use | Supported; changes only through tagged patch releases such as `1.1.5` |
+| **Stable 1.1.x** | Production and normal use | Supported; changes only through tagged patch releases such as `1.1.9` |
 | **Development 1.2** | Integration testing, contributors, disposable labs | **Experimental; no support** |
 
 ## Versions, branches, and tags
@@ -64,7 +64,7 @@ Locks are append-only: once merged, a lock is never edited or deleted.
 
 For 1.1.0 the lock is `config/releases/1.1.0.json`: source `0318257`, System ports `26853c0`,
 optional packages `ce79191`, FreeBSD source `a52c50b4`, `osversion` 1600027, package train `1.1`.
-See the [1.1.0 release notes](/releases/1.1.0/).
+See the [1.1.0 release notes](/releases/previous-1.1/#freesense-110).
 
 A Stable release is published in two manual steps from its checked lock:
 

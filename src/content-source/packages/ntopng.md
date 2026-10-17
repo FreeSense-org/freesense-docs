@@ -22,7 +22,7 @@ disk space. To send flow records to a separate collector instead, use
    resource profile *Intensive*) and choose **Install**.
 
 The install also pulls in `ntopng`, `redis`, `gdbm`, `graphviz`, `webfonts` and `libmaxminddb`.
-Stable packages are published for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64.
+Stable packages are published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64.
 
 ## Where to find it
 

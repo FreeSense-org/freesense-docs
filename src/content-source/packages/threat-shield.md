@@ -28,7 +28,7 @@ it with Suricata and CrowdSec.
 
 :::note[Package version 1.1.0]
 This page describes **Threat Shield package 1.1.0** (`FreeSense-pkg-ThreatShield-1.1.0`). Stable
-systems get it with [FreeSense 1.1.4](/releases/1.1.4/); Development systems get it with their
+systems get it with [FreeSense 1.1.4](/releases/previous-1.1/#freesense-114); Development systems get it with their
 normal package updates. Check the installed version under
 **System → Package Manager → Installed Packages**.
 

@@ -20,7 +20,7 @@ service is enough.
 2. Find **SNMP Agent** (package `FreeSense-pkg-net-snmp`, category *Monitoring*, resource profile
    *Lightweight*) and choose **Install**.
 
-Stable packages are published for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64.
+Stable packages are published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64.
 
 On install, the package creates an SNMPv3 user named `manager` with a random password and
 passphrase. It also sets `manager` as the **Internal Query User**, which `snmpd` uses for its
