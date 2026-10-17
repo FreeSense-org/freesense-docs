@@ -12,7 +12,7 @@ manage production firewalls yet.
 :::
 
 **Tested with:** FreeSense 1.2.0-DEVELOPMENT (build of 17 October 2026) and Fleet package
-`FreeSense-pkg-Fleet` 0.2.0_1, on a lab of one controller and six firewalls (two branch offices,
+`FreeSense-pkg-Fleet` 0.2.0_1 (fixes: 0.2.1), on a lab of one controller and six firewalls (two branch offices,
 two shops and an HA pair) on Proxmox.
 
 ## What was tested and works
@@ -35,48 +35,37 @@ two shops and an HA pair) on Proxmox.
   deliveries are retried every minute.
 - **Webhook alerts** check the receiver's HTTPS certificate.
 
-## Known issues
+## Fixed in Fleet 0.2.1
 
-None of the fixes below is in a published build yet. They are planned for a coming Development
-build, most important first. Until then, use the workaround.
+The issues found in this test are fixed in `FreeSense-pkg-Fleet` 0.2.1 and a small FreeSense
+system change. They were checked on the lab firewalls, but **they are not in a published
+Development build yet**; they arrive with the next nightly build after they are merged. Until
+then, 0.2.0_1 still has them.
 
-### Security
+- **Security:** *WebGUI login protection (SEC-003)* now checks login protection (sshguard), and
+  Fleet can no longer change the anti-lockout rule on a firewall.
+- **Update channel (VER-004)** passes on Development firewalls.
+- **HA pairs:** a firewall that loses power is reported as *member down*, not as split-brain.
+- **Policy failures** show in the headline, the top-bar icon and the NOC view, and a new alert
+  reports a firewall that starts failing a High rule.
+- *Firewall back online* is sent only after an *offline* alert.
+- **Users → Sync** shows never-synced users as waiting for sync, and points out SSH keys without
+  the shell privilege.
+- **Schedules → Run now** asks before a reboot or update.
+- **Alert channels** show save errors, send only the chosen type's fields, and can trust one
+  certificate per webhook, ntfy or Gotify channel by its SHA-256 fingerprint.
+- Smaller fixes: template hints, the HA wizard (moves to the review, warns about two interfaces on
+  one network card), the activity progress bar, the newest-version tile, invitations (**New key**),
+  and group list colours.
 
-| Issue | Workaround |
-| --- | --- |
-| The policy rule **WebGUI login protection (SEC-003)** checks the wrong setting: it tests the *anti-lockout rule*, not login protection. On a firewall with only a WAN interface it reports a failure, and **Fix** would turn the anti-lockout rule back on, which opens the WebUI and SSH on that interface. | Do not switch on SEC-003, and never use **Fix** for it. |
-
-### Wrong or misleading results
-
-| Issue | Workaround |
-| --- | --- |
-| The policy rule **Update channel (VER-004)** can never pass on Development: firewalls report the channel as `devel`, the rule expects `development`. | Leave VER-004 off on Development firewalls. |
-| **HA pairs**: when one firewall of a pair loses power, Fleet briefly reports a *split-brain* (both MASTER) and then *healthy again*, while one firewall is still down. It compares the live state of one firewall with the last report of the other. | Check the firewall list: the firewall that is really down shows as degraded, then offline. |
-| **Users → Sync** shows users and groups that were never synced as *changed on the firewall*, with **Adopt** and **Ignore**. They are only waiting for the first sync. | Select **Sync** instead of Adopt or Ignore. |
-| The headline, the top-bar icon and the NOC summary do not count **policy failures**; only **Needs attention** lists them, and there is no alert for a failing rule. | Check **Policies → Compliance**. |
-| A planned reboot sends *Firewall back online* although no *offline* alert was sent before it. | Ignore *back online* alerts without an *offline* alert. |
-
-### Usability
-
-| Issue | Workaround |
-| --- | --- |
-| **Schedules → Run now** starts a reboot or update at once, without asking. | Be sure before you select it. |
-| **Alert channels**: when a channel cannot be saved (for example a webhook address that does not start with `https://`), the dialog closes without an error. | Use an `https://` address and check that the channel appears in the list. |
-| **Alert channels**: a webhook receiver with a self-signed or private-CA certificate cannot be used; there is no way to trust a certificate per channel. | Use a receiver with a publicly trusted certificate. |
-| **Templates → Firewall rules** opens with an example rule whose values are real text, not hints; typing adds to them. | Clear each field before typing. |
-| The **HA pair** wizard shows the review below the fold after **Review**, without moving to it. | Scroll down to *3. Review*. |
-| An operation's overall progress bar can stay at *Starting* while its firewalls already show progress. | Follow the rows per firewall. |
-| An SSH key for a Fleet user has no effect unless one of the user's groups has the shell privilege. | Add *User - System: Shell account access* to the group when the users need SSH. |
-
-Smaller cosmetic issues (wording, colours, placeholders) are tracked too and fixed with the
-items above.
+Still open: on the cloud image, setting the admin password through the configuration library does
+not save; set it in the WebUI or the console.
 
 ## Not tested yet on 1.2
 
 - A real **rollout** of an update through a maintenance window (no newer build existed during the
   test).
-- Delivery of an alert to a webhook end to end on 1.2 (blocked by the certificate limitation
-  above), and the e-mail, Slack/Teams, Telegram, ntfy and Gotify channels.
+- Delivery of an alert to a webhook end to end on 1.2 (now possible with a trusted fingerprint), and the e-mail, Slack/Teams, Telegram, ntfy and Gotify channels.
 - **Deployment Factory** batches booting from a seed, and joining over **Tailscale**, on 1.2.
 - The **standby controller** on 1.2.
 

@@ -112,7 +112,7 @@ A schedule backs up, reboots or updates firewalls at a set time.
 ![A schedule that reboots the Retail stores group every Sunday at 06:00](__ASSET_ROOT__/screenshots/packages/fleet-schedule-add.png)
 
 The list shows each schedule's next run and last result, with **Run now**, **Pause**, **Change**
-and **Delete**. Note that **Run now** starts the job at once.
+and **Delete**. **Run now** asks first for a reboot or update.
 
 ![The Schedules list](__ASSET_ROOT__/screenshots/packages/fleet-schedules.png)
 
@@ -181,7 +181,8 @@ times can be changed. An offline firewall counts as an outage in the availabilit
 To send alerts somewhere, add a channel under **Activity → Alert channels**: e-mail (it uses
 **System → Advanced → Notifications**), a webhook, Slack or Teams, Telegram, ntfy or Gotify. Pick
 the alerts the channel wants, the lowest severity, and an optional daily report, then select
-**Send test**. Webhook addresses must use `https://` with a trusted certificate. A delivery that
+**Send test**. Webhook addresses must use `https://`. For a receiver with a self-signed or private-CA
+certificate, enter its SHA-256 fingerprint under **Trust this certificate**. A delivery that
 fails is retried every minute.
 
 ## Related pages

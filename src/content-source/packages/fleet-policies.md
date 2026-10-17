@@ -12,15 +12,6 @@ Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/pa
 :::
 
 
-:::danger[Two rules give wrong results in package 0.2.0_1]
-- **WebGUI login protection (SEC-003)** checks the anti-lockout rule instead of login
-  protection. Do not switch it on, and never use **Fix** for it: on a WAN-only firewall, the fix
-  would open the WebUI and SSH on WAN.
-- **Update channel (VER-004)** never passes on Development firewalls.
-
-See [Fleet status and known issues](/packages/fleet-status/).
-:::
-
 ## Add a policy
 
 1. Open **Policies**. With no policy yet, select **Add the first policy**; later, add one from the **Policies** view.
