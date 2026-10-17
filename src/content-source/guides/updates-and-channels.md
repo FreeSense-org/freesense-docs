@@ -17,7 +17,7 @@ report. Requests identify only as `FreeSense/<version>`.
 | Channel | Release line | Intended use | Support |
 | --- | --- | --- | --- |
 | **Stable** | 1.1.x: 1.1.0 and later patch releases such as 1.1.1 | Production and normal use | Supported |
-| **Testing** | Nightly builds of the next 1.1 patch, for example 1.1.6 before its release | Trying Stable fixes before they are released, on test systems | **Pre-release; no support** |
+| **Testing** | Nightly builds of the next 1.1 patch, for example 1.1.10 before its release | Trying Stable fixes before they are released, on test systems | **Pre-release; no support** |
 | **Development** | Rolling 1.2 builds, rebuilt nightly | Contributors, integration testing, disposable labs | **Experimental; no support** |
 
 Stable advances only through tagged releases built from a sealed release lock. Fixes that are
@@ -27,7 +27,7 @@ releases stay published, but ordinary fixes are not backported to them. Read
 
 Testing (shown as **FreeSense 1.1 Testing**) follows the 1.1 maintenance branch: every fix that is
 lined up for the next Stable patch, built every night as that patch number. On a Testing system
-**System → Update** shows a version such as `1.1.6.a.20261016.1200_3`. When that patch is released
+**System → Update** shows a version such as `1.1.10.a.20261017.1200_3`. When that patch is released
 on Stable, Testing moves on to the next patch number. Testing publishes no installer images; install
 Stable and then switch.
 
@@ -41,7 +41,7 @@ Development 1.2 is experimental and intended only for testing. Keep a configurat
 recovery media, and do not use it for a deployment that depends on support.
 :::
 
-Stable is published for amd64 and, starting with [1.1.1](/releases/1.1.1/), for generic arm64
+Stable is published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), for generic arm64
 (UEFI installer image). FreeSense 1.1.0 itself was amd64 only. The Raspberry Pi appliance images
 are Development-only.
 
@@ -72,8 +72,8 @@ and one automatic rollback; on UFS it runs in place. The
 :::caution[1.1.1 to 1.1.4 cannot update on their own]
 The updater in 1.1.1 to 1.1.4 loses the selected channel, so updates and package changes stop with
 "Another instance of FreeSense-upgrade is running". Run the
-[console command in the 1.1.5 notes](/releases/1.1.5/#before-you-update-from-111-to-114) once,
-then update to 1.1.5 as usual.
+[console command in the 1.1.9 notes](/releases/1.1.9/#before-you-update-from-111-to-114) once,
+then update to the current release as usual.
 :::
 
 ### The dashboard update check
@@ -95,7 +95,7 @@ The list offers only channels whose release is the same as or newer than the run
 | --- | --- | --- |
 | 1.0.x Stable | 1.1 Stable | Yes, the normal upgrade path. One-way. |
 | 1.1 Stable | 1.1 Testing | Yes. |
-| 1.1 Testing | 1.1 Stable | Only once Stable has released the patch Testing is on (for example 1.1.6). Until then Stable would be a downgrade and is not listed. |
+| 1.1 Testing | 1.1 Stable | Only once Stable has released the patch Testing is on (for example 1.1.10). Until then Stable would be a downgrade and is not listed. |
 | 1.1 Stable or Testing | 1.2 Development | Yes, but one-way and unsupported. |
 | 1.2 Development | 1.1 Stable or Testing | No |
 | 1.1 (any channel) | 1.0 | No |

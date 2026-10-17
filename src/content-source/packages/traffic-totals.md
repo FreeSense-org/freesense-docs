@@ -24,7 +24,7 @@ per-second graphs, use the built-in traffic graph described in
 2. Find **Traffic Totals** (category Monitoring, lightweight) and select **Install package**, then
    **Confirm**.
 
-Stable packages are published for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64. See [Installing packages](/packages/installing-packages/).
+Stable packages are published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64. See [Installing packages](/packages/installing-packages/).
 
 ## Where to find it
 

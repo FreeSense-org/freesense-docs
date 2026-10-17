@@ -18,7 +18,7 @@ separately from the System, so installing or updating them does not change the b
 | CrowdSec | Behavior-based decisions loaded into a managed WAN block rule | [CrowdSec](/packages/crowdsec/) | Moderate. |
 | ACME Certificates | Automatic certificates from Let's Encrypt and other ACME authorities | [ACME Certificates](/packages/acme/) | Lightweight. |
 
-Stable 1.1.0 was published for amd64 only. Stable arm64 starts with [1.1.1](/releases/1.1.1/);
+Stable 1.1.0 was published for amd64 only. Stable arm64 starts with [1.1.1](/releases/previous-1.1/#freesense-111);
 Suricata and Web Gateway Local Antivirus are not built for arm64 on Stable or Development.
 
 ## Choosing between them

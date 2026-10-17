@@ -20,7 +20,7 @@ metrics instead, use [Prometheus Node Exporter](/packages/node-exporter/) or the
 2. Find **Telegraf** (package `FreeSense-pkg-Telegraf`, category *Monitoring*, resource profile
    *Moderate*) and choose **Install**.
 
-The install pulls in the `telegraf` package. Stable packages are published for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64.
+The install pulls in the `telegraf` package. Stable packages are published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64.
 
 ## Where to find it
 

@@ -21,7 +21,7 @@ of a crash and a possibly damaged file system.
 2. Find **Network UPS Tools** (category System, lightweight) and select **Install package**, then
    **Confirm**.
 
-Stable packages are published for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64. See [Installing packages](/packages/installing-packages/).
+Stable packages are published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64. See [Installing packages](/packages/installing-packages/).
 
 ## Where to find it
 

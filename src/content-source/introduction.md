@@ -60,7 +60,7 @@ FreeSense uses two active channels:
 - **Development 1.2**: the rolling line for the next release, rebuilt nightly for contributors and
   labs. Development receives **no support** and is not intended for production.
 
-Stable is published for amd64 and, starting with [1.1.1](/releases/1.1.1/), for generic arm64
+Stable is published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), for generic arm64
 (UEFI installer image); 1.1.0 itself was amd64 only. The Raspberry Pi appliance images are
 available on Development only.
 

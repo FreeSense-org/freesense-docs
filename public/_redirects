@@ -10,3 +10,16 @@
 /security/suricata/ /packages/suricata/ 301
 /1.2/security/crowdsec/ /1.2/packages/crowdsec/ 301
 /1.2/security/suricata/ /1.2/packages/suricata/ 301
+# 1.1.0 to 1.1.5 release notes merged into one page (1.1.9).
+/releases/1.1.0/ /releases/previous-1.1/#freesense-110 301
+/releases/1.1.1/ /releases/previous-1.1/#freesense-111 301
+/releases/1.1.2/ /releases/previous-1.1/#freesense-112 301
+/releases/1.1.3/ /releases/previous-1.1/#freesense-113 301
+/releases/1.1.4/ /releases/previous-1.1/#freesense-114 301
+/releases/1.1.5/ /releases/previous-1.1/#freesense-115 301
+/1.2/releases/1.1.0/ /1.2/releases/previous-1.1/#freesense-110 301
+/1.2/releases/1.1.1/ /1.2/releases/previous-1.1/#freesense-111 301
+/1.2/releases/1.1.2/ /1.2/releases/previous-1.1/#freesense-112 301
+/1.2/releases/1.1.3/ /1.2/releases/previous-1.1/#freesense-113 301
+/1.2/releases/1.1.4/ /1.2/releases/previous-1.1/#freesense-114 301
+/1.2/releases/1.1.5/ /1.2/releases/previous-1.1/#freesense-115 301

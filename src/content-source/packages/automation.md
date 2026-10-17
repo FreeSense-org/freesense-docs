@@ -22,7 +22,7 @@ separate automation host.
 3. Confirm on the review page.
 
 The package contains only PHP and has no architecture-specific dependencies. Stable packages
-are published for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64.
+are published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64.
 
 ## Where to find it
 

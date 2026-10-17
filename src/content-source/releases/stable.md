@@ -10,7 +10,7 @@ Each Stable release is built from a sealed release lock that records the exact s
 optional package, and FreeBSD revisions, so a published release can be audited and recreated (see
 [Release process](/guides/release-process/)). Fixes are made on the `RELENG_1_1` maintenance
 branch, built and upgrade-tested as a test build, and then published as patch releases such as
-`1.1.5`. Every published release is tagged `v1.1.N` in the FreeSense repositories. Earlier
+`1.1.9`. Every published release is tagged `v1.1.N` in the FreeSense repositories. Earlier
 artifacts stay immutable, and a version number is never reused: a withdrawn release is replaced by
 the next number.
 
@@ -18,12 +18,9 @@ the next number.
 
 | Release | Date | Notes |
 | --- | --- | --- |
-| 1.1.5 | 2026-10-14 | [Release notes](/releases/1.1.5/) · updates and package changes work again on 1.1.1 and later (one console command first); the update window opens at once; Threat Shield save and map fixes |
-| 1.1.4 | 2026-10-14 | **Withdrawn**, superseded by 1.1.5 · [Release notes](/releases/1.1.4/) · Threat Shield 1.1.0: GeoIP and DNS redirection work, IP threat lists, inbound protection, threat map |
-| 1.1.3 | 2026-10-14 | [Release notes](/releases/1.1.3/) · multi-line settings keep their line breaks; Threat Shield settings and query log; no stray VLAN interfaces |
-| 1.1.2 | 2026-10-14 | [Release notes](/releases/1.1.2/) · Tailscale and WireGuard keys kept out of logs and process lists |
-| 1.1.1 | October 2026 | [Release notes](/releases/1.1.1/) · adds arm64 (generic UEFI installer); amd64 code unchanged from 1.1.0 |
-| 1.1.0 | 2026-10-13 | [Release notes](/releases/1.1.0/) · [What's new in 1.1](/releases/whats-new-1.1/) |
+| 1.1.9 | 2026-10-17 | [Release notes](/releases/1.1.9/) · RADIUS works on PHP 8.5; boot environments of older releases locked in the WebUI; PHP 8 fixes across the WebUI and Optional Packages; serial-console installs |
+| 1.1.6 to 1.1.8 | | **Withdrawn before release**, never published; included in 1.1.9 |
+| 1.1.0 to 1.1.5 | 2026-10-13 to 2026-10-14 | [Previous 1.1 releases](/releases/previous-1.1/) · [What's new in 1.1](/releases/whats-new-1.1/) |
 
 Release notes for the earlier 1.0.x line are in the [frozen 1.0 documentation](/1.0/).
 
@@ -33,7 +30,7 @@ To try the fixes lined up for the next patch before it is released, a test syste
 ## Architectures
 
 Stable publishes **amd64** (installer ISO plus UFS and ZFS cloud disks). Starting with
-[1.1.1](/releases/1.1.1/), Stable also publishes **arm64**: System and Optional Packages for
+[1.1.1](/releases/previous-1.1/#freesense-111), Stable also publishes **arm64**: System and Optional Packages for
 aarch64 and the generic arm64 UEFI installer image. There are no arm64 cloud disks on Stable.
 FreeSense 1.1.0 itself was amd64 only. The Raspberry Pi
 appliance images are not part of the Stable line; they are available on

@@ -15,7 +15,7 @@ enable, not just for the base install.
 | **arm64**, generic UEFI machines with virtio storage and networking | Supported from 1.1.1 (installer image only) | Experimental preview |
 | **Raspberry Pi** 4 Model B and Pi 5 (D0) appliance images | Not part of 1.1 | Experimental preview |
 
-Stable 1.1.0 was published for **amd64 only**. Starting with [1.1.1](/releases/1.1.1/), Stable
+Stable 1.1.0 was published for **amd64 only**. Starting with [1.1.1](/releases/previous-1.1/#freesense-111), Stable
 also ships generic arm64 (UEFI): signed System and Optional Packages for aarch64 and an installer
 image. There are no arm64 cloud images on Stable, and the Raspberry Pi appliance images stay on
 the Development line. See [arm64 systems](#arm64-systems) below.

@@ -35,7 +35,7 @@ Development publishes:
   [Raspberry Pi appliances](/1.2/getting-started/raspberry-pi/).
 
 The Raspberry Pi images are Development-only and are not part of the 1.1 Stable line. Generic
-arm64 (UEFI) is also on Stable, starting with [1.1.1](/releases/1.1.1/).
+arm64 (UEFI) is also on Stable, starting with [1.1.1](/releases/previous-1.1/#freesense-111).
 
 Package availability is defined by the [curated catalog](/packages/catalog/), not by a generic
 FreeBSD repository. Some optional packages are not built for arm64.

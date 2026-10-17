@@ -38,7 +38,7 @@ is not a supported way to go back to 1.0. Take a configuration backup before you
    [download center](https://freesense.org/download)) in case the system must be reinstalled.
 6. **Plan for a reboot.** The upgrade always ends with at least one reboot. Schedule a maintenance
    window and keep console access (serial, VGA, or the hypervisor console).
-7. **Read the [known issues](/releases/1.1.0/#known-issues).**
+7. **Read the [known issues](/releases/1.1.9/#known-issues).**
 
 ## Run the upgrade
 
@@ -132,14 +132,14 @@ installer media and restoring the configuration backup.
 
 1. **Version.** The dashboard and **System → Update** show the 1.1.x release you upgraded to. On
    1.1.0 the dashboard's "built on" time shows the current time, a
-   [known issue](/releases/1.1.0/#known-issues) fixed in 1.1.1.
+   [known issue](/releases/previous-1.1/#known-issues-in-110) fixed in 1.1.1.
 2. **Channel.** **System → Update → Update Settings** still shows the Stable channel, and the update
    check reports the system as up to date. Development is listed as an option, but switching to it
    is one-way and unsupported.
 3. **Packages.** Installed optional packages are upgraded to their 1.1 versions together with the
    system, and their install scripts run during the first boot. Check **System → Package Manager → Installed Packages** and **Status →
    Services**. If **Secure Web Gateway** is installed, check that its service is running and start
-   it if needed (a [known issue](/releases/1.1.0/#known-issues)).
+   it if needed (a [known issue](/releases/previous-1.1/#known-issues-in-110)).
 4. **Boot environments (ZFS).** **System → Boot Environments** shows the upgraded environment as
    active and healthy, and the pre-upgrade environment with its timestamp suffix. Keep it for a
    short time as a recovery point, then delete it when you no longer need it.
@@ -157,4 +157,4 @@ installer media and restoring the configuration backup.
 | Automatic rollback after a failed 1.0 → 1.1 first boot | Not covered by the test above <!-- needs verification: forced health-check failure during 1.0 -> 1.1 upgrade --> |
 
 See also [Updates and release channels](/guides/updates-and-channels/) and the
-[1.1.0 release notes](/releases/1.1.0/).
+[1.1.0 release notes](/releases/previous-1.1/#freesense-110).

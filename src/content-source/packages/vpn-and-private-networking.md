@@ -16,7 +16,7 @@ published separately from the System.
 | [ZeroTier](/packages/zerotier/) | Membership in ZeroTier virtual networks | The ZeroTier network controller; FreeSense accepts routes and DNS only with your consent | **VPN → ZeroTier**, **Status → ZeroTier Peers** |
 | [OpenVPN Client Export](/packages/openvpn-client-export/) | Client configs and Windows installers for the built-in OpenVPN server | You, through the built-in OpenVPN server and certificate manager | **VPN → OpenVPN → Client Export** |
 
-All four are lightweight packages. Stable publishes them for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64.
+All four are lightweight packages. Stable publishes them for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64.
 
 ## How to choose
 

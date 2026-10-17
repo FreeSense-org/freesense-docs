@@ -26,7 +26,7 @@ instead and use [Remote logging](/operations/monitoring-and-logs/) from the fire
    then **Confirm**.
 3. Wait for the installation log to finish before leaving the page.
 
-Stable packages are published for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64. See [Installing packages](/packages/installing-packages/)
+Stable packages are published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64. See [Installing packages](/packages/installing-packages/)
 for repository and update behavior.
 
 ## Where to find it

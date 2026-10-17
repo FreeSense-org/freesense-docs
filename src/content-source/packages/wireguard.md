@@ -26,7 +26,7 @@ During installation the package:
 - creates a **WireGuard** access list for the DNS Resolver (Unbound);
 - installs the `wireguardd` service and writes the package default settings.
 
-Stable packages are published for amd64 and, starting with [1.1.1](/releases/1.1.1/), arm64. The package itself has no architecture-specific parts.
+Stable packages are published for amd64 and, starting with [1.1.1](/releases/previous-1.1/#freesense-111), arm64. The package itself has no architecture-specific parts.
 
 ## Where to find it
 

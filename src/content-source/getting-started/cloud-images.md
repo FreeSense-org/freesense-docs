@@ -13,7 +13,7 @@ instead of running the installer. Each image is published in two formats:
 Stable 1.1 cloud images are published for **amd64**. Each format comes with a UFS root or a ZFS root.
 
 :::note[arm64]
-There are no arm64 cloud images on Stable. Stable arm64 starts with [1.1.1](/releases/1.1.1/) and
+There are no arm64 cloud images on Stable. Stable arm64 starts with [1.1.1](/releases/previous-1.1/#freesense-111) and
 ships only the generic arm64 UEFI installer image, not QCOW2 or raw cloud disks. The generic arm64
 target in Development also provides an installer image instead of cloud disks. To run FreeSense on
 arm64, follow [Installation](/getting-started/installation/#install-on-arm64).
