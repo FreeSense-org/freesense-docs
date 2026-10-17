@@ -1,0 +1,138 @@
+---
+title: Fleet updates, templates and schedules
+description: Run many FreeSense firewalls day to day with Fleet - maintenance windows and rollouts, configuration templates, schedules, connections and the NOC live view.
+---
+
+This page covers the day-to-day tools of [FreeSense Fleet](/packages/fleet/): updating firewalls
+in safe steps, pushing the same settings to many firewalls, running jobs on a schedule, and
+showing the fleet on a wall screen.
+
+:::caution[Development only]
+Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/packages/fleet/).
+:::
+
+## Updates
+
+**Updates → Overview** shows the newest version offered, how many firewalls can update, and every
+version running in the fleet with the firewalls on it.
+
+### Maintenance windows
+
+A maintenance window is a weekly time when a group may be updated, for example weeknights at
+01:00 for three hours.
+
+1. Open **Updates → Maintenance windows** and select **Add window**.
+2. Enter a **Name**, choose the **Days**, the start time (**Starts at**) and the **Length** in
+   minutes.
+3. Select **Save window**.
+4. Give a group the window under **Firewalls → Groups → Change → Maintenance window**.
+
+![The Add a window dialog: weeknights from 01:00 for 180 minutes](__ASSET_ROOT__/screenshots/packages/fleet-window-add.png)
+
+Times are in the controller's time zone. A window may run past midnight. A rollout does not start
+an update when less than 60 minutes of the window are left.
+
+### Rollouts
+
+**Updates → Rollouts** updates firewalls ring by ring, each group inside its maintenance window.
+The tab lists something only when at least one firewall has an update available. Firewalls without
+rollback protection (UFS) are left out unless you allow them in the update settings. Pinned and
+allowed version [policies](/packages/fleet-policies/) also stop updates that would break them.
+
+## Templates
+
+A template pushes the same configuration to many firewalls. Fleet shows what would change on each
+firewall before anything is applied.
+
+| Kind | What it sets |
+| --- | --- |
+| Aliases | Lists of servers, networks or ports. Fleet only ever changes aliases it pushed itself. |
+| Firewall rules | Pass and block rules, first on their interface. |
+| Port forwards | NAT port forwards with their firewall rule. |
+| Time and NTP | Time zone and NTP servers. |
+| DNS servers | The DNS servers the firewall itself uses. |
+| SNMP | SNMP on or off, location, contact and community. |
+| Remote logging | Central syslog servers. |
+
+Rules and port forwards are applied under commit-confirm: if a change cuts Fleet off from a
+firewall, the firewall puts its previous rules back by itself. They need FreeSense with API level
+11 or later; older firewalls are skipped with `FLEET-E401`. A firewall can have one settings
+template of each kind.
+
+![The Templates page with rule and settings template kinds](__ASSET_ROOT__/screenshots/packages/fleet-templates.png)
+
+### Add and apply a template
+
+1. Open **Templates** and select a kind, for example **Time and NTP**.
+2. Enter a **Name** and **Description**, choose **For** (all firewalls, groups or single
+   firewalls) and fill in the settings.
+3. Select **Save and preview**. Saving changes nothing on the firewalls.
+4. Check **What applying changes**: each firewall with its changes, read from its newest backup.
+   Open a row to see each change, for example `NTP servers pool.ntp.org → 0.dk.pool.ntp.org, …`.
+   Select **Read the firewalls now** to read them again first.
+5. Apply per firewall with **Apply here**, or to all with **Apply to N firewalls**. **Ignore**
+   leaves one firewall as it is.
+
+![The preview: six firewalls with one change each, with Apply here and Ignore](__ASSET_ROOT__/screenshots/packages/fleet-template-preview.png)
+
+Applying runs as an operation in **Activity**:
+
+![The template applied to all six firewalls in nine seconds](__ASSET_ROOT__/screenshots/packages/fleet-template-applied.png)
+
+When a firewall later drifts from its template, Fleet shows it, and you can adopt the firewall's
+value, ignore it or put the template's value back.
+
+## Schedules
+
+A schedule backs up, reboots or updates firewalls at a set time.
+
+1. Open **Schedules** and select **Add schedule**.
+2. Enter a **Name** and choose what it **Does**: **Back up**, **Reboot one at a time** or
+   **Update one at a time**.
+3. Under **For**, choose any mix of groups and firewalls. A firewall in two chosen groups is done
+   once.
+4. Choose the **Days** and the time (**At**). Leave **On (runs at its times)** ticked.
+5. Select **Save schedule**.
+
+![A schedule that reboots the Retail stores group every Sunday at 06:00](__ASSET_ROOT__/screenshots/packages/fleet-schedule-add.png)
+
+The list shows each schedule's next run and last result, with **Run now**, **Pause**, **Change**
+and **Delete**. Note that **Run now** starts the job at once.
+
+![The Schedules list](__ASSET_ROOT__/screenshots/packages/fleet-schedules.png)
+
+Reboots and updates go one firewall at a time and stop at the first failure. Each firewall must
+come back online before the next one starts:
+
+![A rolling reboot: Shop Nyhavn back online after 1 min 51 s, Shop Strøget restarting](__ASSET_ROOT__/screenshots/packages/fleet-rolling-reboot.png)
+
+Times are in the controller's time zone. A run the controller misses by more than 15 minutes is
+recorded as missed, not run late.
+
+## Connections
+
+**Firewalls → Connections** shows how Fleet reaches each firewall. Every firewall joins over the
+Fleet tunnel (WireGuard). Fleet can also reach a firewall directly on an internal network, or over
+Tailscale; the tunnel then stays as the fallback, so a path that stops answering never cuts a
+firewall off. Choose the method for the whole fleet, a group or one firewall.
+
+![Connections: six firewalls on the Fleet tunnel](__ASSET_ROOT__/screenshots/packages/fleet-connections.png)
+
+## NOC live view
+
+**Dashboard → Open live view** shows the fleet full screen: a one-line summary, counters for
+online, late and offline firewalls, and a card per firewall with its groups, version and policy
+results. Problems come first. Choose a **Style**, turn sound on for alerts, and select **Full
+screen**.
+
+![The live view with six online firewalls](__ASSET_ROOT__/screenshots/packages/fleet-noc.png)
+
+For a wall screen that never logs in, add a screen under **Dashboard → NOC screens → Add screen**.
+Each screen has its own link, works only from its allowed networks, and can hide names when the
+screen is in a public place.
+
+## Related pages
+
+- [FreeSense Fleet](/packages/fleet/)
+- [Fleet policies](/packages/fleet-policies/)
+- [Fleet HA pairs](/packages/fleet-ha/)

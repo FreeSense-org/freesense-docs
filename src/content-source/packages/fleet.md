@@ -21,7 +21,8 @@ What Fleet gives you:
 - **Joining with an approval code**: a join link plus a separate join key, and a 6-digit code you
   compare before you approve.
 - **Backups** of every firewall, kept on the controller, with retention rules.
-- **Updates and rollouts** with maintenance windows.
+- **Updates and rollouts** with maintenance windows, **templates** and **schedules**. See
+  [Fleet updates, templates and schedules](/packages/fleet-operations/).
 - **Policies** that check, fix or lock settings on every firewall. See
   [Fleet policies](/packages/fleet-policies/).
 - **HA pairs** set up from two firewalls in one wizard. See [Fleet HA pairs](/packages/fleet-ha/).
@@ -188,5 +189,6 @@ On the firewall, run `freesense-join leave`. It leaves the fleet and keeps its l
 
 - [Fleet HA pairs](/packages/fleet-ha/)
 - [Fleet policies](/packages/fleet-policies/)
+- [Fleet updates, templates and schedules](/packages/fleet-operations/)
 - [Tailscale](/packages/tailscale/)
 - [Install and manage packages](/packages/installing-packages/)
