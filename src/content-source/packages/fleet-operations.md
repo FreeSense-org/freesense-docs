@@ -79,6 +79,21 @@ Applying runs as an operation in **Activity**:
 
 ![The template applied to all six firewalls in nine seconds](__ASSET_ROOT__/screenshots/packages/fleet-template-applied.png)
 
+### Example: a firewall rule for one group
+
+A **Firewall rules** template for *Branch offices* that blocks and logs Telnet to the WAN address.
+The preview lists one rule to create on each of the two branch firewalls:
+
+![The rule template preview: one rule to create on each branch firewall](__ASSET_ROOT__/screenshots/packages/fleet-rules-preview.png)
+
+Each firewall gets a safety backup and a commit-confirm window first. The result says
+*1 created, 0 changed, 0 removed; confirmed*:
+
+![The rule template applied and confirmed on both branch firewalls](__ASSET_ROOT__/screenshots/packages/fleet-rules-applied.png)
+
+On the firewall, the rule's description starts with `[Fleet:T<id>:<rule name>]`, so you can see
+which template it came from.
+
 When a firewall later drifts from its template, Fleet shows it, and you can adopt the firewall's
 value, ignore it or put the template's value back.
 
@@ -131,8 +146,47 @@ For a wall screen that never logs in, add a screen under **Dashboard → NOC scr
 Each screen has its own link, works only from its allowed networks, and can hide names when the
 screen is in a public place.
 
+## Users
+
+Fleet can keep the same accounts on many firewalls. Local accounts on a firewall (such as
+`admin`) are never changed.
+
+1. Open **Users → Groups → Add group**. Enter a name, choose **For** (the firewall groups or
+   firewalls the group is for) and the **Privileges** its members get.
+2. Open **Users → Users → Add user**. Enter a user name, choose the groups, and a password and/or
+   SSH public keys. With no password the user can sign in with SSH keys only. SSH needs a group
+   with the *User - System: Shell account access* privilege.
+3. Open **Users → Sync** and select **Sync N firewalls**. Each firewall gets a safety backup first,
+   and only accounts Fleet made are changed or removed.
+
+![Adding a user with an SSH key to the shop-support group](__ASSET_ROOT__/screenshots/packages/fleet-user-add.png)
+
+![The sync: two users and groups added on each shop firewall](__ASSET_ROOT__/screenshots/packages/fleet-user-sync.png)
+
+**Lock Fleet users on the firewalls** makes the firewalls refuse local edits to the accounts Fleet
+manages. A firewall that is updated is synced again by itself.
+
+## Alerts and outages
+
+Fleet asks each firewall for its status every 15 seconds (**Settings → Monitoring**). A firewall
+that does not answer is marked **degraded** after 1 minute and **offline** after 5 minutes; both
+times can be changed. An offline firewall counts as an outage in the availability figure.
+
+![Two firewalls offline after a power cut, shown first under Needs attention](__ASSET_ROOT__/screenshots/packages/fleet-outage.png)
+
+**Activity → Alerts** lists every alert with its severity and where it was sent:
+
+![Firewall offline and back online alerts, with delivery retries](__ASSET_ROOT__/screenshots/packages/fleet-alerts.png)
+
+To send alerts somewhere, add a channel under **Activity → Alert channels**: e-mail (it uses
+**System → Advanced → Notifications**), a webhook, Slack or Teams, Telegram, ntfy or Gotify. Pick
+the alerts the channel wants, the lowest severity, and an optional daily report, then select
+**Send test**. Webhook addresses must use `https://` with a trusted certificate. A delivery that
+fails is retried every minute.
+
 ## Related pages
 
 - [FreeSense Fleet](/packages/fleet/)
 - [Fleet policies](/packages/fleet-policies/)
 - [Fleet HA pairs](/packages/fleet-ha/)
+- [Fleet status and known issues](/packages/fleet-status/)

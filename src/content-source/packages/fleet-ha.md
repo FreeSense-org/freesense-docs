@@ -49,6 +49,12 @@ The setup runs as an operation in **Activity**. It takes about a minute:
 
 ![The finished setup: DC1 edge A is MASTER and DC1 edge B BACKUP](__ASSET_ROOT__/screenshots/packages/fleet-ha-activity.png)
 
+:::note[Known issue]
+When one firewall of a pair loses power, Fleet can briefly report a split-brain and then
+"healthy again" while that firewall is still down. See
+[Fleet status and known issues](/packages/fleet-status/).
+:::
+
 ## The pair list
 
 **Firewalls → HA pairs** shows each pair with the role of each firewall, its state, the shared

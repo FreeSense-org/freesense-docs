@@ -114,6 +114,7 @@ export const navigation = [
         ['Fleet HA pairs', 'packages/fleet-ha', ['devel']],
         ['Fleet policies', 'packages/fleet-policies', ['devel']],
         ['Fleet updates, templates and schedules', 'packages/fleet-operations', ['devel']],
+        ['Fleet status and known issues', 'packages/fleet-status', ['devel']],
       ]),
     ],
   },
