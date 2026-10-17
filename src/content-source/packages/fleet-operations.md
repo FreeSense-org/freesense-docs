@@ -186,6 +186,45 @@ unencrypted). For a receiver with a self-signed or private-CA
 certificate, enter its SHA-256 fingerprint under **Trust this certificate**. A delivery that
 fails is retried every minute.
 
+## Internet connectivity
+
+Fleet can watch the internet connection of every firewall, not only whether the firewall answers
+the controller. Each firewall already measures its gateways (latency, jitter and packet loss);
+with this option on, the controller keeps that history for the whole fleet and tells you when a
+connection goes bad.
+
+1. Open **Settings → Monitoring** and turn on **Watch the internet connection of each firewall**.
+2. Check the thresholds: a connection is **poor** at 5 % packet loss, 150 ms latency or 30 ms
+   jitter, and **down** at 20 % loss or when the firewall marks the gateway down. A firewall is
+   reported after **2 bad checks in a row**, read every **5 minutes**.
+3. Select **Save**. The first values appear within a few minutes.
+
+What you get:
+
+- **Firewalls → Internet**: every gateway in the fleet with its state, latency, jitter and loss
+  now, and for the chosen range (24 hours, 7 days or 30 days) its **quality score**, average loss,
+  **flaps** and **minutes with loss**. Sort by lowest quality, most loss or most flaps.
+- **Quality score** (0–100): 100 is a clean, steady line. Packet loss weighs most, then flaps
+  (the gateway changing between up, poor and down), then latency and jitter against the
+  thresholds. 90 and above is excellent, 75 good, 50 unstable, below 50 bad.
+- **Firewalls list**: the score and the current latency and loss under each firewall's state.
+- **Firewall page → Stats → Internet**: quality per range, each gateway now, and the firewall's
+  failovers and outages.
+- **Alerts**: *A firewall lost its internet*, *… is poor*, *… is unstable (flapping)* (more than
+  4 changes in an hour by default), *A firewall moved to another WAN*, and *… works again*
+  (only after a problem was reported). When at least three firewalls and 30 % of the fleet lose
+  their internet at once, you get one *upstream outage* alert instead of one per firewall.
+- **NOC live view**: an **Internet** status ring, an **Internet** list column with the score
+  (`Q 94`) and latency and loss, and the panels *Internet now*, *Internet quality* (latency and
+  loss charts), *Connection quality* (lowest scores first), *Worst internet connections*,
+  *Internet, last 24 hours* and *Failovers and internet outages*. A screen can beep when a
+  firewall loses its internet.
+
+On a firewall with several WANs, the default gateway decides. When it is down and another
+gateway works, the firewall is shown as **poor** ("default gateway down"), and a change of
+default gateway is reported as a failover. Turn on **Keep the history of every gateway** to
+keep the history of the other gateways too.
+
 ## Related pages
 
 - [FreeSense Fleet](/packages/fleet/)
