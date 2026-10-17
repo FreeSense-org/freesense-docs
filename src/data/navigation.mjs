@@ -113,6 +113,7 @@ export const navigation = [
         ['FreeSense Fleet', 'packages/fleet', ['devel']],
         ['Fleet HA pairs', 'packages/fleet-ha', ['devel']],
         ['Fleet policies', 'packages/fleet-policies', ['devel']],
+        ['Fleet updates, templates and schedules', 'packages/fleet-operations', ['devel']],
       ]),
     ],
   },
