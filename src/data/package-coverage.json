@@ -8,7 +8,7 @@
     "bind": "packages/bind",
     "CrowdSec": "packages/crowdsec",
     "Diagnostics": "packages/diagnostics",
-    "Fleet": "packages/fleet",
+    "Fleet": "configure/fleet",
     "freeradius3": "packages/freeradius",
     "frr": "packages/frr",
     "haproxy": "packages/haproxy",

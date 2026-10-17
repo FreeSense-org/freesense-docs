@@ -3,14 +3,14 @@ title: Fleet updates, templates and schedules
 description: Run many FreeSense firewalls day to day with Fleet - maintenance windows and rollouts, configuration templates, schedules, users and alert channels.
 ---
 
-This page covers the day-to-day tools of [FreeSense Fleet](/packages/fleet/): updating firewalls
+This page covers the day-to-day tools of [FreeSense Fleet](/configure/fleet/): updating firewalls
 in safe steps, pushing the same settings to many firewalls, running jobs on a schedule, keeping
 the same users on many firewalls and sending alerts. The wall-screen view and internet monitoring
-have their own pages: [live view](/packages/fleet-live-view/) and
-[internet connectivity](/packages/fleet-internet/).
+have their own pages: [live view](/configure/fleet-live-view/) and
+[internet connectivity](/configure/fleet-internet/).
 
 :::caution[Development only]
-Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/packages/fleet/).
+Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/configure/fleet/).
 :::
 
 ## Updates
@@ -39,7 +39,7 @@ an update when less than 60 minutes of the window are left.
 **Updates → Rollouts** updates firewalls ring by ring, each group inside its maintenance window.
 The tab lists something only when at least one firewall has an update available. Firewalls without
 rollback protection (UFS) are left out unless you allow them in the update settings. Pinned and
-allowed version [policies](/packages/fleet-policies/) also stop updates that would break them.
+allowed version [policies](/configure/fleet-policies/) also stop updates that would break them.
 
 ## Templates
 
@@ -172,10 +172,10 @@ fails is retried every minute.
 
 ## Related pages
 
-- [FreeSense Fleet](/packages/fleet/)
-- [Fleet live view and NOC screens](/packages/fleet-live-view/)
-- [Fleet internet connectivity and quality](/packages/fleet-internet/)
-- [Fleet connection points and firewall rules](/packages/fleet-connect/)
-- [Fleet policies](/packages/fleet-policies/)
-- [Fleet HA pairs](/packages/fleet-ha/)
-- [Fleet status and known issues](/packages/fleet-status/)
+- [FreeSense Fleet](/configure/fleet/)
+- [Fleet live view and NOC screens](/configure/fleet-live-view/)
+- [Fleet internet connectivity and quality](/configure/fleet-internet/)
+- [Fleet connection points and firewall rules](/configure/fleet-connect/)
+- [Fleet policies](/configure/fleet-policies/)
+- [Fleet HA pairs](/configure/fleet-ha/)
+- [Fleet status and known issues](/configure/fleet-status/)

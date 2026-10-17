@@ -9,7 +9,7 @@ with this option on, the controller keeps that history for the whole fleet and t
 connection goes bad. The option is off by default.
 
 :::caution[Development only]
-Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/packages/fleet/).
+Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/configure/fleet/).
 :::
 
 ## Turn it on
@@ -70,11 +70,11 @@ history of the other gateways too.
 | *The internet of a firewall works again* | Only after a problem was reported |
 | *Many firewalls lost their internet at once (upstream outage)* | At least three firewalls and the set share of the fleet lose their internet at once: one alert instead of one per firewall |
 
-Choose these in an [alert channel](/packages/fleet-operations/) like any other alert.
+Choose these in an [alert channel](/configure/fleet-operations/) like any other alert.
 
 ## In the live view
 
-The [live view](/packages/fleet-live-view/) gets an **Internet** status ring, an **Internet**
+The [live view](/configure/fleet-live-view/) gets an **Internet** status ring, an **Internet**
 column in the firewall list with the score (`Q 94`) and, when there is a problem, the loss, and
 these panels: **Internet now**, **Internet quality** (latency and loss charts), **Connection
 quality** (lowest scores first), **Worst internet connections**, **Internet availability** and
@@ -82,8 +82,8 @@ quality** (lowest scores first), **Worst internet connections**, **Internet avai
 
 ## Related pages
 
-- [FreeSense Fleet](/packages/fleet/)
-- [Fleet live view and NOC screens](/packages/fleet-live-view/)
-- [Fleet updates, templates and schedules](/packages/fleet-operations/)
-- [Fleet settings](/packages/fleet-settings/)
-- [Fleet status and known issues](/packages/fleet-status/)
+- [FreeSense Fleet](/configure/fleet/)
+- [Fleet live view and NOC screens](/configure/fleet-live-view/)
+- [Fleet updates, templates and schedules](/configure/fleet-operations/)
+- [Fleet settings](/configure/fleet-settings/)
+- [Fleet status and known issues](/configure/fleet-status/)

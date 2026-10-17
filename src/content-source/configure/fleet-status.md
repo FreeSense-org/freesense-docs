@@ -3,7 +3,7 @@ title: Fleet status and known issues
 description: An honest status of FreeSense Fleet on Development 1.2 - what was tested on real firewalls, what was fixed along the way, and what has not been tested yet.
 ---
 
-This page says plainly what works in [FreeSense Fleet](/packages/fleet/) today and what has not
+This page says plainly what works in [FreeSense Fleet](/configure/fleet/) today and what has not
 been proven yet. It is updated as things change.
 
 :::caution[Development only]
@@ -98,10 +98,10 @@ These problems were found in the lab and are fixed in the current build:
 
 ## Related pages
 
-- [FreeSense Fleet](/packages/fleet/)
-- [Add a firewall to a Fleet](/packages/fleet-join/)
-- [Fleet live view and NOC screens](/packages/fleet-live-view/)
-- [Fleet internet connectivity and quality](/packages/fleet-internet/)
-- [Fleet updates, templates and schedules](/packages/fleet-operations/)
-- [Fleet policies](/packages/fleet-policies/)
-- [Fleet HA pairs](/packages/fleet-ha/)
+- [FreeSense Fleet](/configure/fleet/)
+- [Add a firewall to a Fleet](/configure/fleet-join/)
+- [Fleet live view and NOC screens](/configure/fleet-live-view/)
+- [Fleet internet connectivity and quality](/configure/fleet-internet/)
+- [Fleet updates, templates and schedules](/configure/fleet-operations/)
+- [Fleet policies](/configure/fleet-policies/)
+- [Fleet HA pairs](/configure/fleet-ha/)

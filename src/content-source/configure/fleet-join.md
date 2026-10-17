@@ -3,19 +3,19 @@ title: Add a firewall to a Fleet
 description: Join a FreeSense firewall to a Fleet controller with a guided invitation - the Add a firewall guide on the controller, the Add to fleet guide on the new firewall, Tailscale, approval and the console route.
 ---
 
-A firewall joins a [FreeSense Fleet](/packages/fleet/) in two steps: the controller makes an
+A firewall joins a [FreeSense Fleet](/configure/fleet/) in two steps: the controller makes an
 **invitation**, and the new firewall pastes it into **Add to fleet**. The invitation says how the
 firewall will connect (Fleet tunnel, Tailscale or direct), so there is nothing else to configure
 on the new firewall. Both sides are step-by-step guides, and the console route stays available.
 
 :::caution[Development only]
-Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/packages/fleet/).
+Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/configure/fleet/).
 :::
 
 ## Before you start
 
 - The controller is running and has at least one connection point. See
-  [Fleet connection points and firewall rules](/packages/fleet-connect/).
+  [Fleet connection points and firewall rules](/configure/fleet-connect/).
 - The new firewall runs FreeSense 1.2 (Development) and can reach the controller. With the
   **Tailscale** method it only needs internet access; no port has to be opened.
 - You can sign in to the WebUI of both firewalls.
@@ -125,7 +125,7 @@ On the firewall, open **System → Central Management** and select **Leave the f
 
 ## Related pages
 
-- [FreeSense Fleet](/packages/fleet/)
-- [Fleet connection points and firewall rules](/packages/fleet-connect/)
-- [Fleet status and known issues](/packages/fleet-status/)
+- [FreeSense Fleet](/configure/fleet/)
+- [Fleet connection points and firewall rules](/configure/fleet-connect/)
+- [Fleet status and known issues](/configure/fleet-status/)
 - [Tailscale](/packages/tailscale/)
