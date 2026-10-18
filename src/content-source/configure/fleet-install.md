@@ -177,7 +177,7 @@ do it in the Tailscale admin console).
 ## Versions that must match
 
 The agent updates with System, the controller package updates as a package. Features check the
-firewall's **REST API level** (this build is level 14):
+firewall's **REST API level** (this build is level 15):
 
 | Feature | Needs |
 |---|---|
@@ -186,6 +186,7 @@ firewall's **REST API level** (this build is level 14):
 | Rule and NAT templates, charts and the internet monitor | level 11 |
 | Standby controller (firewalls learn the standby) | level 13 |
 | "Test from outside" through a firewall | level 14 |
+| Encrypted HA link (WireGuard between the pair) | level 15 |
 
 A firewall below the level a feature needs is skipped with `FLEET-E401` and a plain reason; the
 rest of Fleet keeps working. Only FreeSense 1.2 has the agent, so a 1.1 firewall cannot join.

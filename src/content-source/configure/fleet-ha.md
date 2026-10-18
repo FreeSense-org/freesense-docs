@@ -19,8 +19,10 @@ a problem, such as both firewalls claiming MASTER.
 
 - Both firewalls are in the fleet with **Managed** access and not in another pair.
 - Both have the same interfaces on the same networks.
-- Both have a **sync interface** with an address, ideally a direct link between the two. In the
-  examples below it is an interface called *SYNC* with `10.252.0.2/24` and `10.252.0.3/24`.
+- Both reach each other for state sync in one of two ways: a **sync interface** with an address,
+  ideally a direct link between the two (in the examples below an interface called *SYNC* with
+  `10.252.0.2/24` and `10.252.0.3/24`), or an [encrypted link](#the-encrypted-link) that Fleet
+  makes between them, which needs no shared network and no cable.
 
 ## Set up a pair
 
@@ -33,9 +35,12 @@ steps, and **Back** keeps everything you chose.
 2. **Shared addresses.** Tick **Share** for each network that gets a shared (CARP) address. Fleet
    fills in the first free address; check that nothing else on the network uses it. Leave
    **VHID** on *auto* unless you need a fixed one.
-3. **Sync.** Choose the **Sync interface**: states (pfsync) and the configuration go over it, so
-   a direct link between the two is best. If you choose the WAN, a warning says that state sync is
-   not encrypted and would cross the internet. Then choose what configuration sync copies:
+3. **Sync.** Choose how the two firewalls reach each other: **A network between them** (the
+   **Sync interface**) or **An encrypted link (WireGuard)**. States (pfsync) and the configuration
+   go over it. State sync (pfsync) is not encrypted, so a network between them should be a direct
+   link. If you choose the WAN, or an interface that also carries a shared address, a warning on
+   the review says that other devices could read the state sync. Then choose what configuration
+   sync copies:
    firewall rules, aliases and NAT are on by default; schedules, static routes, DHCP server, DNS
    forwarder, traffic shaper and Wake-on-LAN are optional. Users and certificates are not
    offered: syncing them would replace the secondary's Fleet access.
@@ -58,6 +63,32 @@ pair as **Member down** and says which firewall carries the shared addresses. It
 calls a pair healthy while a member does not answer. An alert (*An HA pair has two MASTERs, none,
 or a member down*) is sent, and reboots and updates are held until the pair is healthy again.
 
+## The encrypted link
+
+Choose **An encrypted link (WireGuard)** in the Sync step when the two firewalls have no direct
+cable between them, or when the network between them is not yours alone. Fleet makes a WireGuard
+tunnel straight between the two firewalls and runs state sync over it. It is separate from the
+Fleet tunnel to the controller, so failover still works when the controller is down.
+
+- **Addresses.** For each firewall, give the address the *other* one reaches it on, and a UDP port
+  (default 51831). The address starts from where the controller last saw the firewall connect
+  from; check it. Leave one address empty if that firewall has none, for example behind NAT: it
+  then connects out to the other one. At least one address is needed. Fleet opens the UDP port on
+  the WAN of a firewall that has an address, with a rule marked `[Fleet:HA]`.
+- **The link.** Fleet picks a free private /30 from `10.254.0.0/16` that neither firewall uses,
+  and keeps the two ends' keys on the firewalls: a private key never leaves its firewall. The
+  link shows on each firewall as an interface called *HALINK* and under **VPN → WireGuard**.
+- **WireGuard package.** A firewall without the FreeSense WireGuard package installs it from the
+  package repository, which needs internet and can take a few minutes.
+- **Requirements.** Both firewalls need FreeSense with REST API level 15 (Development builds
+  from the release that adds this). The setup refuses older ones and says to update first.
+- **If it fails.** The two firewalls must see each other within 90 seconds. If they do not, the
+  setup stops with FLEET-E602, names the addresses to check on UDP and undoes everything on
+  both.
+
+State sync over the link is encrypted. The configuration sync still goes to the secondary's
+WebGUI over the link, with the certificate pinned as before.
+
 ## The pair list
 
 **Firewalls → HA pairs** shows each pair with the role of each firewall, its state, the shared
@@ -67,6 +98,17 @@ addresses with their VHID, and where configuration sync comes from.
 
 **Pair a group** sets up several pairs from one group. HA pairs also appear in the
 [live view](/configure/fleet-live-view/), with the role of each member and the last change.
+
+## Remove a pair
+
+**Remove** on a pair removes what Fleet set up for it, on both firewalls, the BACKUP first: the
+shared addresses, the state and configuration sync settings, the rules marked `[Fleet:HA]`, the
+`fleet-hasync` user and the encrypted link. The two firewalls keep their own addresses and
+settings; the shared addresses stop answering, so clients that use them lose the service until
+you point them elsewhere. It runs as an operation in **Activity**.
+
+A pair that was not set up by Fleet only loses what Fleet recognises as its own, which can be
+nothing. Remove it by hand on the firewalls in that case.
 
 ## Related pages
 
