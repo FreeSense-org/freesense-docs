@@ -41,6 +41,26 @@ The tab lists something only when at least one firewall has an update available.
 rollback protection (UFS) are left out unless you allow them in the update settings. Pinned and
 allowed version [policies](/configure/fleet-policies/) also stop updates that would break them.
 
+To start one, select **Roll out** on **Updates → Overview**:
+
+1. Choose a group for each ring, up to five. Rings update in order; inside a ring the firewalls
+   update one at a time. A firewall that is in an [HA pair](/configure/fleet-ha/) is updated
+   after its partner, the BACKUP first.
+2. Select **Review**. The plan lists each ring, its window and its firewalls in order, and a
+   **Wait between rings** field (24 hours by default; 0 starts the next ring as soon as the one
+   before is done).
+3. Select **Start the rollout** and confirm in the window that says each firewall is backed up
+   first and restarts, so it stops forwarding for a few minutes.
+
+**Activity** then shows every firewall with its state, and a failure in a ring pauses the rollout
+until you resume it or cancel the rest. After a firewall restarts, Fleet reads the installed build
+from it and compares the full build stamp, so two Development builds with the same version number
+are told apart.
+
+![A rollout under way: the first firewalls restarting, the rest waiting for their ring](__ASSET_ROOT__/screenshots/packages/fleet-rollout-running.png)
+
+![The same rollout finished: all seven firewalls updated to the same build, with how long each took](__ASSET_ROOT__/screenshots/packages/fleet-rollout-done.png)
+
 ## Templates
 
 A template pushes the same configuration to many firewalls. Fleet shows what would change on each

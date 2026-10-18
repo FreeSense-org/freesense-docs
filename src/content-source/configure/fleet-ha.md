@@ -51,6 +51,8 @@ steps, and **Back** keeps everything you chose.
 4. **Review.** It lists what will happen on both firewalls. Nothing has changed yet. Select
    **Set up ... as a pair**.
 
+![Step 3, Sync: a network between the two firewalls, or an encrypted WireGuard link with the address each firewall is reached on](__ASSET_ROOT__/screenshots/packages/fleet-ha-sync.png)
+
 ![The review: shared address, state sync, configuration sync user and new passwords](__ASSET_ROOT__/screenshots/packages/fleet-ha-review.png)
 
 Fleet creates a user `fleet-hasync` on the secondary with only the HA sync privilege, and new
@@ -59,7 +61,7 @@ commit-confirm: if anything fails, Fleet undoes the setup on both.
 
 The setup runs as an operation in **Activity**. It takes about a minute:
 
-![The finished setup: DC1 edge A is MASTER and DC1 edge B BACKUP](__ASSET_ROOT__/screenshots/packages/fleet-ha-activity.png)
+![The finished setup over the encrypted link: Shop Strøget is MASTER and Shop Nyhavn BACKUP](__ASSET_ROOT__/screenshots/packages/fleet-ha-activity.png)
 
 When one firewall of a pair stops answering, for example after a power cut, Fleet reports the
 pair as **Member down** and says which firewall carries the shared addresses. It reports
@@ -106,7 +108,7 @@ WebGUI over the link, with the certificate pinned as before.
 **Firewalls → HA pairs** shows each pair with the role of each firewall, its state, the shared
 addresses with their VHID, and where configuration sync comes from.
 
-![An HA pair in the Healthy state](__ASSET_ROOT__/screenshots/packages/fleet-ha-pairs.png)
+![Two HA pairs in the Healthy state, each with its shared address](__ASSET_ROOT__/screenshots/packages/fleet-ha-pairs.png)
 
 **Pair a group** sets up several pairs from one group. HA pairs also appear in the
 [live view](/configure/fleet-live-view/), with the role of each member and the last change.

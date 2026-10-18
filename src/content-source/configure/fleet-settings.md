@@ -53,6 +53,29 @@ and the main button last.
 Lists filter as you choose: pick a state or a group and the list updates at once, and the filter
 is kept in the address so you can bookmark it.
 
+## Confirmations
+
+Fleet asks first before anything that deletes, revokes or removes, and before the actions that
+change firewalls, stop a service or end access. A window opens with an icon, what will happen
+and two buttons in one row: **Cancel** on the left, which has the focus so that pressing Enter
+never confirms by accident, and the action on the right.
+
+![A red confirmation: deleting a template, with Cancel on the left and the action on the right](__ASSET_ROOT__/screenshots/packages/fleet-confirm.png)
+
+- **Red** (a trash can or a ban icon): it cannot be undone. Deleting a group, policy, template,
+  schedule, update window, user, user group, backup set or alert channel; revoking an
+  invitation or a screen link; rejecting a firewall; removing the standby, a connection point or
+  an HA pair.
+- **Amber:** it changes firewalls or settings. Starting a rollout, applying or adopting a
+  template, syncing users, applying connection changes, fixing policy rules, setting up pairs for
+  a whole group, restarting or stopping a service, closing joining, recovering the fleet.
+- **Promote to controller** also asks you to type `PROMOTE`, because two controllers can split
+  the fleet. The button stays off until you have.
+
+Rebooting a firewall, restoring a backup and the group actions already end in their own review
+page, so they do not ask twice. Without JavaScript the buttons do what they say; the confirmation
+only gives you a moment to think, and Fleet checks everything on the server as before.
+
 ## Related pages
 
 - [FreeSense Fleet](/configure/fleet/)
