@@ -37,10 +37,12 @@ export default defineConfig({
     starlight({
       title: 'FreeSense Docs',
       description: 'Build, install, operate, and extend the modern FreeSense firewall platform.',
+      // The full lockup, the same logo as the website: white on dark, dark on light.
       logo: {
-        light: './src/assets/icon.svg',
-        dark: './src/assets/icon-white.svg',
+        light: './src/assets/lockup-light.svg',
+        dark: './src/assets/lockup-white.svg',
         alt: 'FreeSense',
+        replacesTitle: true,
       },
       favicon: '/favicon.svg',
       customCss: ['./src/styles/custom.css'],
