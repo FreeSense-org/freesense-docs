@@ -65,32 +65,48 @@ Who may reach the enrollment port is set under **Settings → Access**, in two v
 
 When the controller is in a tailnet, firewalls can join without any public port.
 
-1. Install the Tailscale package on the controller and log it in. See
-   [Tailscale](/packages/tailscale/).
-2. Add a Tailscale API token under **Firewalls → Connections**. Fleet uses it to make a one-time
-   key for each invitation and to turn off the key expiry of the devices it connects.
-3. Add a **Tailscale (tailnet)** connection point, or tick **Firewalls may also connect over
-   Tailscale** in the first-run guide.
+The easy way is the [first-run guide](#first-run-guide) (or **Run the setup guide** on
+**Settings → Controller**): on the Tailscale step, tick **Set it up for me** and paste a Tailscale
+API access token (`tskey-api-...`, made in the Tailscale admin console under Settings → Keys).
+When you apply, Fleet:
+
+1. keeps the token sealed (it uses it to make a one-time key for each invitation and to turn off
+   the key expiry of the devices it connects);
+2. installs the Tailscale package on the controller if it is missing, which needs internet and can
+   take a few minutes;
+3. logs the controller in to the tailnet with a one-time key it makes, and removes the key from
+   the configuration afterwards;
+4. adds a **Tailscale (tailnet)** connection point.
+
+If that fails, for example without internet or when the token may not create keys, Fleet keeps
+running and shows why; run the guide again after fixing it. To do it by hand instead, install the
+Tailscale package and log in ([Tailscale](/packages/tailscale/)), add the API token under
+**Firewalls → Connections**, and add a **Tailscale (tailnet)** connection point.
 
 **Settings → Self-check** shows whether the controller is in the tailnet and ready.
 
 ## How Fleet reaches a firewall
 
 **Firewalls → Connections** shows how Fleet reaches each firewall. Every firewall joins over the
-Fleet tunnel (WireGuard). Fleet can also reach a firewall directly on an internal network, or
-over Tailscale; the tunnel then stays as the fallback, so a path that stops answering never cuts
+Fleet tunnel (WireGuard): a **WAN** connection point is how a firewall on the internet joins, and
+it then keeps the tunnel open. **Direct** is for a network the firewall and the controller share
+(LAN, MPLS, VPN), so it needs a connection point on such an interface, never on the WAN. Fleet can
+also reach a firewall over Tailscale. The tunnel stays as the fallback, so a path that stops answering never cuts
 a firewall off. Choose the method for the whole fleet, a group or one firewall.
 
 ![Connections: six firewalls on the Fleet tunnel](__ASSET_ROOT__/screenshots/packages/fleet-connections.png)
 
 ## First-run guide
 
-Until the controller is switched on, **Settings → Controller** shows a step-by-step guide:
+Until the controller is switched on, **Settings → Controller** shows a step-by-step guide. Later,
+**Run the setup guide** at the top of that page opens it again, filled in with the current
+settings; the last button then reads **Apply** and saves what you chose.
 
 1. **Switch on.**
 2. **Where firewalls connect.** The connection point table, with addresses found automatically.
 3. **Firewall rules.** Fleet opens the ports for you, or you manage them yourself.
-4. **Tailscale.** Optional; shows whether the controller is in a tailnet.
+4. **Tailscale.** Optional; shows whether the controller is in a tailnet, and can set it up (see
+   [Tailscale](#tailscale)).
 5. **Review.** What **Switch on** does.
 
 The last screen links to **Add your first firewall**.
