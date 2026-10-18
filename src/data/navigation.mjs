@@ -32,6 +32,7 @@ export const navigation = [
       ['Development release line', 'releases/development'],
       ['Version compatibility', 'releases/compatibility'],
       ['Release process and provenance', 'guides/release-process'],
+      ['Security advisories', 'guides/security'],
     ],
   },
   {

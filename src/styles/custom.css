@@ -1,31 +1,91 @@
-/* FreeSense uses a deliberately quiet dark shell so operational documentation stays legible. */
+/* FreeSense docs share the website's design ("Bastion"): navy ink with a blue and warm haze,
+   Schibsted Grotesk headings, IBM Plex Sans text, and the orange accent. */
+@import '@fontsource-variable/schibsted-grotesk/wght.css';
+@import '@fontsource/ibm-plex-sans/latin-400.css';
+@import '@fontsource/ibm-plex-sans/latin-500.css';
+@import '@fontsource/ibm-plex-sans/latin-600.css';
+@import '@fontsource-variable/jetbrains-mono/wght.css';
+
 :root {
-  --sl-color-accent-low: #331b18;
-  --sl-color-accent: #f15c3b;
+  --sl-color-accent-low: #3a1a14;
+  --sl-color-accent: #ea4f2d;
   --sl-color-accent-high: #ffc1b2;
+  --sl-color-text-accent: #ff8a5c;
 
-  --sl-color-text-accent: #ff6b4a;
-  --sl-font: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --sl-font-mono: 'Cascadia Code', 'SFMono-Regular', Consolas, monospace;
+  --sl-font: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --sl-font-system-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Consolas, monospace;
+  --fs-font-head: 'Schibsted Grotesk Variable', 'IBM Plex Sans', system-ui, sans-serif;
 }
 
-/* Dark theme: align the greys with the website's ink palette. */
+/* Dark theme: the website's navy ink. */
 :root[data-theme='dark'] {
-  --sl-color-bg: #0c1118;
-  --sl-color-bg-nav: rgba(12, 17, 24, .92);
-  --sl-color-bg-sidebar: #101720;
-  --sl-color-bg-inline-code: #17212d;
-  --sl-color-hairline: #263445;
-  --sl-color-hairline-light: #3a4a5e;
+  --sl-color-white: #f4f6ff;
+  --sl-color-gray-1: #dde1f4;
+  --sl-color-gray-2: #c0c6e0;
+  --sl-color-gray-3: #a3accd;
+  --sl-color-gray-4: #7c86aa;
+  --sl-color-gray-5: #263256;
+  --sl-color-gray-6: #101a45;
+  --sl-color-gray-7: #0b1333;
+  --sl-color-black: #060b1f;
+  --sl-color-bg: #060b1f;
+  --sl-color-bg-nav: rgba(6, 11, 31, .82);
+  --sl-color-bg-sidebar: #0a1236;
+  --sl-color-bg-inline-code: #131d4a;
+  --sl-color-hairline: rgba(150, 170, 255, .16);
+  --sl-color-hairline-light: rgba(150, 170, 255, .28);
+  --sl-color-hairline-shade: rgba(150, 170, 255, .1);
 }
 
-/* Light theme accent tuning. */
+:root[data-theme='dark'] body {
+  background:
+    radial-gradient(60vw 50vw at 8% -5%, rgba(59, 107, 255, .22), transparent 65%),
+    radial-gradient(55vw 45vw at 100% 85%, rgba(234, 79, 45, .14), transparent 65%),
+    linear-gradient(180deg, #0b1640 0%, #060b1f 38%, #060b1f 100%);
+  background-attachment: fixed;
+  background-color: #060b1f;
+}
+
+/* Light theme: the website's light palette. */
 :root[data-theme='light'] {
   --sl-color-accent-low: #ffd9cd;
-  --sl-color-accent: #d63e1d;
+  --sl-color-accent: #d9441f;
   --sl-color-accent-high: #5e1c0d;
-  --sl-color-text-accent: #d63e1d;
+  --sl-color-text-accent: #b8360f;
+  --sl-color-white: #111633;
+  --sl-color-gray-1: #1d2347;
+  --sl-color-gray-2: #323a60;
+  --sl-color-gray-3: #475073;
+  --sl-color-gray-4: #646c8c;
+  --sl-color-gray-5: #c5cbe0;
+  --sl-color-gray-6: #e6eaf6;
+  --sl-color-gray-7: #eef1f8;
+  --sl-color-black: #ffffff;
+  --sl-color-bg: #f5f6fa;
+  --sl-color-bg-nav: rgba(245, 246, 250, .86);
+  --sl-color-bg-sidebar: #eef1f8;
+  --sl-color-bg-inline-code: #e6eaf6;
+  --sl-color-hairline: rgba(20, 30, 70, .12);
+  --sl-color-hairline-light: rgba(20, 30, 70, .21);
+  --sl-color-hairline-shade: rgba(20, 30, 70, .08);
 }
+
+:root[data-theme='light'] body {
+  background:
+    radial-gradient(60vw 50vw at 8% -5%, rgba(59, 107, 255, .12), transparent 65%),
+    radial-gradient(55vw 45vw at 100% 85%, rgba(234, 79, 45, .09), transparent 65%),
+    linear-gradient(180deg, #e6eaf6 0%, #f5f6fa 38%, #f5f6fa 100%);
+  background-attachment: fixed;
+  background-color: #f5f6fa;
+}
+
+h1, h2, h3, h4,
+.sl-markdown-content h1, .sl-markdown-content h2, .sl-markdown-content h3, .sl-markdown-content h4 {
+  font-family: var(--fs-font-head);
+  font-weight: 750;
+}
+
+.sl-markdown-content a:not(:where(.not-content *)) { text-underline-offset: .18em; }
 
 /* A touch more presence for the site title next to the logo. */
 .site-title {
