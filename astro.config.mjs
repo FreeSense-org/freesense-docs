@@ -39,7 +39,7 @@ export default defineConfig({
       description: 'Build, install, operate, and extend the modern FreeSense firewall platform.',
       logo: {
         light: './src/assets/icon.svg',
-        dark: './src/assets/icon-reversed.svg',
+        dark: './src/assets/icon-white.svg',
         alt: 'FreeSense',
       },
       favicon: '/favicon.svg',
