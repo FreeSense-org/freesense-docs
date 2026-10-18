@@ -38,7 +38,6 @@ unsupported.
 | Firmware | BIOS or UEFI | BIOS or UEFI |
 | Root grows when the virtual disk is enlarged | Yes | Yes |
 | QEMU guest agent | Included | Included |
-| VMware tools (open-vm-tools), started on VMware | Included | Included |
 
 <!-- needs verification: the 2 GiB recommendation for the UFS image is a sizing estimate. The 16/32
 GiB sizes, the pool and dataset names, BIOS+UEFI and root growth come from
