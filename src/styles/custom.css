@@ -87,6 +87,21 @@ h1, h2, h3, h4,
 
 .sl-markdown-content a:not(:where(.not-content *)) { text-underline-offset: .18em; }
 
+/* The header shows the full FreeSense lockup. A small tag keeps it clear that this is the documentation. */
+.site-title img { height: 2.1rem; width: auto; }
+.site-title::after {
+  content: 'Docs';
+  margin-left: .8rem;
+  padding: .12rem .55rem;
+  border: 1px solid var(--sl-color-hairline-light);
+  border-radius: 99px;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--sl-color-gray-3);
+}
+
 /* A touch more presence for the site title next to the logo. */
 .site-title {
   font-weight: 700;
