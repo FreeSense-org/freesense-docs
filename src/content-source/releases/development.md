@@ -60,3 +60,48 @@ of the same build, `1.2.0.a.YYYYMMDD.HHMM_G`.
 
 The exact current build is shown in the live Development release document,
 `https://pkg.freesense.org/v1/releases/devel.json`, and in the provenance attached to its images.
+
+## Recent changes in 1.2
+
+What reached the Development line in the second week of October 2026, newest first. Development
+builds are experimental; see [Fleet status and known issues](/1.2/configure/fleet-status/) for what
+was tested.
+
+### 17-18 October
+
+- **Fleet 0.5.0**: one-paste invitations, three ways to connect (Fleet tunnel, Tailscale, direct),
+  visible firewall rules for the connection points, and step-by-step guides for adding a firewall
+  and for the controller's first run. The HA pair wizard is step by step too.
+- **Fleet 0.4.0**: internet connectivity and connection quality (loss, latency, jitter, a quality
+  score, failover alerts). **0.3.0**: live view 2.0 with split screen, panels and a paged firewall
+  list, and firewall groups in the NOC view.
+- **Fleet fixes from the lab**: no false split-brain when an HA member loses power; policy failures
+  reach the headline, the top-bar icon and the alerts; the per-firewall Stats charts were empty;
+  WebGUI login protection checks real protection; every filter bar applies as you choose.
+- **WebUI hardening**: widget disconnect uses POST, `unserialize()` is restricted, legacy hashes
+  are handled safely, captive portal file names and CSRF checks are tightened, and IDs are random.
+
+### 15-16 October
+
+- **WebUI**: the home page is now titled **Dashboard**. New **Page width** (Classic or Wide) and
+  **menu icons** options under **System → General Setup**, a top bar that fits every window width, a
+  notifications panel under the bell, and top-bar items and notices that packages can add. See the
+  [menu reference](/reference/menu-guide/).
+- **Dashboard widgets**: one look, an icon in every title, compact settings forms, a tidier update
+  notice, and a real empty state in the ZFS and thermal widgets.
+- **PHP 8**: code whose behavior changed since PHP 7 is fixed, and a full crawl of the WebUI no
+  longer produces warnings. RADIUS authentication was rewritten for PHP 8.5.
+- **REST API**: port forwards, rule tabs and the rule interface check now accept every interface
+  for an API user, a filter rule must name an existing interface, and a remote logging route was
+  added. The API level is now 14.
+- **HA**: configuration sync pins the peer's WebGUI certificate.
+- **Fleet 0.2.0**: a dashboard widget, a status menu in the top bar, per-firewall Stats, central
+  users and groups, alerts and alert channels, templates and drift, NOC screens, the Deployment
+  Factory, HA pair setup and a standby controller.
+- **Stable and Development**: the updater keeps the selected update channel and reports real exit
+  codes; custom package repositories are shown to the shell and never to the system upgrader.
+
+For fixes that also shipped in Stable, read the [1.1.9 release notes](/releases/1.1.9/). The FreeBSD
+security advisories that are open or fixed on 1.2 are listed on the
+[security site](https://security.freesense.org/all/?version=1.2); see
+[Security advisories](/guides/security/).
