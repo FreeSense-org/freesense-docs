@@ -123,7 +123,7 @@ export const navigation = [
         ['Overview', 'packages/system-and-diagnostics'],
         ['Diagnostics', 'packages/diagnostics'],
         ['Open VM Tools', 'packages/open-vm-tools'],
-        ['QEMU Guest Agent', 'packages/qemu-guest-agent'],
+        ['QEMU Guest Agent', 'packages/qemu-guest-agent', ['devel']],
       ]),
     ],
   },

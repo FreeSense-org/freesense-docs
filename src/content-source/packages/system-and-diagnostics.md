@@ -11,7 +11,6 @@ and **Status → System Logs** are always there without any package.
 | --- | --- | --- | --- |
 | [Network Diagnostics](/packages/diagnostics/) | MTR path reports, Nmap top-ports scans, iperf3 throughput tests, ARP probes from the WebUI | **Diagnostics → Network Tools** | None |
 | [Open VM Tools](/packages/open-vm-tools/) | VMware guest integration: tools status, guest IP reporting, guest power operations | No page; two entries in **Status → Services** | `vmware-guestd`, `vmware-kmod` |
-| [QEMU Guest Agent](/packages/qemu-guest-agent/) | Proxmox, KVM and libvirt guest integration: clean shutdown, guest addresses, snapshot freeze | No page; one entry in **Status → Services** | `qemu-guest-agent` |
 | [Automation](/packages/automation/) | Scheduled jobs and service checks | **Services → Automation** | None |
 
 All three are lightweight packages. Install them from
@@ -27,9 +26,6 @@ All three are lightweight packages. Install them from
 - **FreeSense runs as a VMware virtual machine:** install [Open VM Tools](/packages/open-vm-tools/)
   so the host can see the guest and shut it down cleanly. Do not install it on other hypervisors or
   on hardware.
-- **FreeSense runs on Proxmox, KVM or libvirt from the installer image:** install
-  [QEMU Guest Agent](/packages/qemu-guest-agent/). The cloud image already includes it, and the
-  VMware tools too.
 - **Something should happen on a schedule or when a service stops:** see
   [Automation](/packages/automation/).
 

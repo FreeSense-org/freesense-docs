@@ -82,9 +82,8 @@ serial or virtual console.
 - Take a configuration backup before you change virtual switches or NIC order.
 
 For KVM-compatible platforms and bhyve, official amd64 QCOW2 and raw disk images are available with
-a UFS or ZFS root. They are provisioned with cloud-init and include the QEMU guest agent and the
-VMware tools. See [Cloud images](/getting-started/cloud-images/). On a standard install on one of
-these platforms, install the [QEMU Guest Agent](/packages/qemu-guest-agent/) package.
+a UFS or ZFS root. They are provisioned with cloud-init and include the QEMU guest agent. See
+[Cloud images](/getting-started/cloud-images/).
 
 On VMware, install the **Open VM Tools** package for guest integration (**System → Package
 Manager**). It adds integration with the hypervisor, not firewall features. See

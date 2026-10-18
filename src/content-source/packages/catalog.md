@@ -82,7 +82,6 @@ be built for arm64 in the build environment. Raspberry Pi images are only availa
 | [Automation](/packages/automation/) | System | Lightweight | Scheduled commands and service-health watchdog, managed from one audited interface. |
 | [Network UPS Tools](/packages/nut/) | System | Lightweight | Monitors local USB or serial UPS units, and remote ones over SNMP, apcupsd or NUT, and shuts down cleanly. |
 | [Open VM Tools](/packages/open-vm-tools/) | System | Lightweight | VMware guest integration for FreeSense running as a VMware virtual machine. |
-| [QEMU Guest Agent](/packages/qemu-guest-agent/) | System | Lightweight | Guest agent for Proxmox, KVM and libvirt: clean shutdown, guest addresses and snapshot freeze. |
 | [Network Diagnostics](/packages/diagnostics/) | Diagnostics | Lightweight | Allow-listed MTR, Nmap, iperf3 and ARP tools with strict input validation. |
 
 ## Package names, services and pages
@@ -126,7 +125,6 @@ is configured. You need the package name for the API and the shell, for example
 | Automation | `FreeSense-pkg-Automation` | none | `/automation/automation.php` |
 | Network UPS Tools | `FreeSense-pkg-nut` | `nut` | `/nut_settings.php` |
 | Open VM Tools | `FreeSense-pkg-Open-VM-Tools` | `vmware-guestd` | `/pkg_edit.php?xml=open-vm-tools.xml` |
-| QEMU Guest Agent | `FreeSense-pkg-Qemu-Guest-Agent` | `qemu-guest-agent` | `/pkg_edit.php?xml=qemu-guest-agent.xml` |
 | Network Diagnostics | `FreeSense-pkg-Diagnostics` | none | `/diagnostics/network_tools.php` |
 
 The packages with a separate status page are CrowdSec (`/crowdsec/crowdsec_decisions.php`),

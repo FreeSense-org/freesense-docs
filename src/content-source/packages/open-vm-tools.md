@@ -13,13 +13,6 @@ Install it only when FreeSense runs as a guest on VMware ESXi, Workstation, or F
 hypervisors or on hardware it is not needed. The guest daemon checks for VMware on every start and
 does nothing elsewhere.
 
-:::note[Not for the cloud image]
-The [cloud image](/getting-started/cloud-images/) already includes the VMware tools and the QEMU
-guest agent, and starts the VMware tools when it runs on VMware. Installing this package there is
-refused, with a message saying so; nothing is installed. For KVM-compatible hypervisors on a
-standard install, see [QEMU Guest Agent](/packages/qemu-guest-agent/).
-:::
-
 ## Install
 
 1. Open **System → Package Manager → Available Packages**.
