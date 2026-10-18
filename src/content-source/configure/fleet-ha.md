@@ -17,6 +17,10 @@ a problem, such as both firewalls claiming MASTER.
 
 ## Before you start
 
+Fleet sets up a pair only when both firewalls are idle: a firewall with a queued or running
+operation (a reboot, an update) is refused with the name of that operation, because a reboot in
+the middle of a setup would undo it.
+
 - Both firewalls are in the fleet with **Managed** access and not in another pair.
 - Both have the same interfaces on the same networks.
 - Both reach each other for state sync in one of two ways: a **sync interface** with an address,
@@ -73,8 +77,10 @@ Fleet tunnel to the controller, so failover still works when the controller is d
 - **Addresses.** For each firewall, give the address the *other* one reaches it on, and a UDP port
   (default 51831). The address starts from where the controller last saw the firewall connect
   from; check it. Leave one address empty if that firewall has none, for example behind NAT: it
-  then connects out to the other one. At least one address is needed. Fleet opens the UDP port on
-  the WAN of a firewall that has an address, with a rule marked `[Fleet:HA]`.
+  then connects out to the other one. At least one address is needed. Fleet makes two rules on
+  each firewall's WAN for the link's UDP port (one in, one out, both marked `[Fleet:HA]` and
+  without state; see the note below), so the port is open on the firewall that waits and answers
+  on the one that connects out.
 - **The link.** Fleet picks a free private /30 from `10.254.0.0/16` that neither firewall uses,
   and keeps the two ends' keys on the firewalls: a private key never leaves its firewall. The
   link shows on each firewall as an interface called *HALINK* and under **VPN → WireGuard**.
@@ -85,6 +91,12 @@ Fleet tunnel to the controller, so failover still works when the controller is d
 - **If it fails.** The two firewalls must see each other within 90 seconds. If they do not, the
   setup stops with FLEET-E602, names the addresses to check on UDP and undoes everything on
   both.
+
+The rules for the link, and for state sync itself, are stateless on purpose. With states, pfsync
+would sync the states of its own packets and every pfsync packet would cause another: a storm of
+millions of packets right after setup. With them, state sync starts with one short exchange of the
+state table (about 2 MB for a small firewall) and then goes quiet. Fleet loads these rules before
+state sync starts, and drops the link's old states when it removes a link.
 
 State sync over the link is encrypted. The configuration sync still goes to the secondary's
 WebGUI over the link, with the certificate pinned as before.
