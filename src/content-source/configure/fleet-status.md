@@ -12,8 +12,7 @@ manage production firewalls yet.
 :::
 
 **Tested with:** FreeSense 1.2.0-DEVELOPMENT and the `FreeSense-pkg-Fleet` package (version
-0.5.0_1, merged on 17 October 2026 and in Development builds from the nightly build of 18
-October 2026), on a lab of one controller and seven firewalls: three branch firewalls (one of
+0.5.0_5, the Development build of 18 October 2026, build 1340), on a lab of one controller and seven firewalls: three branch firewalls (one of
 them joined over Tailscale), two shops and an HA pair, all virtual machines on Proxmox.
 
 ## What was tested and works
@@ -51,7 +50,17 @@ them joined over Tailscale), two shops and an HA pair, all virtual machines on P
   rings. Every firewall ended on the new build with a fresh boot environment, the pair came back
   as MASTER and BACKUP with its state sync, and the controller itself was upgraded afterwards
   (System and the Fleet package from 0.2.0 to 0.5.0_1) with its database, tunnels and all seven
-  firewalls intact. The firewalls took about six minutes each.
+  firewalls intact. The firewalls took about six minutes each. The same day the rollout wizard
+  updated all seven firewalls to build 1340 in three rings: branch offices, retail stores, then
+  the datacenter pair with the secondary first. It took 20 minutes in all, every firewall was
+  checked on the new build by its full build stamp, and both pairs stayed healthy.
+- **HA pairs with the encrypted link**: the wizard's *encrypted link (WireGuard)* option
+  made a pair over a WireGuard tunnel between the two firewalls on a WAN network, with state
+  sync inside it. Removing the pair took the tunnel, the sync settings and the shared address
+  off both firewalls in four seconds, and the pair was set up again on the new build.
+- **Confirmations**: deleting a template, group, policy, schedule, window, user and alert
+  channel, rejecting a firewall, and starting a rollout ask first in a window; Cancel closes it
+  and nothing changes.
 
 ## Fixed during testing
 
@@ -79,8 +88,13 @@ These problems were found in the lab and are fixed in the current build:
   for each firewall, and both members of an HA pair rebooted together. Fleet now reads the
   installed build from the firewall after its reboot and compares the full stamp, reports a
   firewall that rolled back as failed, and names the builds ("1.2.0 build 20261017.1403")
-  instead of "from 1.2.0 to 1.2.0". The fix is in Development builds from the 19 October
-  nightly and has been tested with unit tests only; it has not yet run against a real update.
+  instead of "from 1.2.0 to 1.2.0". The fix has now run against a real update: the 18 October
+  rollout to build 1340 waited for each firewall, one at a time, and updated the secondary of
+  the datacenter pair before its partner.
+- **HA pairs:** the state sync of a pair no longer floods the firewalls with its own packets
+  (the pfsync rules are stateless and allow options), and the pair wizard names the sync network
+  *encrypted* or *not encrypted* so the choice is clear.
+- **Setup guide:** the controller's setup guide sets up the Fleet tunnel and Tailscale for you.
 
 ## Not tested yet
 
@@ -93,7 +107,8 @@ These problems were found in the lab and are fixed in the current build:
 - The **Direct** connection method (the lab controller has no internal connection point), a
   second enrollment port, and several connection points on LAN.
 - The **standby controller** on 1.2.
-- A rollout through a **maintenance window** or with a pause between rings, an update that
+- A rollout through a **maintenance window** or with a pause between rings (the lab rollout used
+  no pause), an update that
   **rolls back** on the firewall, an update where a firewall **does not come back**, and an
   update between two Stable releases (their numbers differ, so the follower takes the other
   path).

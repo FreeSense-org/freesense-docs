@@ -42,6 +42,8 @@ What Fleet gives you:
 - **HA pairs** set up from two firewalls in a step-by-step guide. See
   [Fleet HA pairs](/configure/fleet-ha/).
 - **Activity**: every action runs as an operation with live progress.
+- **Confirmations** before deletes and other critical actions, with a warning that says what will
+  happen. See [Fleet settings](/configure/fleet-settings/#confirmations).
 - **Settings** for everything, in sections. See [Fleet settings](/configure/fleet-settings/).
 
 Firewalls open the connection to the controller, so they can sit behind NAT. Only the controller
