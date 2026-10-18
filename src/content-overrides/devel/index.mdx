@@ -12,9 +12,9 @@ hero:
     - text: About the Development line
       link: /releases/development/
       icon: right-arrow
-    - text: What 1.1 brought
-      link: /releases/whats-new-1.1/
-      icon: document
+    - text: FreeSense Fleet
+      link: /configure/fleet/
+      icon: rocket
       variant: secondary
     - text: Stable 1.1 documentation
       link: /
@@ -36,6 +36,20 @@ offers Stable again on a Development system. Keep a configuration backup and rec
 ## What Development offers today
 
 <CardGrid stagger>
+  <Card title="FreeSense Fleet" icon="rocket">
+    Central management for many firewalls: guided joining, a live dashboard and wall-screen view,
+    updates in rings, policies, backups and HA pairs. Experimental.
+    [Fleet documentation →](/configure/fleet/)
+  </Card>
+  <Card title="Recent changes in 1.2" icon="document">
+    What reached the Development line lately: Fleet 0.2 to 0.5, WebUI changes, PHP 8, REST API and
+    hardening fixes.
+    [Recent changes →](/releases/development/#recent-changes-in-12)
+  </Card>
+  <Card title="Security advisories" icon="warning">
+    Which FreeBSD security advisories are open, fixed or not relevant on 1.2, and FreeSense's own bugs.
+    [Security advisories →](/guides/security/)
+  </Card>
   <Card title="Nightly builds" icon="rocket">
     The Development cycle starts daily at 01:00 UTC. System and optional packages rebuild only when
     their inputs change.
