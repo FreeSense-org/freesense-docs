@@ -21,6 +21,7 @@
     "nut": "packages/nut",
     "Open-VM-Tools": "packages/open-vm-tools",
     "openvpn-client-export": "packages/openvpn-client-export",
+    "Qemu-Guest-Agent": "packages/qemu-guest-agent",
     "softflowd": "packages/softflowd",
     "Status_Traffic_Totals": "packages/traffic-totals",
     "suricata": "packages/suricata",
