@@ -1,9 +1,11 @@
 ---
 title: FreeSense Fleet
-description: Manage many FreeSense firewalls from one controller with FreeSense Fleet - guided joining, groups, a live dashboard and wall-screen view, internet monitoring, backups, updates, policies and HA pairs.
+description: Manage many FreeSense firewalls from one controller that you host yourself, with no cloud service. FreeSense Fleet gives you guided joining, groups, a live dashboard and wall-screen view, internet monitoring, backups, updates, policies and HA pairs.
 ---
 
-FreeSense Fleet is central management for FreeSense. One firewall runs the **Fleet controller**
+FreeSense Fleet is central management for FreeSense, and it is **self-hosted by design**: it is not
+a cloud service and does not need one. You run the controller yourself, your firewalls connect to
+it, and nothing in between is run by the FreeSense project. One firewall runs the **Fleet controller**
 (the optional package `FreeSense-pkg-Fleet`); every other firewall joins it with the **Fleet
 agent**, which is part of FreeSense itself. From the controller you see every firewall on one
 dashboard and on a wall screen, and can back them up, update them, check them against policies and
@@ -49,6 +51,44 @@ What Fleet gives you:
 Firewalls open the connection to the controller, so they can sit behind NAT. Only the controller
 must be reachable: on its enrollment port (TCP, 8443 by default) and tunnel port (UDP, 51830 by
 default), or in a tailnet with no public port at all.
+
+## Self-hosted and private
+
+Fleet is built so that the whole fleet stays in your hands:
+
+- **No cloud service.** There is no FreeSense-hosted Fleet service, no account to create and no
+  subscription. The controller is an optional package on a FreeSense system that you own.
+- **Your data stays on your controller.** The inventory, history, alerts, backups, policies and keys
+  are stored on the controller under `/fleet` (its own ZFS dataset when the controller boots from
+  ZFS). Removing the package does not delete the fleet.
+- **No phone home.** Fleet makes no connection to FreeSense servers. The invitation a new firewall
+  pastes points at *your* controller, and each firewall pins the controller's certificate.
+- **Encrypted and authenticated.** Firewalls reach the controller over the Fleet tunnel
+  (WireGuard), over a tailnet, or directly. Joining needs an invitation from your controller and a
+  6-digit approval code that you compare on both screens.
+- **Optional third parties only when you choose them.** Tailscale is one way to connect, and
+  alert channels (email, a webhook, Slack or Teams, Telegram, ntfy or Gotify) reach the services
+  you configure. Fleet works without any of them.
+
+### Where to run the controller
+
+The controller is an ordinary FreeSense system, so you decide where it lives:
+
+| Setup | What it looks like |
+| --- | --- |
+| **On your own network** | The controller is a firewall or VM at your headquarters or lab. Firewalls reach it over your WAN, your LAN or a VPN. |
+| **On your own server** | The controller runs on a server or VM you operate, for example a hypervisor in a rack. |
+| **On a public host that you control** | Deploy the controller from a FreeSense [cloud image](/getting-started/cloud-images/) on a server or cloud account that you own, give it a public address, and let your firewalls reach it as a [WAN connection point](/configure/fleet-connect/). You manage the fleet from that site over a secure connection. It is still your server and your data; the project runs nothing. |
+| **Inside a tailnet** | If you use Tailscale, the controller can sit in your tailnet and firewalls join without any public port. |
+
+Choose where the controller is reachable under **Settings → Controller** (see
+[connection points and rules](/configure/fleet-connect/)). Only the controller must be reachable.
+Firewalls open the connection, so they can sit behind NAT.
+
+:::note
+A controller on a public address is reachable from the internet on its enrollment and tunnel
+ports. Limit it with the **allowed list** and keep the controller itself updated and backed up.
+:::
 
 ## Install the controller
 
