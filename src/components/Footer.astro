@@ -1,0 +1,10 @@
+---
+// Starlight's footer (edit link, last updated, pagination) plus a way to reopen the cookie and storage notice.
+import Default from '@astrojs/starlight/components/Footer.astro';
+---
+<Default><slot /></Default>
+<p class="privacy-row">
+  <button type="button" class="privacy-link" data-cookie-settings>Cookie settings</button>
+  <span aria-hidden="true">&middot;</span>
+  <a class="privacy-link" href="https://freesense.org/privacy/">Privacy policy</a>
+</p>
