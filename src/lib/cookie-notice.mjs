@@ -31,6 +31,9 @@ export const cookieNoticeScript = `(function () {
     } catch (e) {}
   }
 
+  // A choice made on another freesense.org site applies here too: an older persisted theme moves to this visit only.
+  if (declined()) moveTheme(true);
+
   function build() {
     var bar = document.createElement('div');
     bar.id = 'cookie-bar';
