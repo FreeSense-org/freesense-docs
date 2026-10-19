@@ -227,3 +227,48 @@ header.header {
   .edition-selector__label { display: none; }
   .docs-feature-grid { grid-template-columns: 1fr; }
 }
+
+/* Cookie and storage notice, and the footer link that reopens it. */
+.fs-cookie-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  width: min(1040px, calc(100% - 28px));
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--sl-color-hairline-light);
+  border-radius: 16px;
+  background: var(--sl-color-bg-sidebar);
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, .7);
+}
+.fs-cookie-bar[hidden] { display: none; }
+.fs-cb-text { margin: 0; flex: 1; font-size: .9rem; line-height: 1.5; color: var(--sl-color-gray-2); }
+.fs-cb-text strong { color: var(--sl-color-white); }
+.fs-cb-text a { color: var(--sl-color-text-accent); font-weight: 600; white-space: nowrap; }
+.fs-cb-actions { display: flex; gap: .6rem; flex: none; }
+.fs-cb-btn {
+  min-height: 40px;
+  padding: 0 1.15rem;
+  border: 1px solid var(--sl-color-hairline-light);
+  border-radius: 99px;
+  background: transparent;
+  color: var(--sl-color-white);
+  font: inherit;
+  font-size: .85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.fs-cb-btn:hover { border-color: var(--sl-color-accent); }
+.fs-cb-primary { border-color: transparent; background: var(--sl-color-accent); color: #fff; }
+.fs-cb-btn[aria-pressed="true"] { outline: 2px solid var(--sl-color-text-accent); outline-offset: 2px; }
+@media (max-width: 640px) {
+  .fs-cookie-bar { flex-direction: column; align-items: stretch; gap: .85rem; }
+  .fs-cb-actions { justify-content: flex-end; }
+}
+.privacy-row { margin: 1.25rem 0 0; font-size: .8rem; color: var(--sl-color-gray-3); display: flex; gap: .6rem; align-items: center; }
+.privacy-link { background: none; border: 0; padding: 0; font: inherit; color: var(--sl-color-gray-3); cursor: pointer; text-decoration: underline; text-underline-offset: .18em; }
+.privacy-link:hover { color: var(--sl-color-white); }

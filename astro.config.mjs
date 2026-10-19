@@ -4,6 +4,7 @@ import starlight from '@astrojs/starlight';
 
 import editions from './src/data/editions.json' with { type: 'json' };
 import { frozenNavigation, navigation } from './src/data/navigation.mjs';
+import { cookieNoticeScript } from './src/lib/cookie-notice.mjs';
 
 const toSidebarItems = (items, edition, prefix) => items
   .filter((item) => !Array.isArray(item) || !item[2] || item[2].includes(edition))
@@ -48,6 +49,11 @@ export default defineConfig({
       customCss: ['./src/styles/custom.css'],
       head: [
         {
+          // Cookie and storage notice. It runs first so the theme script reads the right store.
+          tag: 'script',
+          content: cookieNoticeScript,
+        },
+        {
           // Open WebUI screenshots full size: they are scaled down to the content width.
           tag: 'script',
           content: `document.addEventListener('DOMContentLoaded', () => {
@@ -73,6 +79,7 @@ export default defineConfig({
       },
       components: {
         Header: './src/components/Header.astro',
+        Footer: './src/components/Footer.astro',
         MobileMenuFooter: './src/components/MobileMenuFooter.astro',
         Sidebar: './src/components/EditionSidebar.astro',
       },
