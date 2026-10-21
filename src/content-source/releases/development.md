@@ -67,6 +67,15 @@ What reached the Development line in the second week of October 2026, newest fir
 builds are experimental; see [Fleet status and known issues](/1.2/configure/fleet-status/) for what
 was tested.
 
+### 21 October
+
+- **PHP 8.5.12 (security).** Fixes the two critical PHP vulnerabilities CVE-2026-109618 and
+  CVE-2026-109619, the same fix as [FreeSense 1.1.10](/releases/1.1.10/). The change is on `main`, so
+  the next Development build carries it: expected tonight, from the nightly build or a build started
+  sooner. Installed Development systems receive it with that System update. Until then Development
+  runs the affected PHP 8.5.11. Development is experimental and unsupported, so keep the WebUI off
+  untrusted networks.
+
 ### 17-18 October
 
 - **Fleet 0.5.0**: one-paste invitations, three ways to connect (Fleet tunnel, Tailscale, direct),
