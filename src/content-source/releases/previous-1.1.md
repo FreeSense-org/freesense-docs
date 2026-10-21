@@ -4,7 +4,8 @@ description: Release notes for FreeSense 1.1.0 to 1.1.5, the earlier releases of
 ---
 
 These are the release notes of the earlier 1.1 Stable releases, newest first. The current release
-is [FreeSense 1.1.9](/releases/1.1.9/); it contains every change listed here.
+is [FreeSense 1.1.10](/releases/1.1.10/); it contains every change listed here and in
+[1.1.9](/releases/1.1.9/).
 
 | Release | Date | Summary |
 | --- | --- | --- |
