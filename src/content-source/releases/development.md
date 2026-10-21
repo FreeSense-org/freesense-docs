@@ -101,7 +101,7 @@ was tested.
 - **Stable and Development**: the updater keeps the selected update channel and reports real exit
   codes; custom package repositories are shown to the shell and never to the system upgrader.
 
-For fixes that also shipped in Stable, read the [1.1.9 release notes](/releases/1.1.9/). The FreeBSD
+For fixes that also shipped in Stable, read the [1.1.10](/releases/1.1.10/) and [1.1.9](/releases/1.1.9/) release notes. The FreeBSD
 security advisories that are open or fixed on 1.2 are listed on the
 [security site](https://security.freesense.org/all/?version=1.2); see
 [Security advisories](/guides/security/).
