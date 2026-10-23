@@ -18,6 +18,7 @@ the next number.
 
 | Release | Date | Notes |
 | --- | --- | --- |
+| 1.1.11 | 2026-10-23 | [Release notes](/releases/1.1.11/) · Supersedes 1.1.10 (same PHP 8.5.12 fix); cloud images are back, with the VMware tools |
 | 1.1.10 | 2026-10-22 | [Release notes](/releases/1.1.10/) · **Security patch**: PHP 8.5.12 fixes two critical remote code execution flaws (CVE-2026-109618, CVE-2026-109619); WebUI hardening; HAProxy 3.4.7; VXLAN and cloud image fixes |
 | 1.1.9 | 2026-10-17 | [Release notes](/releases/1.1.9/) · RADIUS works on PHP 8.5; boot environments of older releases locked in the WebUI; PHP 8 fixes across the WebUI and Optional Packages; serial-console installs |
 | 1.1.6 to 1.1.8 | | **Withdrawn before release**, never published; included in 1.1.9 |
