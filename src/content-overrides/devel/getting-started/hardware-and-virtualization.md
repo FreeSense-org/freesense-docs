@@ -60,6 +60,40 @@ and high encrypted VPN throughput also add load. **System → Package Manager** 
 resource profile (lightweight, moderate, or intensive) before you install it. See the
 [package catalog](/packages/catalog/).
 
+## Crypto acceleration
+
+IPsec and OpenVPN DCO encrypt traffic in the kernel. A crypto accelerator makes that faster. Choose
+one under **System → Advanced → Miscellaneous → Cryptographic Hardware**, then reboot, because an
+accelerator that is already loaded stays loaded until the next boot.
+
+| Choice | Platforms | What it uses |
+| --- | --- | --- |
+| AES-NI CPU-based Acceleration (aesni) | amd64 | The CPU's AES instructions |
+| OpenSSL CPU-based Acceleration (ossl) | amd64, arm64 | OpenSSL's optimized AES-GCM, AES-CBC, ChaCha20-Poly1305 and SHA routines |
+| Intel IPsec-MB multi-buffer (ipsecmb) | amd64, experimental | Intel's multi-buffer library, which encrypts several packets at once |
+
+Each choice also has a variant with the BSD Crypto Device (`cryptodev`), which only userland tools
+need. The list shows only the accelerators that the installed build includes. IPsec-MB is still
+being tested and appears once a Development build ships it.
+
+The separate **Intel QAT** checkbox loads the Intel QuickAssist drivers. They offload the same
+cryptography to a QAT device, as found on Atom C2000 and C3000, Xeon D and C62x chipsets and QAT
+add-in cards. The drivers attach only when such a device is present, and they can run next to the
+accelerator you chose above.
+
+:::caution[Experimental]
+QAT support has not yet been tested on QAT hardware. IPsec-MB is experimental. In first tests it
+was faster than ossl with many parallel flows and slower with a single flow. Test with your own
+traffic before you depend on either.
+:::
+
+<!-- verified 2026-10-24: choices and labels from freesense 4e45843 (system_advanced_misc.inc,
+system_advanced_misc.php); ipsecmb results in test-lab evidence (freebsd16-ipsecmb-dev,
+evidence-2026-10-24/RESULTS.md); the driver is freesense-os-base PR 344, not yet in a build. -->
+
+The **Hardware Crypto** line of the dashboard's System Information widget shows which accelerators
+the CPU supports and which are active.
+
 ## Network interfaces
 
 An appliance normally has a dedicated WAN interface and a dedicated LAN interface. You can run a
