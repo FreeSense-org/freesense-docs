@@ -47,8 +47,8 @@ The package has no configuration page and no menu entry. Its two services appear
 3. In the VMware client, check that the virtual machine reports VMware Tools as running and shows
    the guest's IP addresses.
 4. In a maintenance window, test **Shut Down Guest** (or **Restart Guest**) from VMware and confirm
-   that FreeSense shuts down cleanly.
-   <!-- needs verification: that VMware "Shut Down Guest" performs a clean FreeSense shutdown on 1.1.0 (tools.conf sets empty power-operation scripts). -->
+   that FreeSense shuts down cleanly. The daemon runs the normal FreeSense shutdown (filesystems
+   synced, power off) within about twenty seconds.
 
 ## Settings reference
 
@@ -72,6 +72,11 @@ The rc scripts read these variables, which you normally leave alone:
 | `vmware_guest_vmmemctl_enable` | Loads the `vmmemctl` memory balloon module. | Follows `vmware_guest_kmod_enable` |
 | `vmware_guest_vmxnet_enable` | Loads the `vmxnet` module. | Follows `vmware_guest_kmod_enable` |
 | `vmware_guest_vmblock_enable` | Loads the `vmblock` module. | Follows `vmware_guest_kmod_enable` |
+
+`open-vm-tools-nox11` 13.1.0 on FreeBSD 16 ships none of these kernel modules, so the
+`vmware-kmod` service reports `vmmemctl` and `vmblock` as not loaded. That is expected: the guest
+daemon, IP reporting and power operations work without them, and the `vmx` network driver comes
+from the System kernel.
 
 ## Firewall rules and interfaces
 
@@ -105,7 +110,7 @@ writing `tools.conf` are logged with the tag `open-vm-tools`.
 | Symptom | What to check |
 | --- | --- |
 | VMware shows Tools as not running | **VMware Guest Daemon** is stopped. Start it from **Status → Services**. If it will not start, run `/usr/local/bin/vmware-checkvm` from a shell; the daemon only starts when VMware is detected. |
-| **VMware Kernel Modules** shows as stopped | One or more modules failed to load or are not installed. Run `/usr/local/etc/rc.d/vmware-kmod status` to see which. The guest daemon works without them. <!-- needs verification: which of vmmemctl, vmxnet and vmblock exist in open-vm-tools-nox11 13.1.0 on FreeBSD 16, and how Status → Services shows vmware-kmod when one is missing. --> |
+| **VMware Kernel Modules** shows as stopped | Expected with `open-vm-tools-nox11` 13.1.0, which ships no kernel modules (`/usr/local/lib/vmware-tools/modules/drivers/` is empty). `/usr/local/etc/rc.d/vmware-kmod status` lists `vmmemctl` and `vmblock` as not loaded. The guest daemon works without them. |
 | Services missing after a package update | Reinstall the package; the installer restores the rc scripts if they are gone. |
 | Installed on a non-VMware hypervisor | Remove the package. It does no harm, but has no use there. |
 
