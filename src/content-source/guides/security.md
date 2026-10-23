@@ -47,7 +47,7 @@ reviews them.
 
 A fix that FreeBSD published after the pin of a version arrives with the next FreeBSD pin of that
 version. See [Updates and release channels](/guides/updates-and-channels/) for how updates reach
-your firewall, and the [release notes](/releases/1.1.9/) for what each release contains.
+your firewall, and the [release notes](/releases/stable/#release-notes) for what each release contains.
 
 ## Report a vulnerability
 

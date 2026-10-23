@@ -1,14 +1,15 @@
 ---
 title: Previous 1.1 releases
-description: Release notes for FreeSense 1.1.0 to 1.1.5, the earlier releases of the 1.1 Stable line, and the release numbers 1.1.6 to 1.1.8 that were withdrawn before release.
+description: Release notes for FreeSense 1.1.0 to 1.1.10, the earlier releases of the 1.1 Stable line, and the release numbers 1.1.6 to 1.1.8 that were withdrawn before release.
 ---
 
 These are the release notes of the earlier 1.1 Stable releases, newest first. The current release
-is [FreeSense 1.1.10](/releases/1.1.10/); it contains every change listed here and in
-[1.1.9](/releases/1.1.9/).
+is [FreeSense 1.1.11](/releases/1.1.11/); it contains every change listed here.
 
 | Release | Date | Summary |
 | --- | --- | --- |
+| [1.1.10](#freesense-1110) | 2026-10-22 | **Security patch**: PHP 8.5.12 fixes two critical remote code execution flaws (CVE-2026-109618, CVE-2026-109619); WebUI hardening; HAProxy 3.4.7; VXLAN and cloud image fixes |
+| [1.1.9](#freesense-119) | 2026-10-17 | RADIUS works on PHP 8.5; boot environments of older releases locked in the WebUI; PHP 8 fixes across the WebUI and Optional Packages; serial-console installs |
 | 1.1.6 to 1.1.8 | 2026-10-15 to 2026-10-17 | **Withdrawn before release**, never published · see [below](#withdrawn-before-release) |
 | [1.1.5](#freesense-115) | 2026-10-14 | Updates and package changes work again on 1.1.1 and later (one console command first); the update window opens at once; Threat Shield save and map fixes |
 | [1.1.4](#freesense-114) | 2026-10-14 | **Withdrawn**, superseded by 1.1.5 · Threat Shield 1.1.0: GeoIP and DNS redirection work, IP threat lists, inbound protection, threat map |
@@ -23,7 +24,7 @@ Release notes for the 1.0.x line are in the [frozen 1.0 documentation](/1.0/).
 
 The numbers **1.1.6, 1.1.7 and 1.1.8** were test builds of the next patch. Each was withdrawn
 before it was published, so no system ever installed them, and its changes ship in
-[1.1.9](/releases/1.1.9/). A version number is never reused.
+[1.1.9](#freesense-119). A version number is never reused.
 
 - **1.1.6** was replaced so that security fixes merged after it was locked could ship in the same
   release.
@@ -31,6 +32,220 @@ before it was published, so no system ever installed them, and its changes ship 
   ship with it.
 - **1.1.8** failed its upgrade test: the changed Optional Packages and Status Monitoring kept their
   old version numbers, so updated systems would not have received the fixes.
+
+## FreeSense 1.1.10
+
+| | |
+| --- | --- |
+| **Released** | 2026-10-22 |
+| **Line** | Stable 1.1.x |
+| **Product version** | `1.1.10-RELEASE` |
+| **Architectures** | amd64; arm64 (generic UEFI installer image) |
+| **Platform** | FreeBSD 16.0-CURRENT snapshot, source `a52c50b4`, `osversion` 1600027 (unchanged) |
+| **FreeSense source** | `192abeb` |
+| **System ports** | `e1c2449` |
+| **Optional packages** | `d3309a8` |
+| **Previous release** | [1.1.9](#freesense-119) |
+
+The release lock is `config/releases/1.1.10.json` in the `freesense-os-base` repository. It keeps
+the FreeBSD platform of 1.1.9 and moves all three FreeSense repositories. Every published 1.1
+release is tagged `v1.1.N` in those repositories.
+
+1.1.10 supersedes 1.1.9. **1.1.9 is not withdrawn**: it works, but it carries a PHP version with the
+two vulnerabilities below, so update to 1.1.10 promptly. A version number is never reused.
+
+:::caution[Update promptly: two critical PHP vulnerabilities]
+PHP 8.5.11, which 1.1.9 and earlier use, is affected by CVE-2026-109618 and CVE-2026-109619. Both are
+rated critical (CVSS 4.0 score 9.2) by the PHP project and can allow remote code execution without
+logging in. 1.1.10 ships PHP 8.5.12, which fixes both.
+:::
+
+### What changed in 1.1.10
+
+#### Security
+
+- **PHP 8.5.12.** It fixes two critical flaws in PHP itself, both caused by PHP's handling of a
+  request that runs out of memory:
+  - **CVE-2026-109618** ([GHSA-w8hw-w9fx-j79w](https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w)):
+    memory left in an invalid state when a request, for example a crafted multipart upload, runs out
+    of memory early, which request shutdown then uses.
+  - **CVE-2026-109619** ([GHSA-6wmf-4rv5-p3rp](https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp)):
+    state left over from a finished request that a later request on the same worker can reach.
+
+  The PHP project says updating is the only complete mitigation. The WebUI runs PHP-FPM behind
+  nginx. The PHP advisories describe a demonstrated exploit only for Apache's `mod_php`, and say that
+  PHP-FPM is affected under some conditions; do not rely on that. Update.
+- **WebUI hardening from the security audit.**
+  - XML-RPC `exec_php` and `exec_shell` no longer accept the high availability sync privilege; only
+    the admin user (uid 0) may call them.
+  - Captive portal element names must be plain file names, and the CSRF check is skipped only for
+    requests that signed in themselves.
+  - Disconnecting a client from the Captive Portal status widget is a CSRF-checked POST.
+  - `unserialize()` no longer creates objects from stored data.
+  - A login that matches a legacy `crypt()` or unsalted MD5 password hash re-stores the password
+    with the current algorithm (bcrypt by default) and drops the legacy hash.
+  - Captive portal session IDs and voucher values come from a secure random source, and redirect and
+    shell escaping were fixed.
+- **HAProxy 3.4.7 (Optional package).** HAProxy 3.4.2 becomes 3.4.7. Releases 3.4.6 and 3.4.7 fix
+  buffer overflows in JWT/JWE handling, HTTP/2 and HTTP/3 framing problems that could be used for
+  request smuggling, and a number of crashes. The full list is in the
+  [HAProxy changelog](https://www.haproxy.org/download/3.4/src/CHANGELOG).
+- **Development 1.2** ships the same PHP 8.5.12 since build `1.2.0-dev.20261020.1792754032`, published
+  on 2026-10-23. See [Development channel](/releases/development/#21-october). FreeSense 1.0 is frozen
+  and receives no fix; upgrade to the current 1.1 release (the upgrade is one-way, read
+  [Upgrading from 1.0](/guides/upgrading-from-1.0/) first).
+- Which FreeBSD security advisories apply to 1.1.10, and which are fixed or not relevant, is listed
+  on the [security site](https://security.freesense.org/all/?version=1.1). See
+  [Security advisories](/guides/security/).
+
+#### Base system
+
+- **VXLAN multicast tunnels with a non-default local port work.** The group port stayed 4789, so
+  nothing arrived. A multicast tunnel now defaults the remote port to the local port, and an explicit
+  value is kept.
+- **Cloud images keep an administrator's password.** Re-applying the cloud configuration, which
+  happens when SSH keys or management networks arrive after the first boot, locked the admin
+  password again. It is now locked only on the first boot of an instance, or after a boot
+  environment rollback to the image's own configuration.
+
+### What to check after updating in 1.1.10
+
+- **Optional Packages**: open **System → Package Manager → Installed Packages** and update the
+  packages it offers. HAProxy gets its new version this way.
+- **PHP version**: **Diagnostics → Command Prompt**, or a shell, `php -v` shows 8.5.12.
+
+### Upgrade notes in 1.1.10
+
+- **From 1.1.0, 1.1.5 or 1.1.9:** a normal Stable update. See
+  [Updates and release channels](/guides/updates-and-channels/).
+- **From 1.1.1 to 1.1.4:** run the
+  [console command](#before-you-update-from-111-to-114-in-119) first.
+- **From 1.0.x:** the upgrade to the 1.1 line is one-way. Read
+  [Upgrading from 1.0](/guides/upgrading-from-1.0/) first.
+- **Tested path:** a 1.1.9 amd64 system upgraded to 1.1.10 with the FreeSense upgrader: it boots, reports PHP 8.5.12 (CLI and FPM), the WebUI answers, `pkg check` is clean and PHP-FPM restarts. Optional Packages (including HAProxy 3.4.7) and arm64 were built but not installed in that test.
+
+## FreeSense 1.1.9
+
+| | |
+| --- | --- |
+| **Released** | 2026-10-17 |
+| **Line** | Stable 1.1.x |
+| **Product version** | `1.1.9-RELEASE` |
+| **Architectures** | amd64; arm64 (generic UEFI installer image) |
+| **Platform** | FreeBSD 16.0-CURRENT snapshot, source `a52c50b4`, `osversion` 1600027 (unchanged) |
+| **FreeSense source** | `093c199` |
+| **System ports** | `3d1157e` |
+| **Optional packages** | `9b9d848` |
+| **Previous release** | [1.1.5](#freesense-115) |
+
+The release lock is `config/releases/1.1.9.json` in the `freesense-os-base` repository. It keeps
+the FreeBSD platform of 1.1.0 to 1.1.5 and moves all three FreeSense repositories. Every published
+1.1 release is tagged `v1.1.N` in those repositories.
+
+1.1.9 supersedes 1.1.5. The numbers **1.1.6, 1.1.7 and 1.1.8 were withdrawn before release**: they
+were test builds that were never published, and everything they contained is in 1.1.9. A version
+number is never reused. Older release notes follow [below](#freesense-115).
+
+:::caution[Systems on 1.1.1 to 1.1.4: one console command first]
+On 1.1.1, 1.1.2, 1.1.3 and 1.1.4 the updater itself is broken, so **System → Update** and the
+Package Manager cannot install 1.1.9 on their own. Run the command in
+[Before you update](#before-you-update-from-111-to-114-in-119) once, then update as usual.
+Systems on 1.1.0 and 1.1.5 update normally.
+:::
+
+### What changed in 1.1.9
+
+#### Base system
+
+- **RADIUS authentication works again.** Every login through a RADIUS authentication server failed
+  on 1.1.0 to 1.1.5: the WebUI, VPN users and Captive Portal. The RADIUS client was rewritten for
+  PHP 8.5 and supports PAP, CHAP-MD5, MS-CHAPv1 and MS-CHAPv2, with group and session attributes.
+  It no longer needs the old `Crypt_CHAP` and `mcrypt` libraries, and its CHAP code is tested
+  against the RFC test vectors.
+- **Older boot environments are locked in the WebUI.** **System → Boot Environments** refuses to
+  activate a boot environment that holds an older release (such as 1.0), as the REST API already
+  did. The page marks it **Older release** and disables its activate buttons.
+- **Serial-console installs work.** Installing over a serial console stopped at the ZFS step with
+  "ZFS setup failed", because the console reported no screen size. A console without a size now
+  gets the standard 24×80.
+- **PHP 8 fixes across the WebUI.** Undefined variables, array keys and null arguments are fixed on
+  every page. A full crawl of the WebUI with every PHP warning turned on went from about 1,000
+  warnings to a few dozen harmless notices, with no errors. Code whose behaviour changed in PHP 8
+  was corrected as well.
+- **Virtual IP subnets in firewall aliases and rules.** Proxy ARP and other virtual IP subnets that
+  contain a `1` are listed again, and IPv6 virtual IP networks are skipped as intended. Both broke
+  on PHP 8.
+- **Diagnostics → GEOM Mirrors** no longer stops with a fatal error when a form field is invalid.
+- **System → Update → Update Settings** explains the new **Testing** branch, which installs nightly
+  builds of the next Stable patch. See [Updates and release channels](/guides/updates-and-channels/).
+
+#### Security
+
+- The firewall rule editor escapes the gateway name in JavaScript, and the LDAP container lookup
+  accepts only CSRF-checked POST requests.
+- The unused jquery.cookie 1.3.1 library (CVE-2022-23395) is removed. It was never loaded by the
+  WebUI.
+- Which FreeBSD security advisories apply to 1.1.9, and which are fixed or not relevant, is listed on the
+  [security site](https://security.freesense.org/all/?version=1.1). See
+  [Security advisories](/guides/security/).
+
+#### Optional packages
+
+PHP 8.5 deprecation fixes, released as new package versions so updated systems actually receive
+them:
+
+- **WireGuard, Tailscale, ACME and OpenVPN Client Export**: no null array keys.
+- **BIND, ntopng, Suricata and Threat Shield**: the obsolete `curl_close()` calls are gone.
+- **HAProxy**: no shell backtick operator or `$http_response_header`.
+- **UDP Broadcast Relay**: explicit nullable parameter types.
+- **OpenVPN Client Export**: no optional parameters before required ones.
+- **Status Monitoring** (part of the system): no undefined-key warnings.
+
+### Before you update from 1.1.1 to 1.1.4 in 1.1.9
+
+Open a shell (console option **8**, or SSH) and run this once. It points the update channel
+tool at the channel you chose and installs the fixed updater:
+
+```sh
+cd /usr/local/etc/FreeSense/pkg/repos && rm -f FreeSense-repo-*.default && touch FreeSense-repo-stable.default && env -u REPOS_DIR -u FETCH_TIMEOUT /usr/local/sbin/FreeSense-repo-setup && pkg-static update -f -r FreeSense && pkg-static upgrade -y -r FreeSense FreeSense-upgrade FreeSense-repoc
+```
+
+The command only reads the FreeSense repository, so an unreachable custom repository can't stop
+it. Then open **System → Update** (or console option **13**) and install 1.1.9. If you use the
+Development channel instead of Stable, write `devel` instead of `stable` in
+`FreeSense-repo-stable.default`.
+
+### What to check after updating in 1.1.9
+
+- **Optional Packages**: open **System → Package Manager → Installed Packages** and update the
+  packages it offers, so the fixes above reach them.
+- **RADIUS**: if you switched logins to local users while RADIUS was broken, you can switch back.
+  **Diagnostics → Authentication** tests a RADIUS server without logging out.
+
+### Known issues in 1.1.9
+
+- **Older boot environments are not locked everywhere.** The WebUI and the REST API refuse to
+  activate a boot environment of an older release, but `freesense-be` and the loader menu don't
+  yet. Activating a 1.0 boot environment is not a supported downgrade; see
+  [Upgrading from 1.0](/guides/upgrading-from-1.0/#if-the-upgrade-fails).
+- **Tailscale can take over DNS.** Tailscale's MagicDNS replaces `/etc/resolv.conf` with
+  `100.100.100.100`. When that address doesn't answer, the firewall loses DNS after a reboot and
+  updates fail with "Unable to read the package catalogue". Turn it off with
+  `tailscale set --accept-dns=false` in a shell.
+- **Secure Web Gateway stopped after an upgrade reboot.** In one 1.1.0 upgrade test the service was
+  stopped after the reboot; starting it from **Status → Services** works. The cause is not known
+  and it has not been seen again.
+
+### Upgrade notes in 1.1.9
+
+- **From 1.1.0 or 1.1.5:** a normal Stable update. See
+  [Updates and release channels](/guides/updates-and-channels/).
+- **From 1.1.1 to 1.1.4:** run the [console command](#before-you-update-from-111-to-114-in-119) first.
+- **From 1.0.x:** the upgrade to the 1.1 line is one-way. Read
+  [Upgrading from 1.0](/guides/upgrading-from-1.0/) first.
+- **Tested path:** a 1.1.5 system with WireGuard, Threat Shield and FreeRADIUS installed was
+  updated to the 1.1.9 test build. The system, Status Monitoring and the changed Optional Packages
+  moved to their new versions, and every WebUI page loaded.
 
 ## FreeSense 1.1.5
 
@@ -52,7 +267,7 @@ the FreeBSD platform of 1.1.0 to 1.1.4 and moves all three FreeSense repositorie
 :::caution[Systems on 1.1.1 to 1.1.4: one console command first]
 On 1.1.1, 1.1.2, 1.1.3 and 1.1.4 the updater itself is broken, so **System → Update** and the
 Package Manager cannot install 1.1.5 on their own. Run the command in
-[Before you update](/releases/1.1.9/#before-you-update-from-111-to-114) once, then update as usual.
+[Before you update](#before-you-update-from-111-to-114-in-119) once, then update as usual.
 Systems on 1.1.0 update normally.
 :::
 
@@ -145,7 +360,7 @@ These are open in 1.1.5. Everything else on the
 
 - **From 1.1.0:** a normal Stable update. See
   [Updates and release channels](/guides/updates-and-channels/).
-- **From 1.1.1 to 1.1.4:** run the [console command](/releases/1.1.9/#before-you-update-from-111-to-114) first.
+- **From 1.1.1 to 1.1.4:** run the [console command](#before-you-update-from-111-to-114-in-119) first.
 - **From 1.0.x:** the upgrade to the 1.1 line is one-way. Read
   [Upgrading from 1.0](/guides/upgrading-from-1.0/) first.
 

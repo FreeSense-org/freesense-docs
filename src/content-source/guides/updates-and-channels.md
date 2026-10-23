@@ -72,7 +72,7 @@ and one automatic rollback; on UFS it runs in place. The
 :::caution[1.1.1 to 1.1.4 cannot update on their own]
 The updater in 1.1.1 to 1.1.4 loses the selected channel, so updates and package changes stop with
 "Another instance of FreeSense-upgrade is running". Run the
-[console command in the 1.1.9 notes](/releases/1.1.9/#before-you-update-from-111-to-114) once,
+[console command in the 1.1.9 notes](/releases/previous-1.1/#before-you-update-from-111-to-114-in-119) once,
 then update to the current release as usual.
 :::
 

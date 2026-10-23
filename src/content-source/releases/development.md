@@ -70,11 +70,11 @@ was tested.
 ### 21 October
 
 - **PHP 8.5.12 (security).** Fixes the two critical PHP vulnerabilities CVE-2026-109618 and
-  CVE-2026-109619, the same fix as [FreeSense 1.1.10](/releases/1.1.10/). The change is on `main`, so
-  the next Development build carries it: expected tonight, from the nightly build or a build started
-  sooner. Installed Development systems receive it with that System update. Until then Development
-  runs the affected PHP 8.5.11. Development is experimental and unsupported, so keep the WebUI off
-  untrusted networks.
+  CVE-2026-109619, the same fix as [FreeSense 1.1.10](/releases/previous-1.1/#freesense-1110). The
+  change landed on `main` on 21 October and is published in build `1.2.0-dev.20261020.1792754032`
+  (23 October). Installed Development systems receive it with that System update; until they do,
+  they run the affected PHP 8.5.11. Development is experimental and unsupported, so keep the WebUI
+  off untrusted networks.
 
 ### 17-18 October
 
@@ -110,7 +110,7 @@ was tested.
 - **Stable and Development**: the updater keeps the selected update channel and reports real exit
   codes; custom package repositories are shown to the shell and never to the system upgrader.
 
-For fixes that also shipped in Stable, read the [1.1.10](/releases/1.1.10/) and [1.1.9](/releases/1.1.9/) release notes. The FreeBSD
+For fixes that also shipped in Stable, read the [Stable release notes](/releases/stable/#release-notes). The FreeBSD
 security advisories that are open or fixed on 1.2 are listed on the
 [security site](https://security.freesense.org/all/?version=1.2); see
 [Security advisories](/guides/security/).

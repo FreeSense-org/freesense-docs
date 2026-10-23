@@ -316,7 +316,7 @@ to save the log before you try again. Then check:
 - no other update or package operation is running. The progress window says so when one is;
   wait for it to finish and try again. On 1.1.1 to 1.1.4, "Another instance of
   FreeSense-upgrade is running" appears for every operation; see the
-  [1.1.9 notes](/releases/1.1.9/#before-you-update-from-111-to-114);
+  [1.1.9 notes](/releases/previous-1.1/#before-you-update-from-111-to-114-in-119);
 - **Need attention** packages on Installed Packages. Use **Reinstall** for a **Missing** package.
 
 When you report a problem, include the FreeSense version, the package name and version, the
