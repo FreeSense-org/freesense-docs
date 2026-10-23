@@ -38,7 +38,7 @@ is not a supported way to go back to 1.0. Take a configuration backup before you
    [download center](https://freesense.org/download)) in case the system must be reinstalled.
 6. **Plan for a reboot.** The upgrade always ends with at least one reboot. Schedule a maintenance
    window and keep console access (serial, VGA, or the hypervisor console).
-7. **Read the [known issues](/releases/1.1.9/#known-issues).**
+7. **Read the [known issues](/releases/previous-1.1/#known-issues-in-119).**
 
 ## Run the upgrade
 
