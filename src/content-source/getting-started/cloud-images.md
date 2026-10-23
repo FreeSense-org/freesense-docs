@@ -175,10 +175,8 @@ instance's ConfigDrive or the metadata service.
 
 Provisioning is applied atomically and keyed to the cloud instance ID. Rebooting the same instance
 doesn't duplicate interfaces, users, or firewall rules. A clone with a new instance ID is
-provisioned from scratch.
-
-<!-- needs verification: regeneration of SSH host keys and host identity on a new instance ID was
-documented earlier and has not been re-checked against the 1.1.0 adapter. -->
+provisioned from scratch: the hostname, domain, interfaces and keys from the new metadata replace
+the old ones, and cloud-init generates new SSH host keys for the new instance.
 
 ## Next
 
