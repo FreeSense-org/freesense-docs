@@ -73,26 +73,47 @@ accelerator that is already loaded stays loaded until the next boot.
 | Intel IPsec-MB multi-buffer (ipsecmb) | amd64, experimental | Intel's multi-buffer library, which encrypts several packets at once |
 
 Each choice also has a variant with the BSD Crypto Device (`cryptodev`), which only userland tools
-need. The list shows only the accelerators that the installed build includes. IPsec-MB is still
-being tested and appears once a Development build ships it.
+need. The list shows only the accelerators that the installed build includes. On arm64, the ARMv8
+CPU crypto instructions (`armv8crypto`) are built into the kernel and used automatically, so there
+is nothing to choose.
 
-The separate **Intel QAT** checkbox loads the Intel QuickAssist drivers. They offload the same
-cryptography to a QAT device, as found on Atom C2000 and C3000, Xeon D and C62x chipsets and QAT
-add-in cards. The drivers attach only when such a device is present, and they can run next to the
-accelerator you chose above.
+### Crypto offload hardware
+
+Below the list, a checkbox appears for each offload driver that the build includes. Each driver
+attaches only when its device is present, and it can run next to the accelerator chosen above.
+Clear a checkbox and reboot to unload its driver.
+
+| Checkbox | Hardware |
+| --- | --- |
+| Intel QAT | Intel QuickAssist: Atom C2000 and C3000, Xeon D and C62x chipsets, QAT add-in cards |
+| AMD CCP | The AMD Crypto Co-Processor on EPYC and Ryzen Embedded processors. It also feeds the kernel's random number generator. |
+| Chelsio crypto | The crypto engine of Chelsio T6 network adapters |
+
+On arm64 boards with a Marvell SafeXcel engine, its driver is built into the kernel and attaches
+by itself.
+
+### Inline IPsec offload
+
+Some network adapters can encrypt and decrypt IPsec themselves, such as NVIDIA (Mellanox) ConnectX-6
+Dx and ConnectX-7 with crypto enabled. For those adapters, **Interfaces → NIC Settings** offers
+**Inline IPsec offload** in the adapter's settings. With it on, the kernel hands each new IPsec
+security association to the adapter. Only AES-GCM security associations are offloaded; others stay
+in software. It applies to tunnels that come up after you save, and no profile turns it on.
 
 :::caution[Experimental]
-QAT support has not yet been tested on QAT hardware. IPsec-MB is experimental. In first tests it
-was faster than ossl with many parallel flows and slower with a single flow. Test with your own
-traffic before you depend on either.
+None of the offload hardware above has been tested yet: not QAT, AMD CCP, Chelsio, SafeXcel or
+inline IPsec offload. IPsec-MB is experimental too. In first tests it was faster than ossl with many
+parallel flows and slower with a single flow. Test with your own traffic before you depend on any
+of them.
 :::
 
-<!-- verified 2026-10-24: choices and labels from freesense 4e45843 (system_advanced_misc.inc,
-system_advanced_misc.php); ipsecmb results in test-lab evidence (freebsd16-ipsecmb-dev,
-evidence-2026-10-24/RESULTS.md); the driver is freesense-os-base PR 344, not yet in a build. -->
+<!-- verified 2026-10-24: choices and labels from freesense 4e45843, 3c6f7e2 and PR 220
+(system_advanced_misc.php, interfaces_nic_settings.php, freesense-utils.inc crypto_offload_drivers);
+ipsecmb results in test-lab evidence (freebsd16-ipsecmb-dev, evidence-2026-10-24/RESULTS.md);
+mlx5 offloads only AES-GCM-16 SAs (FreeBSD sys/dev/mlx5/mlx5_accel/mlx5_ipsec.c). -->
 
 The **Hardware Crypto** line of the dashboard's System Information widget shows which accelerators
-the CPU supports and which are active.
+are present and which are active. It also lists the adapters with inline IPsec offload on.
 
 ## Network interfaces
 
