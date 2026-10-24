@@ -62,12 +62,15 @@ resource profile (lightweight, moderate, or intensive) before you install it. Se
 
 ## Crypto acceleration
 
-IPsec and OpenVPN DCO encrypt traffic in the kernel. A crypto accelerator makes that faster. Choose
-one under **System → Advanced → Miscellaneous → Cryptographic Hardware**, then reboot, because an
+IPsec and OpenVPN DCO encrypt traffic in the kernel. A crypto accelerator makes that faster. The
+setting is **System → Advanced → Miscellaneous → Cryptographic Hardware**. It defaults to
+**Automatic**, which loads OpenSSL (ossl). OpenSSL uses the CPU's AES and SHA instructions when the
+CPU has them. Choose another accelerator, or **None**, only for a reason, then reboot, because an
 accelerator that is already loaded stays loaded until the next boot.
 
 | Choice | Platforms | What it uses |
 | --- | --- | --- |
+| Automatic (default) | amd64, arm64 | OpenSSL (ossl); AES-NI on a build without ossl |
 | AES-NI CPU-based Acceleration (aesni) | amd64 | The CPU's AES instructions |
 | OpenSSL CPU-based Acceleration (ossl) | amd64, arm64 | OpenSSL's optimized AES-GCM, AES-CBC, ChaCha20-Poly1305 and SHA routines |
 | Intel IPsec-MB multi-buffer (ipsecmb) | amd64, experimental | Intel's multi-buffer library, which encrypts several packets at once |
@@ -114,6 +117,30 @@ mlx5 offloads only AES-GCM-16 SAs (FreeBSD sys/dev/mlx5/mlx5_accel/mlx5_ipsec.c)
 
 The **Hardware Crypto** line of the dashboard's System Information widget shows which accelerators
 are present and which are active. It also lists the adapters with inline IPsec offload on.
+
+## CPU microcode and power
+
+**CPU microcode.** Intel and AMD publish microcode updates that fix CPU bugs and security issues.
+FreeSense ships them and, on bare-metal amd64 systems, the boot loader applies the update before the
+kernel starts. The kernel then picks its CPU vulnerability mitigations with the updated microcode.
+If the loader finds no newer update, or early loading is off, the update is still applied near the
+end of boot. Virtual machines are skipped, because their microcode comes from the host. To turn
+early loading off, clear **CPU Microcode** under **System → Advanced → Miscellaneous**, then reboot.
+New microcode arrives with FreeSense updates, so keep the system and the BIOS up to date.
+
+**Dashboard.** The System Information widget shows the **CPU Microcode** result for the current
+boot: updated from one revision to another, up to date, provided by the hypervisor, or failed with
+"a BIOS update is advised". Under **CPU Type** it lists the crypto instructions the CPU has: AES-NI
+(or AES on arm64), SHA, AVX2, AVX-512 and VAES.
+
+**Power savings.** On CPUs with hardware-controlled performance states, **System → Advanced →
+Miscellaneous** shows a power section. It is named **Intel Speed Shift** on Intel CPUs and **AMD
+CPPC** on AMD CPUs, and both offer the same power preference slider, from Performance to Energy
+Efficiency. Package-level control exists only on Intel. Turning the feature on or off needs a reboot.
+
+<!-- verified 2026-10-24: freesense 88e6ed8 (freesense-utils.inc cpu_microcode_file,
+cpu_microcode_status, cpu_crypto_features; system.inc system_hwpstate_vendor; system_advanced_misc.php).
+AMD CPPC and early microcode have not been tested on bare metal yet. -->
 
 ## Network interfaces
 
