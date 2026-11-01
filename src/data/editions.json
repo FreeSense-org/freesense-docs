@@ -4,13 +4,13 @@
     "label": "1.1 Stable",
     "route_prefix": "",
     "train": "1.1",
-    "release": "1.1.11",
+    "release": "1.1.12",
     "lifecycle": "supported",
-    "source_sha": "d3ec33c165c46bb1a9b25684c7eb5830d2c47d99",
-    "packages_sha": "d3309a8e4907b936ffb66f44daf6750be7b9508c",
-    "system_ports_sha": "e1c24498c926207f4ed9447860ad2c656ccdf003",
-    "freebsd_source_sha": "a52c50b4b7c2652954ef1bd34710a4b1fc8ef391",
-    "freebsd_ports_sha": "2e67f384802ff04abd34e706fb098e4cd999e7e6"
+    "source_sha": "287db335e5928295055097a60a8b07cce8e722b5",
+    "packages_sha": "0df8b8ec522dfa86874cc8ba56fa5d745106046c",
+    "system_ports_sha": "f1e8704382bdbf763f468ed9064ff4a0971808a1",
+    "freebsd_source_sha": "61c70dc16a79efcb9db732d37706cd311f555d9a",
+    "freebsd_ports_sha": "2ea38e53e6a3434d2cf581813ba80592681c811c"
   },
   "devel": {
     "label": "1.2 Development",
