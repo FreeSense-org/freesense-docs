@@ -1,13 +1,14 @@
 ---
 title: Previous 1.1 releases
-description: Release notes for FreeSense 1.1.0 to 1.1.10, the earlier releases of the 1.1 Stable line, and the release numbers 1.1.6 to 1.1.8 that were withdrawn before release.
+description: Release notes for FreeSense 1.1.0 to 1.1.11, the earlier releases of the 1.1 Stable line, and the release numbers 1.1.6 to 1.1.8 that were withdrawn before release.
 ---
 
 These are the release notes of the earlier 1.1 Stable releases, newest first. The current release
-is [FreeSense 1.1.11](/releases/1.1.11/); it contains every change listed here.
+is [FreeSense 1.1.12](/releases/1.1.12/); it contains every change listed here.
 
 | Release | Date | Summary |
 | --- | --- | --- |
+| [1.1.11](#freesense-1111) | 2026-10-23 | Supersedes 1.1.10 (same PHP 8.5.12 fix); cloud images are back, with the VMware tools |
 | [1.1.10](#freesense-1110) | 2026-10-22 | **Security patch**: PHP 8.5.12 fixes two critical remote code execution flaws (CVE-2026-109618, CVE-2026-109619); WebUI hardening; HAProxy 3.4.7; VXLAN and cloud image fixes |
 | [1.1.9](#freesense-119) | 2026-10-17 | RADIUS works on PHP 8.5; boot environments of older releases locked in the WebUI; PHP 8 fixes across the WebUI and Optional Packages; serial-console installs |
 | 1.1.6 to 1.1.8 | 2026-10-15 to 2026-10-17 | **Withdrawn before release**, never published · see [below](#withdrawn-before-release) |
@@ -32,6 +33,68 @@ before it was published, so no system ever installed them, and its changes ship 
   ship with it.
 - **1.1.8** failed its upgrade test: the changed Optional Packages and Status Monitoring kept their
   old version numbers, so updated systems would not have received the fixes.
+
+## FreeSense 1.1.11
+
+| | |
+| --- | --- |
+| **Released** | 2026-10-23 |
+| **Line** | Stable 1.1.x |
+| **Product version** | `1.1.11-RELEASE` |
+| **Architectures** | amd64; arm64 (generic UEFI installer image) |
+| **Platform** | FreeBSD 16.0-CURRENT snapshot, source `a52c50b4`, `osversion` 1600027 (unchanged) |
+| **FreeSense source** | `d3ec33c` |
+| **System ports** | `e1c2449` (unchanged) |
+| **Optional packages** | `d3309a8` (unchanged) |
+| **Previous release** | [1.1.10](#freesense-1110) |
+
+The release lock is `config/releases/1.1.11.json` in the `freesense-os-base` repository. It keeps
+the FreeBSD platform, System ports and Optional packages of 1.1.10 and moves the FreeSense source by
+one commit. Every published 1.1 release is tagged `v1.1.N` in those repositories.
+
+1.1.11 supersedes 1.1.10. **1.1.10 is not withdrawn**: it already ships PHP 8.5.12 with the fixes for
+CVE-2026-109618 and CVE-2026-109619, and a system on 1.1.10 is not exposed to them. There is nothing to
+do before updating. A version number is never reused. Older release notes follow on this page.
+
+:::note[Still on 1.1.9 or earlier?]
+Update promptly. PHP 8.5.11, which 1.1.9 and earlier use, is affected by two critical remote code
+execution vulnerabilities; see the [1.1.10 release notes](#what-changed-in-1110). 1.1.11
+carries the same fixed PHP 8.5.12.
+:::
+
+### What changed in 1.1.11
+
+#### Images
+
+- **Cloud images are back, with the VMware tools.** 1.1.10 shipped without cloud images: the image
+  assembly requires `open-vm-tools-nox11` in the System repository, and on the 1.1 line that package
+  was not a System build root. It is now (the same as on 1.2), so the ZFS and UFS cloud images are
+  published again and carry the VMware guest tools, next to `qemu-guest-agent` and the FreeSense
+  cloud-init.
+
+#### Build
+
+- PHP 8.5.12 is now compiled by FreeSense on amd64, as it already was on arm64, instead of being taken
+  prebuilt from the FreeBSD package mirror. The installed version and configuration are the same;
+  the change is in how the release is produced.
+
+### What to check after updating in 1.1.11
+
+- **PHP version**: **Diagnostics → Command Prompt**, or a shell, `php -v` shows 8.5.12.
+- **Optional Packages**: unchanged since 1.1.10. If you skipped 1.1.10, open
+  **System → Package Manager → Installed Packages** and update the packages it offers (HAProxy 3.4.7).
+
+### Upgrade notes in 1.1.11
+
+- **From 1.1.0, 1.1.5, 1.1.9 or 1.1.10:** a normal Stable update. See
+  [Updates and release channels](/guides/updates-and-channels/).
+- **From 1.1.1 to 1.1.4:** run the
+  [console command](#before-you-update-from-111-to-114-in-119) first.
+- **From 1.0.x:** the upgrade to the 1.1 line is one-way. Read
+  [Upgrading from 1.0](/guides/upgrading-from-1.0/) first.
+- **Tested path:** a 1.1.9 amd64 system upgraded to 1.1.11 with the FreeSense upgrader: it boots,
+  reports PHP 8.5.12 (CLI and FPM), the WebUI answers, `pkg check` is clean and PHP-FPM restarts.
+  Optional Packages and arm64 were built but not installed in that test.
 
 ## FreeSense 1.1.10
 
