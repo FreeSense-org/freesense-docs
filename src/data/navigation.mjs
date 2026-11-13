@@ -131,6 +131,7 @@ export const navigation = [
   {
     label: 'Operate and troubleshoot',
     items: [
+      ['Dashboard', 'operations/dashboard', ['devel']],
       ['Monitoring and logs', 'operations/monitoring-and-logs'],
       ['Diagnostics and troubleshooting', 'operations/diagnostics-and-troubleshooting'],
       ['ZFS boot environments', 'operations/zfs-boot-environments'],
@@ -150,6 +151,7 @@ export const navigation = [
       ['Building optional packages', 'developers/building-optional-packages'],
       ['Package integration', 'developers/package-integration'],
       ['WebUI menu system', 'developers/webui-menu-system'],
+      ['Dashboard widgets', 'developers/dashboard-widgets', ['devel']],
     ],
   },
   {
