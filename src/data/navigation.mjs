@@ -132,6 +132,7 @@ export const navigation = [
     label: 'Operate and troubleshoot',
     items: [
       ['Dashboard', 'operations/dashboard', ['devel']],
+      ['Account', 'operations/account', ['devel']],
       ['Monitoring and logs', 'operations/monitoring-and-logs'],
       ['Diagnostics and troubleshooting', 'operations/diagnostics-and-troubleshooting'],
       ['ZFS boot environments', 'operations/zfs-boot-environments'],
