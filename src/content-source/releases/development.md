@@ -61,11 +61,22 @@ of the same build, `1.2.0.a.YYYYMMDD.HHMM_G`.
 The exact current build is shown in the live Development release document,
 `https://pkg.freesense.org/v1/releases/devel.json`, and in the provenance attached to its images.
 
-## Recent changes in 1.2
+## What is new in 1.2
 
-What reached the Development line in the second week of October 2026, newest first. Development
-builds are experimental; see [Fleet status and known issues](/1.2/configure/fleet-status/) for what
-was tested.
+The current list is on the system itself: **System → Update → What is new**. It is rebuilt with every
+Development build and shows the builds your system has not installed yet (or the latest three when it
+is up to date), with the FreeBSD and package changes. The **New in 1.2 vs 1.1** tab lists what the
+Development line has that Stable 1.1 does not; a fix that was also released in 1.1 is not listed
+there. The same data is public at `https://pkg.freesense.org/v1/releases/devel.notes.json`.
+
+The lines come from commit messages (`Area: what changed`), so they stay current without anyone
+editing this page. Development builds are experimental; see
+[Fleet status and known issues](/1.2/configure/fleet-status/) for what was tested.
+
+## Earlier changes in 1.2 (up to 23 October 2026)
+
+What reached the Development line in the second week of October 2026, newest first. This part was
+written by hand and is no longer updated.
 
 ### 21 October
 
