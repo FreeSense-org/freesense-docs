@@ -49,15 +49,20 @@ const sealedLocks = (train) => readdirSync(releasesDirectory)
 	.map((file) => JSON.parse(readFileSync(resolve(releasesDirectory, file), 'utf8')))
 	.filter((release) => release.sealed === true)
 	.sort((left, right) => right.release.localeCompare(left.release, undefined, { numeric: true }));
+// A sealed input lock can exist before publication, or belong to a cancelled
+// candidate. Validate the deliberately registered published edition, not the
+// numerically newest candidate lock. Promotion follows live release verification.
+const withdrawn = JSON.parse(readFileSync(resolve(releasesDirectory, 'withdrawn.json'), 'utf8')).withdrawn;
 for (const edition of ['stable', 'frozen']) {
-	const latest = sealedLocks(editions[edition].train)[0];
-	if (!latest) throw new Error(`no sealed ${editions[edition].train}.x release lock is available for edition validation`);
-	if (editions[edition].release !== latest.release) {
-		throw new Error(`${edition} docs identify ${editions[edition].release}, but the latest sealed release is ${latest.release}`);
+	const registered = editions[edition].release;
+	const release = sealedLocks(editions[edition].train).find((item) => item.release === registered);
+	if (!release) throw new Error(`${edition} docs have no sealed input lock for ${registered}`);
+	if (withdrawn.some((item) => item.release === registered)) {
+		throw new Error(`${edition} docs cannot promote withdrawn release ${registered}`);
 	}
-	for (const field of ['source_sha', 'packages_sha', 'system_ports_sha']) {
-		if (editions[edition][field] !== latest[field]) {
-			throw new Error(`${edition} docs ${field} does not match release ${latest.release}`);
+	for (const field of ['source_sha', 'packages_sha', 'system_ports_sha', 'freebsd_source_sha', 'freebsd_ports_sha']) {
+		if (editions[edition][field] !== release[field]) {
+			throw new Error(`${edition} docs ${field} does not match release ${registered}`);
 		}
 	}
 }

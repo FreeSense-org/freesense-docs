@@ -137,10 +137,10 @@ passphrase, older backups need the old passphrase.
   [ZFS boot environments](/operations/zfs-boot-environments/). A boot environment is not a substitute
   for a configuration backup.
 
-## Session and recovery changes prepared for 1.1.13
+## Session and recovery changes prepared for 1.1.14
 
-The planned 1.1.13 update revokes earlier local WebUI/widget/REST sessions when the account is
+The planned 1.1.14 update revokes earlier local WebUI/widget/REST sessions when the account is
 removed, disabled, expires or its password changes. Re-enabling an account does not revive an
 older revoked session. Independent API keys retain their existing lifecycle. Keep console access
 available when changing administrator accounts. Emergency WebUI recovery is root-controlled,
-limited to 15 minutes and cleared at boot. See the [release preparation notes](/releases/1.1.13/).
+limited to 15 minutes and cleared at boot. See the [release preparation notes](/releases/1.1.14/).

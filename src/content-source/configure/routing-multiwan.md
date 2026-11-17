@@ -85,8 +85,8 @@ The [multicast bridge](/packages/mcast-bridge/), [mDNS bridge](/packages/mdns-br
 built-in **Services → IGMP Proxy**, each forward one kind of discovery or multicast traffic between
 segments. Enable only the path you need; broad forwarding can undo the segmentation that VLANs provide.
 
-## Routing changes prepared for 1.1.13
+## Routing changes prepared for 1.1.14
 
 The planned release protects pending route changes with private, validated system state. After
 upgrading, test gateway deletion, static routes and WAN failover used by the installation, and
-verify that normal traffic resumes after a reboot. See [1.1.13 preparation](/releases/1.1.13/).
+verify that normal traffic resumes after a reboot. See [1.1.14 preparation](/releases/1.1.14/).

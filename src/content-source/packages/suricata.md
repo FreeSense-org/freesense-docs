@@ -175,8 +175,8 @@ means Suricata can parse it, not that the policy is right.
   catalog. See [Threat Shield](/packages/threat-shield/).
 :::
 
-## Engine requirement prepared for 1.1.13
+## Engine requirement prepared for 1.1.14
 
-The planned 1.1.13 package requires Suricata 8.0.8 or later. Confirm the installed engine version,
+The planned 1.1.14 package requires Suricata 8.0.8 or later. Confirm the installed engine version,
 rule loading and traffic inspection after updating; a wrapper version alone does not establish
-which engine is running. See [1.1.13 preparation](/releases/1.1.13/).
+which engine is running. See [1.1.14 preparation](/releases/1.1.14/).

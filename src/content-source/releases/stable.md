@@ -16,8 +16,10 @@ the next number.
 
 ## Next patch preparation
 
-[1.1.13 preparation notes](/releases/1.1.13/) describe the planned security batch and upgrade
-precautions. **1.1.13 has not been published.** The current published release remains 1.1.12.
+1.1.13 was cancelled before publication. Its release number is not reused.
+
+[1.1.14 preparation notes](/releases/1.1.14/) describe the planned security batch and upgrade
+precautions. **1.1.14 has not been published.** The current published release remains 1.1.12.
 
 ## Release notes
 
