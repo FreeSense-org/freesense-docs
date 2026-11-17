@@ -14,6 +14,11 @@ branch, built and upgrade-tested as a test build, and then published as patch re
 artifacts stay immutable, and a version number is never reused: a withdrawn release is replaced by
 the next number.
 
+## Next patch preparation
+
+[1.1.13 preparation notes](/releases/1.1.13/) describe the planned security batch and upgrade
+precautions. **1.1.13 has not been published.** The current published release remains 1.1.12.
+
 ## Release notes
 
 | Release | Date | Notes |

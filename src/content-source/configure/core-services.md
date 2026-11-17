@@ -82,3 +82,11 @@ certificate expires.
 - **Status → Services** shows the DHCP, DNS, and NTP services running.
 - A client on each network gets an address, resolves names, and reaches the internet.
 - **Status → System Logs** (DHCP, NTP, and system tabs) shows no repeating errors.
+
+## DNS delegation changes prepared for 1.1.13
+
+The planned update adds **WebCfg - Services: DNS Resolver: Custom Configuration** and
+**WebCfg - Services: DNS Forwarder: Custom Configuration**. These privileges permit control of
+custom daemon settings and scripts and can confer root-level control. Grant them only to trusted
+administrators. A user permitted to change ordinary DNS settings can continue to save those
+settings while protected custom options are preserved. See [1.1.13 preparation](/releases/1.1.13/).

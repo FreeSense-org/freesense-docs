@@ -75,3 +75,11 @@ is one you trust, because its content becomes firewall policy.
 Restore the previous configuration from **Diagnostics → Backup & Restore → Configuration History** if
 a change locks out access or breaks traffic. From the console, option 15 of the console menu
 (**Restore recent configuration**) does the same.
+
+## URL alias changes prepared for 1.1.13
+
+In the planned 1.1.13 update, HTTPS alias downloads verify certificates by default. Check feeds
+using a private CA before updating. A failed or incomplete refresh keeps the previous complete
+list; check the logs and repair the feed rather than treating the old data as newly refreshed.
+The explicit insecure-feed exception reduces protection and should not replace fixing trust or
+certificates. See [1.1.13 preparation](/releases/1.1.13/) for the upgrade checks.
