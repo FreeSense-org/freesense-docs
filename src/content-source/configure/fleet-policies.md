@@ -34,13 +34,20 @@ Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/co
 5. For each rule, choose **When it is broken**:
    - **Report**: Fleet only shows it.
    - **Fix**: Fleet corrects the setting in the firewall's maintenance window, after a safety
-     backup. A failed fix is not retried by itself.
+     backup. A failed fix is not retried by itself, and a rule that is changed back on the firewall
+     three times in a day is not fixed again by itself (a policy alert says so; **Fix now** still
+     works).
    - **Lock**: the firewall refuses saves that break the rule, also while the controller is
      offline. A console administrator can suspend the lock (break-glass).
 
    Not every rule offers every mode. **What are Fix and Lock?** next to the search box explains
    them in a small window.
-6. Select **Save policy**.
+6. Select **Save policy**. Fleet then checks every firewall against it and sends the lock rules
+   within a minute; the page does not wait for that.
+
+If two policies at the same level give the same rule different modes, the page shows a conflict
+and the stricter mode (Lock before Fix before Report) is the one that applies. Custom rules have
+numbers that are unique across all policies.
 
 ![The policy editor with the Security rules on and WebGUI over HTTPS locked](__ASSET_ROOT__/screenshots/packages/fleet-policy-edit.png)
 
@@ -74,7 +81,9 @@ with the reason for each result.
 
 When one firewall may break a rule for a while, add an **exception** from its Policies view
 instead of changing the policy. An exception has a reason and an end date, and is listed under
-**Policies → Exceptions**.
+**Policies → Exceptions**. While an exception lasts the rule is left out of that firewall's lock
+rules and not fixed there, so the firewall accepts what the exception allows; it counts again when
+the exception ends.
 
 ## Related pages
 

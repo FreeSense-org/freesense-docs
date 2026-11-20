@@ -112,7 +112,11 @@ template of each kind.
 
 ![The preview: six firewalls with one change each, with Apply here and Ignore](__ASSET_ROOT__/screenshots/packages/fleet-template-preview.png)
 
-Applying runs as an operation in **Activity**:
+Applying runs as an operation in **Activity**. The buttons only apply what the page showed: when
+the template or its firewalls changed meanwhile, nothing starts and you are asked to look again.
+If an alias or settings template fails on one firewall, the firewalls still waiting are skipped so
+one bad template does not reach all of them (rule and NAT templates roll back by themselves and go
+on):
 
 ![The template applied to all six firewalls in nine seconds](__ASSET_ROOT__/screenshots/packages/fleet-template-applied.png)
 
