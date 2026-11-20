@@ -23,7 +23,7 @@ Fleet is part of the Development line (FreeSense 1.2). See [FreeSense Fleet](/co
 | **Access** | Who may reach the enrollment port: **Exposure** (open for joining, or only an allowed list) and the **Allowed list**, and whether Fleet turns off the key expiry of firewalls on a Tailscale path. |
 | **Standby server** | A second FreeSense with the Fleet package keeps a verified, encrypted copy of this controller and can take over. Firewalls learn its address automatically and move to it by themselves. |
 | **Self-check** | Everything firewalls need to reach and trust the controller, checked now, with repair buttons. See [Self-check](/configure/fleet-connect/#self-check). |
-| **Advanced** | Values you rarely change: how long invitations are valid, how many wrong join keys burn an invitation, and rows per page in lists. |
+| **Advanced** | Values you rarely change: how long invitations are valid, how many wrong join keys burn an invitation, how long Fleet keeps its audit log (365 days by default), finished actions (90), alerts (90) and used or expired invitations (30), and rows per page in lists. Older rows are removed once an hour; the join key of an invitation is removed as soon as the invitation is over. |
 
 ![Settings, Backups: one setting per row and retention as one sentence](__ASSET_ROOT__/screenshots/packages/fleet-settings-backups.png)
 
