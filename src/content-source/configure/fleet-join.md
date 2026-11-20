@@ -118,6 +118,11 @@ themselves. Every firewall in a batch also gets a `paste-on-the-firewall.txt` wi
 one-paste text, for an administrator who prefers the guide. It holds the join key: keep it like a
 password.
 
+A batch is made in the background and shows up under **Activity** like any other operation (a
+batch of 200 firewalls takes minutes); the passphrase is passed in a private file that is deleted
+at once. Download the bundle when the operation is done. An **unattended** seed is for firewalls
+you can identify by serial or instance id, and lives 3 days by default (7 at most).
+
 ## Leave a fleet
 
 On the firewall, open **System → Central Management** and select **Leave the fleet**, or run
