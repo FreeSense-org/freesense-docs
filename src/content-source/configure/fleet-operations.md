@@ -58,6 +58,18 @@ until you resume it or cancel the rest. After a firewall restarts, Fleet reads t
 from it and compares the full build stamp, so two Development builds with the same version number
 are told apart.
 
+### Actions that stop or get stuck
+
+An action whose process died (the controller restarted, a PHP error) does not stay "Running" for
+ever: when it has made no progress for a set time (30 minutes for most actions, longer for updates
+and restores) and nothing is running it any more, Fleet marks it failed and frees the firewall, and
+what it still had waiting is skipped. A reboot that the firewall accepts but never carries out fails
+after the **A reboot fails after** time.
+
+To stop an action yourself open it in **Activity** and select **Cancel**. What is still waiting is
+skipped. A firewall that is busy with its part finishes it first, because a remote update cannot
+be pulled back; an action that nothing runs any more is marked failed so you can start again.
+
 ![A rollout under way: the first firewalls restarting, the rest waiting for their ring](__ASSET_ROOT__/screenshots/packages/fleet-rollout-running.png)
 
 ![The same rollout finished: all seven firewalls updated to the same build, with how long each took](__ASSET_ROOT__/screenshots/packages/fleet-rollout-done.png)
