@@ -139,7 +139,8 @@ Three ways, all ending in the same handshake:
 3. **A seed**: a file `fleet-join.conf` on a USB stick, CD or second disk, or in cloud-init user
    data, as the [Deployment Factory](/configure/fleet-join/) makes it. It is attended (asks for
    the key at the console), PIN-sealed, or unattended (joins at the end of boot, in the
-   background). The seed is deleted once the firewall has joined.
+   background). A PIN is 20 characters (100 bits) and the join command accepts it with or without
+   dashes and in either case. The seed is deleted once the firewall has joined.
 
 The invitation's link is `https://<controller>:<port>/fleet/join#<id>.<secret>.<fingerprint>.<m>`.
 The part after `#` never leaves the firewall, and its fingerprint is what the firewall pins. The
@@ -173,6 +174,11 @@ Only the **Tailscale** method does this, and only when the firewall does not alr
 With a Tailscale API token, the controller also turns Tailscale key expiry off for the firewall's
 device, so the path does not drop months later (**Settings → Access**, on by default; without it,
 do it in the Tailscale admin console).
+
+Under **Connections**, the token dialog also takes optional **tags** (for example `tag:fleet`). The
+one-time keys then create tagged devices, which belong to the tag and never expire; your tailnet
+policy must make the token's owner an owner of each tag. A one-time key is deleted from Tailscale
+when its invitation is revoked or burned by too many wrong join keys.
 
 ## Versions that must match
 
