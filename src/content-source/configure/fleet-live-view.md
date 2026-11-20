@@ -57,7 +57,7 @@ When you add a screen, enter a **name** and the **networks** it may be opened fr
 **style** and a **theme**, and tick **hide names** if needed. The screen's link is shown **only
 once**: copy it before you leave the page and treat it like a password. The key sits in the part
 of the link after `#`, so the browser never sends it to a web server. **Revoke** a link at any
-time; the screen shows *not connected* within 10 seconds. A change to a screen's layout reaches it
+time; the screen shows *not connected* within 10 seconds. **New link** gives a screen a fresh key and keeps its settings; the old link stops working at once. A change to a screen's layout reaches it
 within 10 seconds, and it keeps its link.
 
 ### Styles

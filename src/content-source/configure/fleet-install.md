@@ -79,7 +79,11 @@ when you are sure.
   the package that keeps a sealed copy of the controller, pulled over the enrollment port, and
   tells every firewall (REST API level 13) where to go if the first stops answering. A takeover is
   manual or automatic; a controller that meets a newer takeover epoch steps down. The standby
-  controller has not been tested on 1.2 yet.
+  controller has been tested on 1.2 in a lab (pairing, takeover and firewalls moving over). The copy is
+  built in a separate process and also carries the newest backups of every firewall.
+- The **enrollment endpoint** has its own web server and its own small php-fpm (4 workers), so a flood
+  of join requests can never use up the WebUI's workers. Requests are rate-limited per address
+  (per /64 for IPv6). A client that sends too many wrong keys goes straight into a pf table.
 
 ## What runs on a managed firewall
 
@@ -110,7 +114,8 @@ are brought in line with what that version grants the firewall's role.
 
 Changes that could cut the controller off use **commit-confirm**: the controller asks the firewall
 for a snapshot and a deadline, and if it does not confirm in time, a watchdog on the firewall
-restores the snapshot (E310).
+restores the snapshot (E310). A firewall keeps **one** such window open at a time: a second request is
+refused (HTTP 409) until the first is confirmed or cancelled.
 
 ### While the controller is away
 
@@ -201,6 +206,10 @@ rest of Fleet keeps working. Only FreeSense 1.2 has the agent, so a 1.1 firewall
 
 - The controller's certificate is **pinned** by the invitation link. Alert channels can pin a
   certificate too.
+- A firewall that gives up a join (it failed part-way and was undone) tells the controller, so the
+  request stops waiting; the invitation stays open for another try. A repeated completion after a
+  lost answer gets the same answer instead of an error.
+- Unattended seeds live **3 days** by default and 7 at most, and a firewall deletes an expired seed.
 - The **join key** travels by another channel and is never logged. An invitation works once, expires
   (24 hours by default) and is burned after a number of wrong keys.
 - Both screens show the **approval code**; the administrator approves it on the controller.
