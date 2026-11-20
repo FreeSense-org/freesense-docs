@@ -209,6 +209,10 @@ rest of Fleet keeps working. Only FreeSense 1.2 has the agent, so a 1.1 firewall
 - A firewall that gives up a join (it failed part-way and was undone) tells the controller, so the
   request stops waiting; the invitation stays open for another try. A repeated completion after a
   lost answer gets the same answer instead of an error.
+- A webhook alert channel cannot point at the controller itself (127.0.0.1, localhost) or at a link-local
+  address such as the cloud metadata service (169.254.169.254); addresses on your LAN are allowed.
+- A firewall accepts at most 8 networks per controller peer and refuses a default route or a block
+  wider than /8 (IPv4) or /16 (IPv6). The console refuses a PIN that is not 20 characters.
 - Unattended seeds live **3 days** by default and 7 at most, and a firewall deletes an expired seed.
 - The **join key** travels by another channel and is never logged. An invitation works once, expires
   (24 hours by default) and is burned after a number of wrong keys.
