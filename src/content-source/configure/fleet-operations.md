@@ -195,6 +195,12 @@ times can be changed. An offline firewall counts as an outage in the availabilit
 
 ![Firewall offline and back online alerts, with delivery retries](__ASSET_ROOT__/screenshots/packages/fleet-alerts.png)
 
+Alerts are sent by their own job, apart from the status checks, so a channel that does not answer
+cannot delay monitoring. A failed send is tried again after 1, 2, 4 minutes and so on (at most an hour
+apart, eight tries). When more than eight alerts are waiting for one channel they go out as one
+summary message. An alert that nobody tried to send for an hour (there was no channel yet) is dropped, so
+a channel you add later does not get the old ones.
+
 To send alerts somewhere, add a channel under **Activity → Alert channels**: e-mail (it uses
 **System → Advanced → Notifications**), a webhook, Slack or Teams, Telegram, ntfy or Gotify. Pick
 the alerts the channel wants, the lowest severity, and an optional daily report, then select
