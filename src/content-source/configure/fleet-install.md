@@ -56,7 +56,7 @@ controller on.
 |---|---|---|
 | Menu entries | **System → FreeSense Fleet** and **Status → FreeSense Fleet** | on install |
 | Dashboard widget | **FreeSense Fleet** | on install |
-| A privilege for the Fleet pages | in the user manager | on install |
+| Two privileges | in the user manager: **WebCfg - Status: FreeSense Fleet** (read only: the dashboard, activity, policies and the live metrics of every firewall) and **WebCfg - System: FreeSense Fleet** (manage the fleet: this is administrator access to every firewall in the fleet, so give it only to administrators) | on install |
 | The controller's data | `/fleet`, its own ZFS dataset when the firewall boots from ZFS (otherwise a directory, mode 0700) | when you switch on |
 | Database | `/fleet/fleet.db` (SQLite) | when you switch on |
 | Keys | the controller's WireGuard key, its signing key and a master key, all in `/fleet` | when you switch on |
@@ -177,7 +177,7 @@ do it in the Tailscale admin console).
 ## Versions that must match
 
 The agent updates with System, the controller package updates as a package. Features check the
-firewall's **REST API level** (this build is level 15):
+firewall's **REST API level** (Development builds are at level 20 or later):
 
 | Feature | Needs |
 |---|---|

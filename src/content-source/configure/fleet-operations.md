@@ -32,7 +32,8 @@ A maintenance window is a weekly time when a group may be updated, for example w
 ![The Add a window dialog: weeknights from 01:00 for 180 minutes](__ASSET_ROOT__/screenshots/packages/fleet-window-add.png)
 
 Times are in the controller's time zone. A window may run past midnight. A rollout does not start
-an update when less than 60 minutes of the window are left.
+an update when less than the **update timeout** (60 minutes by default, set under **Settings → Updates**; the box shows it as "An update fails after")
+of the window is left.
 
 ### Rollouts
 
