@@ -143,3 +143,11 @@ channel has a small release document on `pkg.freesense.org`:
 The release pipeline publishes the images and verifies their public checksums and sizes before it
 updates the matching document. The download page reads these documents live. Publishing Development
 never changes Stable, and publishing Stable never changes Development.
+
+## Preparing for 1.1.14
+
+1.1.14 is being prepared as a security and maintenance update. Keep using the published Stable
+channel until the release is announced. Back up the configuration, retain console access and
+review the [draft upgrade precautions](/releases/1.1.14/). The existence of a release lock or a
+passing build is not a publication announcement. Testing systems should verify their actual
+build date; a selected Testing channel does not by itself establish that the latest fixes ran.

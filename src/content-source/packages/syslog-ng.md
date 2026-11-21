@@ -200,3 +200,10 @@ Saving any tab restarts or reloads syslog-ng (`HUP`) and reloads the firewall fi
   package install script is now started after the package operation finishes instead of being
   killed with the script (freesense `746b03c`).
 :::
+
+## Listener validation prepared for 1.1.14
+
+The planned package update accepts only the supported UDP, TCP and TLS listener protocols and
+valid port values. Invalid input is rejected before checking socket conflicts. TLS listeners
+are checked against the TCP transport. Existing valid listener settings remain supported; test
+log delivery after the upgrade. See [1.1.14 preparation](/releases/1.1.14/).

@@ -174,3 +174,9 @@ means Suricata can parse it, not that the policy is right.
 - The obsolete pfBlockerNG section that was on this page is gone: pfBlockerNG is not in the 1.1
   catalog. See [Threat Shield](/packages/threat-shield/).
 :::
+
+## Engine requirement prepared for 1.1.14
+
+The planned 1.1.14 package requires Suricata 8.0.8 or later. Confirm the installed engine version,
+rule loading and traffic inspection after updating; a wrapper version alone does not establish
+which engine is running. See [1.1.14 preparation](/releases/1.1.14/).
